@@ -5,8 +5,7 @@
   <artifactId>minFS</artifactId>
   <version>1.0</version>
   <packaging>pom</packaging>
-  <name>Archetype - minFS</name>
-  <url>http://maven.apache.org</url>
+  <name>minFS</name>
   <modules>
     <module>metaServer</module>
     <module>dataServer</module>

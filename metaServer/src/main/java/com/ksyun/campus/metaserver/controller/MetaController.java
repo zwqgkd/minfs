@@ -10,47 +10,47 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController("/")
 public class MetaController {
     @RequestMapping("stats")
-    public ResponseEntity stats(@RequestHeader String fileSystem,@RequestParam String path){
+    public ResponseEntity stats(@RequestHeader String fileSystemName,@RequestParam String path){
         return new ResponseEntity(HttpStatus.OK);
     }
     @RequestMapping("create")
-    public ResponseEntity createFile(@RequestHeader String fileSystem, @RequestParam String path){
+    public ResponseEntity createFile(@RequestHeader String fileSystemName, @RequestParam String path){
         return new ResponseEntity(HttpStatus.OK);
     }
     @RequestMapping("mkdir")
-    public ResponseEntity mkdir(@RequestHeader String fileSystem, @RequestParam String path){
+    public ResponseEntity mkdir(@RequestHeader String fileSystemName, @RequestParam String path){
         return new ResponseEntity(HttpStatus.OK);
     }
     @RequestMapping("listdir")
-    public ResponseEntity listdir(@RequestHeader String fileSystem,@RequestParam String path){
+    public ResponseEntity listdir(@RequestHeader String fileSystemName,@RequestParam String path){
         return new ResponseEntity(HttpStatus.OK);
     }
     @RequestMapping("delete")
-    public ResponseEntity delete(@RequestHeader String fileSystem, @RequestParam String path){
+    public ResponseEntity delete(@RequestHeader String fileSystemName, @RequestParam String path){
         return new ResponseEntity(HttpStatus.OK);
     }
 
     /**
      * 保存文件写入成功后的元数据信息，包括文件path、size、三副本信息等
-     * @param fileSystem
+     * @param fileSystemName
      * @param path
      * @param offset
      * @param length
      * @return
      */
     @RequestMapping("write")
-    public ResponseEntity commitWrite(@RequestHeader String fileSystem, @RequestParam String path, @RequestParam int offset, @RequestParam int length){
+    public ResponseEntity commitWrite(@RequestHeader String fileSystemName, @RequestParam String path, @RequestParam int offset, @RequestParam int length){
         return new ResponseEntity(HttpStatus.OK);
     }
 
     /**
      * 根据文件path查询三副本的位置，返回客户端具体ds、文件分块信息
-     * @param fileSystem
+     * @param fileSystemName
      * @param path
      * @return
      */
     @RequestMapping("open")
-    public ResponseEntity open(@RequestHeader String fileSystem,@RequestParam String path){
+    public ResponseEntity open(@RequestHeader String fileSystemName,@RequestParam String path){
         return new ResponseEntity(HttpStatus.OK);
     }
 

@@ -7,12 +7,12 @@ import java.util.List;
 
 public class EFileSystem extends FileSystem{
 
-    private String fileName="default";
     public EFileSystem() {
+        this("default");
     }
 
-    public EFileSystem(String fileName) {
-        this.fileName = fileName;
+    public EFileSystem(String fileSystemName) {
+        this.defaultFileSystemName = fileSystemName;
     }
 
     public FSInputStream open(String path){
