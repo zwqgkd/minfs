@@ -14,5 +14,14 @@
             <artifactId>httpclient5</artifactId>
             <version>5.2.1</version>
         </dependency>
+        <!--curator-->
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-framework</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-recipes</artifactId>
+        </dependency>
     </dependencies>
 </project>
