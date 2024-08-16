@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 public class ZkUtil {
+
     private static final String ZK_ADDR="localhost:2181";
 
     private static final String MASTER_META_ZK_PATH="/metaServer/master";
@@ -55,6 +56,9 @@ public class ZkUtil {
 
             }
         });
+    }
+
+    public ZkUtil() {
     }
 
     /**
@@ -137,7 +141,7 @@ public class ZkUtil {
      * @return 集群信息
      */
     public ClusterInfo getClusterInfo() throws Exception {
-        ClusterInfo clusterInfo=new ClusterInfo();
+        ClusterInfo clusterInfo = new ClusterInfo();
         //get master address
         clusterInfo.setMasterMetaServer(
                 new MetaServerMsg(
@@ -153,18 +157,18 @@ public class ZkUtil {
                 )
         );
         //get ds list
-        if(curatorClient.checkExists().forPath(DS_ZK_PATH)!=null) {
+        if (curatorClient.checkExists().forPath(DS_ZK_PATH) != null) {
             log.info("get ds list from zk");
-            List<DataServerInfo> dataServerInfoList=this.getAllDataServerInfo();
+            List<DataServerInfo> dataServerInfoList = this.getAllDataServerInfo();
             clusterInfo.setDataServer(dataServerInfoList.stream()
-                    .map(ds->new DataServerMsg(
+                    .map(ds -> new DataServerMsg(
                             ds.getIp(),
                             ds.getPort(),
                             ds.getFileTotal(),
                             ds.getCapacity(),
                             ds.getUseCapacity()
                     )).collect(Collectors.toList()));
-        }else{
+        } else {
             log.error("no data server in zk");
         }
         return clusterInfo;

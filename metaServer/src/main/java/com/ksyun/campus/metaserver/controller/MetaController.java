@@ -6,15 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.Map;
 
 @Slf4j
 @RestController("/")
 public class MetaController {
 
-    private MetaService metaService;
+    private final MetaService metaService;
 
-    @Autowired
-    public MetaController(MetaService metaService){
+    public MetaController(MetaService metaService) {
         this.metaService = metaService;
     }
 
@@ -26,10 +26,16 @@ public class MetaController {
     public ResponseEntity createFile(@RequestHeader String fileSystemName, @RequestParam String path){
         return new ResponseEntity(HttpStatus.OK);
     }
+
     @RequestMapping("mkdir")
     public ResponseEntity mkdir(@RequestHeader String fileSystemName, @RequestParam String path){
-        return new ResponseEntity(HttpStatus.OK);
+        if(metaService.mkdir(path)) {
+            return new ResponseEntity(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("zookeeper连接失败或找不到对应结点", HttpStatus.valueOf(500));
+        }
     }
+
     @RequestMapping("listdir")
     public ResponseEntity listdir(@RequestHeader String fileSystemName,@RequestParam String path){
         return new ResponseEntity(HttpStatus.OK);
@@ -48,7 +54,10 @@ public class MetaController {
      * @return
      */
     @RequestMapping("write")
-    public ResponseEntity commitWrite(@RequestHeader String fileSystemName, @RequestParam String path, @RequestParam int offset, @RequestParam int length){
+    public ResponseEntity commitWrite(@RequestHeader String fileSystemName, @RequestParam String path, @RequestParam int offset, @RequestParam int length, @RequestBody Map<String, Object> bodyData){
+
+        System.out.println(fileSystemName + ":" + path + ":" + offset + ":" + length);
+        System.out.println(bodyData);
         return new ResponseEntity(HttpStatus.OK);
     }
 

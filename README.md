@@ -39,3 +39,7 @@
 1. 准备工作
 
    `docker run --name zookeeper-dev --restart always -p 2181:2181 -d zookeeper:3.9 `
+   
+   如何查看zookeeper数据
+   
+   `docker exec -it zookeeper-dev zkCli.sh `
