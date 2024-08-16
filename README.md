@@ -18,21 +18,21 @@
 
 - metaServer
   - master
-    - <ip>:<port>
+    - `<ip>:<port>`
   - slave
-    - <ip>:<port>
+    - `<ip>:<port>`
 - dataServer
-  - 1(<DataServerInfo>)
-  - 2(<DataServerInfo>)
-  - 3(<DataServerInfo>)
-  - 4(<DataServerInfo>)
+  - `<zone>-<rack>`(`<DataServerInfo>`)
+  - `<zone>-<rack>`(`<DataServerInfo>`)
+  - `<zone>-<rack>`(`<DataServerInfo>`)
+  - `<zone>-<rack>`(`<DataServerInfo>`)
 
 - fileSystem
-  - <fileSystemName>
-    - <path>(<StatInfo>)
-      - <path>(<StatInfo>)
-      - ...(<StatInfo>)
-    - ...(<StatInfo>)
+  - `<fileSystemName>`
+    - `<path>`(`<StatInfo>`)
+      - `<path>`(`<StatInfo>`)
+      - ...
+    - ...
 
 ## HOW TO USE
 
@@ -40,6 +40,6 @@
 
    `docker run --name zookeeper-dev --restart always -p 2181:2181 -d zookeeper:3.9 `
    
-   如何查看zookeeper数据
+   如何查看**zookeeper**数据
    
    `docker exec -it zookeeper-dev zkCli.sh `
