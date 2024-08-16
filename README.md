@@ -8,11 +8,31 @@
 
 
 
-## 大致流程
+## 结构
 
-### 写流程
+### 写流程结构
 
-![写流程](https://github.com/zwqgkd/picx-images-hosting/raw/master/kc/photo_2024-08-15_13-13-32.wihaa1jjc.jpg)
+![写流程](https://github.com/zwqgkd/picx-images-hosting/raw/master/kc/微信图片_20240816140905.969nzzbccp.jpg)
+
+### ZK数据结构
+
+- metaServer
+  - master
+    - <ip>:<port>
+  - slave
+    - <ip>:<port>
+- dataServer
+  - 1(<DataServerInfo>)
+  - 2(<DataServerInfo>)
+  - 3(<DataServerInfo>)
+  - 4(<DataServerInfo>)
+
+- fileSystem
+  - <fileSystemName>
+    - <path>(<StatInfo>)
+      - <path>(<StatInfo>)
+      - ...(<StatInfo>)
+    - ...(<StatInfo>)
 
 ## HOW TO USE
 

@@ -4,5 +4,4 @@ public class ReplicaData {
     public String id;
     public String dsNode;
     public String path;
-
 }

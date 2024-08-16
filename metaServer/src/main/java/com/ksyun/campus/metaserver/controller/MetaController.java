@@ -1,14 +1,23 @@
 package com.ksyun.campus.metaserver.controller;
 
+import com.ksyun.campus.metaserver.services.MetaService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController("/")
 public class MetaController {
+
+    private MetaService metaService;
+
+    @Autowired
+    public MetaController(MetaService metaService){
+        this.metaService = metaService;
+    }
+
     @RequestMapping("stats")
     public ResponseEntity stats(@RequestHeader String fileSystemName,@RequestParam String path){
         return new ResponseEntity(HttpStatus.OK);

@@ -1,4 +1,4 @@
-package com.ksyun.campus.dataserver.model;
+package com.ksyun.campus.client.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -16,7 +16,7 @@ public class DataServerInfo {
     private String ip;
 
     @JsonProperty("port")
-    private String port;
+    private int port;
 
     @JsonProperty("rack")
     private String rack;
@@ -26,4 +26,14 @@ public class DataServerInfo {
 
     @JsonProperty("capacity")
     private int capacity;
+
+    @JsonProperty("fileTotal")
+    private int fileTotal;
+
+    @JsonProperty("useCapacity")
+    private int useCapacity;
+
+    public int getFreeSpace() {
+        return capacity-useCapacity;
+    }
 }

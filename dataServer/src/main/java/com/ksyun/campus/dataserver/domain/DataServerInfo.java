@@ -1,4 +1,4 @@
-package com.ksyun.campus.metaserver.domain;
+package com.ksyun.campus.dataserver.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -35,13 +35,5 @@ public class DataServerInfo {
 
     public int getFreeSpace() {
         return capacity-useCapacity;
-    }
-
-    public String getId(){
-        return zone+"-"+rack;
-    }
-
-    public String getDsNode(){
-        return ip+":"+port;
     }
 }

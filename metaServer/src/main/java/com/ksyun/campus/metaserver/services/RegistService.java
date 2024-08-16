@@ -17,10 +17,7 @@ public class RegistService {
 
     private final CuratorFramework curatorClient;
 
-    private final String registerPath = "/metaServer";
-
-    @Value("${spring.metaServer.role}")
-    private String role;
+    private static final String META_ZK_PATH = "/metaServer";
 
     private final String serverHost;
 
@@ -46,7 +43,12 @@ public class RegistService {
     }
 
     public void registToCenter() throws Exception {
+        String role="";
+        if(curatorClient.checkExists().forPath(META_ZK_PATH + "/master") == null)
+            role = "master";
+        else
+            role = "slave";
         curatorClient.create().creatingParentsIfNeeded()
-                .withMode(CreateMode.EPHEMERAL).forPath(registerPath + "/" + role + "/"+ serverHost + ":" + serverPort);
+                .withMode(CreateMode.EPHEMERAL).forPath(META_ZK_PATH + "/" + role + "/"+ serverHost + ":" + serverPort);
     }
 }

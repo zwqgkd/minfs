@@ -1,16 +1,17 @@
 package com.ksyun.campus.client.domain;
 
+import lombok.Getter;
+
+@Getter
 public enum FileType
 {
     Unknown(0),  Volume(1),  File(2),  Directory(3);
 
-    private int code;
+    private final int code;
     FileType(int code) {
         this.code=code;
     }
-    public int getCode(){
-        return code;
-    }
+
     public static FileType get(int code){
         switch (code){
             case 1:

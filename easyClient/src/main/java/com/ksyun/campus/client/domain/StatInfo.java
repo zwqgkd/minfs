@@ -1,7 +1,12 @@
 package com.ksyun.campus.client.domain;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.List;
 
+@Setter
+@Getter
 public class StatInfo
 {
     public String path;
@@ -9,47 +14,8 @@ public class StatInfo
     public long mtime;
     public FileType type;
     public List<ReplicaData> replicaData;
+
     public StatInfo() {}
-
-    public String getPath() {
-        return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
-    }
-
-    public long getSize() {
-        return size;
-    }
-
-    public void setSize(long size) {
-        this.size = size;
-    }
-
-    public long getMtime() {
-        return mtime;
-    }
-
-    public void setMtime(long mtime) {
-        this.mtime = mtime;
-    }
-
-    public FileType getType() {
-        return type;
-    }
-
-    public void setType(FileType type) {
-        this.type = type;
-    }
-
-    public List<ReplicaData> getReplicaData() {
-        return replicaData;
-    }
-
-    public void setReplicaData(List<ReplicaData> replicaData) {
-        this.replicaData = replicaData;
-    }
 
     @Override
     public String toString() {
