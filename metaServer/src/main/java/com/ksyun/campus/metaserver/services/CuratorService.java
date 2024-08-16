@@ -76,6 +76,17 @@ public class CuratorService {
         }
     }
 
+    public StatInfo getStatInfo(String fileSystemName, String path){
+        try {
+            byte[] data = curatorClient.getData().forPath(FS_ZK_PATH + "/" + fileSystemName + path);
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.readValue(data, StatInfo.class);
+        } catch (Exception e) {
+            log.error("get file:{} stat info error",path,e);
+            throw new RuntimeException(e);
+        }
+    }
+
     /**
      * 获得文件夹下一层的元数据
      * @param fileSystemName 文件系统名称
@@ -92,12 +103,12 @@ public class CuratorService {
                     StatInfo statInfo = mapper.readValue(data, StatInfo.class);
                     statInfoList.add(statInfo);
                 } catch (Exception e) {
-                    log.error("get children error",e);
+                    log.error("list dir:{} children error",path,e);
                     throw new RuntimeException(e);
                 }
             });
         } catch (Exception e) {
-            log.error("get children error",e);
+            log.error("list dir children error", e);
             throw new RuntimeException(e);
         }
         return statInfoList;

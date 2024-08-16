@@ -2,10 +2,13 @@ package com.ksyun.campus.client;
 
 import com.ksyun.campus.client.domain.ClusterInfo;
 import com.ksyun.campus.client.domain.StatInfo;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
+@Slf4j
 public class EFileSystem extends FileSystem{
 
     public EFileSystem() {
@@ -24,7 +27,7 @@ public class EFileSystem extends FileSystem{
 
 
         String url = zkUtil.getMasterMetaAddress();
-        HttpStatus status = sendGetRequest(url, path, "create").getStatusCode();
+        HttpStatus status = sendGetRequest(url, "create", path, Void.class).getStatusCode();
         if(status != HttpStatus.OK) {
             return null;
         }
@@ -34,21 +37,48 @@ public class EFileSystem extends FileSystem{
 
     public boolean mkdir(String path) throws Exception {
         String url = zkUtil.getMasterMetaAddress();
-        HttpStatus status = this.sendGetRequest(url, path, "mkdir").getStatusCode();
+        HttpStatus status = this.sendGetRequest(url, "mkdir", path, Void.class).getStatusCode();
         return status == HttpStatus.OK ? true : false;
     }
 
     public boolean delete(String path){return false;}
 
-    public StatInfo getFileStats(String path){
-        return null;
+
+    /**
+     * @param path 文件路径
+     * @return 返回文件的元数据信息
+     */
+    public StatInfo getFileStats(String path) {
+        try{
+            return sendGetRequest(zkUtil.getMasterMetaAddress(), "getFileStats", path, StatInfo.class).getBody();
+        }catch (Exception e){
+            log.error("get file stats error",e);
+            return null;
+        }
     }
 
+    /**
+     * @param path 文件路径
+     * @return 返回文件夹下的文件元数据信息
+     */
     public List<StatInfo> listFileStats(String path){
-        return null;
+        try{
+            return sendGetRequest(zkUtil.getMasterMetaAddress(), "listFileStats", path, new ParameterizedTypeReference<List<StatInfo>>(){}).getBody();
+        }catch(Exception e){
+            log.error("list file stats error",e);
+            return null;
+        }
     }
 
+    /**
+     * @return 返回集群信息
+     */
     public ClusterInfo getClusterInfo(){
-        return null;
+        try{
+            return zkUtil.getClusterInfo();
+        }catch(Exception e) {
+            log.error("get cluster info error", e);
+            return null;
+        }
     }
 }

@@ -1,6 +1,6 @@
 package com.ksyun.campus.metaserver.services;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.zookeeper.CreateMode;
@@ -12,6 +12,7 @@ import javax.annotation.PreDestroy;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+@Slf4j
 @Component
 public class RegistService {
 
@@ -33,7 +34,7 @@ public class RegistService {
     @PostConstruct
     public void postConstruct() throws Exception {
         //注册到zk中心
-        registToCenter();
+        registerToCenter();
     }
 
     @PreDestroy
@@ -42,12 +43,14 @@ public class RegistService {
         this.curatorClient.close();
     }
 
-    public void registToCenter() throws Exception {
+    public void registerToCenter() throws Exception {
         String role="";
-        if(curatorClient.checkExists().forPath(META_ZK_PATH + "/master") == null)
+        if(curatorClient.checkExists().forPath(META_ZK_PATH+"/master")==null
+                ||curatorClient.getChildren().forPath(META_ZK_PATH + "/master").isEmpty())
             role = "master";
         else
             role = "slave";
+        log.info("register to zk center, role:{}", role);
         curatorClient.create().creatingParentsIfNeeded()
                 .withMode(CreateMode.EPHEMERAL).forPath(META_ZK_PATH + "/" + role + "/"+ serverHost + ":" + serverPort);
     }

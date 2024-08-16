@@ -3,6 +3,7 @@ package com.ksyun.campus.client;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ksyun.campus.client.util.ZkUtil;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -40,7 +41,7 @@ public abstract class FileSystem {
 //        return res;
 //    }
 
-    protected ResponseEntity sendGetRequest(String url, String path, String interfaceName) {
+    protected <T> ResponseEntity<T> sendGetRequest(String url, String interfaceName, String path, Class<T> responseType) {
         try {
             String[] parts = url.split(":");
 
@@ -61,13 +62,40 @@ public abstract class FileSystem {
             HttpEntity<String> entity = new HttpEntity<>(httpHeaders);
 
             URI uri = uriBuilder.build().toUri();
-            ResponseEntity<String> responseEntity = restTemplate.exchange(uri, HttpMethod.GET, entity, String.class);
-            return responseEntity;
+            return restTemplate.exchange(uri, HttpMethod.GET, entity, responseType);
         } catch (HttpServerErrorException e) {
             HttpStatus status = e.getStatusCode();
             String responseBody = e.getResponseBodyAsString();
-            return ResponseEntity.status(status)
-                    .body("An error occurred: " + responseBody);
+            return ResponseEntity.status(status).body(null);
+        }
+    }
+
+    protected <T> ResponseEntity<T> sendGetRequest(String url, String interfaceName, String path, ParameterizedTypeReference<T> responseType) {
+        try {
+            String[] parts = url.split(":");
+
+            String host = parts[0];
+            int port = Integer.parseInt(parts[1]);
+
+            UriComponentsBuilder uriBuilder = UriComponentsBuilder.newInstance();
+            uriBuilder.scheme("http") // 设置协议为http
+                    .host(host)
+                    .port(port)
+                    .pathSegment(interfaceName)
+                    .queryParam("path", path);
+
+            RestTemplate restTemplate = new RestTemplate();
+            HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.add("fileSystemName", fileSystemName);
+
+            HttpEntity<String> entity = new HttpEntity<>(httpHeaders);
+
+            URI uri = uriBuilder.build().toUri();
+            return restTemplate.exchange(uri, HttpMethod.GET, entity, responseType);
+        } catch (HttpServerErrorException e) {
+            HttpStatus status = e.getStatusCode();
+            String responseBody = e.getResponseBodyAsString();
+            return ResponseEntity.status(status).body(null);
         }
     }
 

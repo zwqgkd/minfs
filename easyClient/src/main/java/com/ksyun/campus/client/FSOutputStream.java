@@ -31,11 +31,15 @@ public class FSOutputStream extends OutputStream {
     }
 
     @Override
-    public void write(byte[] b) throws IOException {
+    public void write(byte[] b) {
         for (byte value : b) {
             writeBuffer.add(value);
         }
-        tryFlushWriteBuffer();
+        try {
+            tryFlushWriteBuffer();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         // super.write(b);
     }
 
@@ -49,7 +53,7 @@ public class FSOutputStream extends OutputStream {
         super.close();
     }
 
-    private void flushWriteBuffer() throws IOException {
+    private void flushWriteBuffer() throws Exception {
         if (!writeBuffer.isEmpty()) {
             int size = writeBuffer.size();
             byte[] data = new byte[size];
@@ -61,14 +65,14 @@ public class FSOutputStream extends OutputStream {
             postData.put("path", path);
             postData.put("data", data);
 
-            String url = fileSystem.acquireIpAddress("metaServer");
+            String url = FileSystem.zkUtil.getMasterMetaAddress();
             fileSystem.sendPostRequest(url, "write", postData);
 
             writeBuffer.clear();
         }
     }
 
-    private void tryFlushWriteBuffer() throws IOException {
+    private void tryFlushWriteBuffer() throws Exception {
         if (writeBuffer.size() >= BUFFER_SIZE) {
             flushWriteBuffer();
         }

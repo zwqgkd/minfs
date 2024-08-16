@@ -1,11 +1,15 @@
 package com.ksyun.campus.metaserver.controller;
 
+import com.ksyun.campus.metaserver.domain.StatInfo;
+import com.ksyun.campus.metaserver.services.CuratorService;
 import com.ksyun.campus.metaserver.services.MetaService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -14,6 +18,7 @@ public class MetaController {
 
     private final MetaService metaService;
 
+    @Autowired
     public MetaController(MetaService metaService) {
         this.metaService = metaService;
     }
@@ -40,6 +45,7 @@ public class MetaController {
     public ResponseEntity listdir(@RequestHeader String fileSystemName,@RequestParam String path){
         return new ResponseEntity(HttpStatus.OK);
     }
+
     @RequestMapping("delete")
     public ResponseEntity delete(@RequestHeader String fileSystemName, @RequestParam String path){
         return new ResponseEntity(HttpStatus.OK);
@@ -80,4 +86,25 @@ public class MetaController {
         System.exit(-1);
     }
 
+    /**
+     * 获取文件元数据信息
+     * @param fileSystemName
+     * @param path
+     * @return StatInfo
+     */
+    @RequestMapping("getFileStats")
+    public ResponseEntity<StatInfo> getFileStats(@RequestHeader String fileSystemName, @RequestParam String path){
+        return new ResponseEntity<>(metaService.getStatInfo(fileSystemName,path), HttpStatus.OK);
+    }
+
+    /**
+     * 获取文件夹下的文件元数据信息
+     * @param fileSystemName
+     * @param path
+     * @return List<StatInfo>
+     */
+    @RequestMapping("listFileStats")
+    public ResponseEntity<List<StatInfo>> listFileStats(@RequestHeader String fileSystemName, @RequestParam String path){
+        return new ResponseEntity<>(metaService.listFileStats(fileSystemName,path), HttpStatus.OK);
+    }
 }

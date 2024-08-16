@@ -1,15 +1,12 @@
 package com.ksyun.campus.dataserver.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
-@NoArgsConstructor
+
 @AllArgsConstructor
+@Data
+@Builder
 public class DataServerInfo {
 
     @JsonProperty("ip")
@@ -36,4 +33,13 @@ public class DataServerInfo {
     public int getFreeSpace() {
         return capacity-useCapacity;
     }
+
+    public String getId(){
+        return zone+"-"+rack;
+    }
+
+    public String getDsNode(){
+        return ip+":"+port;
+    }
 }
+

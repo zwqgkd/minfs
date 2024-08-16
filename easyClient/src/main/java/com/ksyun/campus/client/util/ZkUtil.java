@@ -93,7 +93,7 @@ public class ZkUtil {
      * @return 获取当前master metaServer地址
      */
     public String getMasterMetaAddress() throws Exception {
-         if(curatorClient.checkExists().forPath(MASTER_META_ZK_PATH)!=null){
+         if(!curatorClient.getChildren().forPath(MASTER_META_ZK_PATH).isEmpty()) {
              log.info("get master address from zk");
              return curatorClient.getChildren().forPath(MASTER_META_ZK_PATH).get(0);
          }else {

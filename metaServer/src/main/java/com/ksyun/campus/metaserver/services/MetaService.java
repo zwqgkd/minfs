@@ -6,10 +6,10 @@ import com.ksyun.campus.metaserver.domain.StatInfo;
 import com.ksyun.campus.metaserver.domain.DataServerInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,8 +21,6 @@ public class MetaService {
     private final CuratorService curatorService;
 
     private final HttpService httpService;
-
-    private static final String DS_REGISTER_PATH = "/dataServer";
 
     @Autowired
     public MetaService(CuratorService curatorService, HttpService httpService){
@@ -127,11 +125,25 @@ public class MetaService {
 //        return statInfo;
 //    }
 
-    // 获取ds列表
-    List<DataServerInfo> getThreeDataServerList() throws Exception {
-        //todo 选择策略
-        return curatorService.getAllDataServerInfo().stream().sorted((ds1,ds2)->
-             ds1.getFreeSpace()>ds2.getFreeSpace()?1:-1
-        ).collect(Collectors.toList()).subList(0,3);
+    /**
+     * @return 负载均衡，选3个空间最大的DataServer
+     */
+    public List<DataServerInfo> getThreeDataServerList() throws Exception {
+        //选择策略
+        return curatorService.getAllDataServerInfo().stream().sorted(Comparator.comparingInt(DataServerInfo::getFreeSpace)).collect(Collectors.toList()).subList(0,3);
+    }
+
+    /**
+     * @return 文件的元数据信息
+     */
+    public StatInfo getStatInfo(String fileSystemName, String path){
+        return this.curatorService.getStatInfo(fileSystemName, path);
+    }
+
+    /**
+     * @return 文件夹下所有文件的元数据信息
+     */
+    public List<StatInfo> listFileStats(String fileSystemName, String path) {
+        return this.curatorService.getChildren(fileSystemName, path);
     }
 }

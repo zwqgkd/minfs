@@ -42,7 +42,7 @@ public class DataController {
     }
 
     @RequestMapping("mkdir")
-    public ResponseEntity mkdir(@ResponseBody("path") String path){
+    public ResponseEntity mkdir(){
         return new ResponseEntity(HttpStatus.OK);
     }
 }

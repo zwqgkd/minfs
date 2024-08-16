@@ -42,7 +42,7 @@ public class RegistService {
     @PostConstruct
     public void postConstruct() throws Exception {
         //注册到zk中心
-        registToCenter();
+        registerToCenter();
     }
 
     @PreDestroy
@@ -51,13 +51,13 @@ public class RegistService {
         this.curatorClient.close();
     }
 
-    public void registToCenter() throws Exception {
+    public void registerToCenter() throws Exception {
         //将本实例信息注册至zk中心，包含信息 ip、port、capacity、rack、zone
         DataServerInfo dataServerInfo=new DataServerInfo(serverHost, serverPort, rack, zone, 100, 0, 0);
         ObjectMapper mapper = new ObjectMapper();
         String json = mapper.writeValueAsString(dataServerInfo);
         curatorClient.create().creatingParentsIfNeeded()
-                .withMode(CreateMode.EPHEMERAL).forPath(DS_ZK_PATH + "/1", json.getBytes());
+                .withMode(CreateMode.EPHEMERAL).forPath(DS_ZK_PATH + "/"+ dataServerInfo.getId(), json.getBytes());
     }
 
     public List<Map<String, Integer>> getDslist() {
