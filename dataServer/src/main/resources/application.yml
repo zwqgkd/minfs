@@ -3,3 +3,5 @@ server:
 az:
   rack: rack1
   zone: zone1
+spring:
+  zookeeper-address: localhost:2181

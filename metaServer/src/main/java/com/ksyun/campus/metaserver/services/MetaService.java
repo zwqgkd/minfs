@@ -1,30 +1,46 @@
 package com.ksyun.campus.metaserver.services;
 
+
 import com.ksyun.campus.metaserver.domain.FileType;
 import com.ksyun.campus.metaserver.domain.ReplicaData;
 import com.ksyun.campus.metaserver.domain.StatInfo;
 import com.ksyun.campus.metaserver.entry.DataServerInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.curator.framework.CuratorFramework;
 
 @Slf4j
 @Service
 public class MetaService {
 
+    private final HttpService httpService;
+
+    private final CuratorFramework curatorClient;
+
+    private static final String DS_REGISTER_PATH = "/dataServer";
+
     @Autowired
-    HttpService httpService = new HttpService();
+    public MetaService(CuratorFramework curatorFramework, HttpService httpService){
+        this.httpService=httpService;
+        this.curatorClient = curatorFramework;
+    }
 
     public Object pickDataServer(){
         // todo 通过zk内注册的ds列表，选择出来一个ds，用来后续的wirte
         // 需要考虑选择ds的策略？负载
+
+        try{
+            getDataServerList();
+        }catch (Exception e){
+            log.error("get data server list error",e);
+        }
         return null;
     }
 
@@ -124,4 +140,21 @@ public class MetaService {
 //        }
 //        return statInfo;
 //    }
+
+    // 获取ds列表
+    List<DataServerInfo> getDataServerList() throws Exception {
+        List<DataServerInfo> dsList=new ArrayList<>();
+        curatorClient.getChildren().forPath(DS_REGISTER_PATH).forEach(child->{
+            try {
+                byte[] data = curatorClient.getData().forPath(DS_REGISTER_PATH+"/"+child);
+                ObjectMapper mapper = new ObjectMapper();
+                DataServerInfo ds = mapper.readValue(data, DataServerInfo.class);
+                dsList.add(ds);
+            } catch (Exception e) {
+                log.error("get data server info error",e);
+                throw new RuntimeException(e);
+            }
+        });
+        return dsList;
+    }
 }
