@@ -1,0 +1,36 @@
+services:
+  register:
+    image: zookeeper:3.9
+    ports:
+      - "2181:2181"
+    volumes:
+      - register-data:/data
+    networks:
+      - minfs_net
+
+  master-meta-db:
+    image: zookeeper:3.9
+    ports:
+      - "2182:2181"
+    volumes:
+      - master-meta-data:/data
+    networks:
+      - minfs_net
+
+  slave-meta-db:
+    image: zookeeper:3.9
+    ports:
+      - "2183:2181"
+    volumes:
+      - slave-meta-data:/data
+    networks:
+      - minfs_net
+
+
+
+volumes:
+    register-data:
+    master-meta-data:
+    slave-meta-data:
+networks:
+  minfs_net:

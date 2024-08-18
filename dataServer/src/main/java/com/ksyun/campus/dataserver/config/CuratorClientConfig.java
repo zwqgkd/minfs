@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class CuratorClientConfig {
-    @Value("${spring.zookeeper-address}")
+    @Value("${spring.zookeeper-address.register}")
     private String zookeeperAddress;
 
     @Bean

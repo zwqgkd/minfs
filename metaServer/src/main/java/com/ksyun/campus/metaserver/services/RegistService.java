@@ -16,18 +16,22 @@ import java.net.UnknownHostException;
 @Component
 public class RegistService {
 
-    private final CuratorFramework curatorClient;
+    private final CuratorFramework curatorRegisterClient;
 
     private static final String META_ZK_PATH = "/metaServer";
 
     private final String serverHost;
 
+    private String role;
+
     @Value("${server.port}")
     private String serverPort;
 
+    public String getRole(){return role;}
+
     @Autowired
     public RegistService(CuratorFramework curatorFramework) throws UnknownHostException {
-        this.curatorClient = curatorFramework;
+        this.curatorRegisterClient = curatorFramework;
         this.serverHost = InetAddress.getLocalHost().getHostAddress();
     }
 
@@ -40,18 +44,17 @@ public class RegistService {
     @PreDestroy
     public void preDestroy() {
         //关闭curatorFramework
-        this.curatorClient.close();
+        this.curatorRegisterClient.close();
     }
 
     public void registerToCenter() throws Exception {
-        String role="";
-        if(curatorClient.checkExists().forPath(META_ZK_PATH+"/master")==null
-                ||curatorClient.getChildren().forPath(META_ZK_PATH + "/master").isEmpty())
+        if(curatorRegisterClient.checkExists().forPath(META_ZK_PATH+"/master")==null
+                ||curatorRegisterClient.getChildren().forPath(META_ZK_PATH + "/master").isEmpty())
             role = "master";
         else
             role = "slave";
         log.info("register to zk center, role:{}", role);
-        curatorClient.create().creatingParentsIfNeeded()
+        curatorRegisterClient.create().creatingParentsIfNeeded()
                 .withMode(CreateMode.EPHEMERAL).forPath(META_ZK_PATH + "/" + role + "/"+ serverHost + ":" + serverPort);
     }
 }

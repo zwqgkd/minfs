@@ -2,7 +2,10 @@ server:
   port: 8000
 
 spring:
-  zookeeper-address: localhost:2181
+  zookeeper-address:
+    register: localhost:2181
+    master-meta: localhost:2182
+    slave-meta: localhost:2183
   task:
     execution:
       pool:

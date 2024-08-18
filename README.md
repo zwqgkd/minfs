@@ -12,7 +12,7 @@
 
 ### 写流程结构
 
-![写流程](https://github.com/zwqgkd/picx-images-hosting/raw/master/kc/微信图片_20240816140905.969nzzbccp.jpg)
+![写流程](https://github.com/zwqgkd/picx-images-hosting/raw/master/kc/photo_2024-08-18_15-34-45.67xdzf0tx2.jpg)
 
 ### ZK数据结构
 
@@ -38,8 +38,20 @@
 
 1. 准备工作
 
-   `docker run --name zookeeper-dev --restart always -p 2181:2181 -d zookeeper:3.9 `
+   `docker compose -p minfs up -d` 
+
+2. 停掉所有服务
+
+   `docker compose -p minfs down -v`
+
+3. 如何查看**zookeeper**数据
+   - 进入zk
+     `docker exec -it <container-name> zkCli.sh `
    
-   如何查看**zookeeper**数据
+   - 查看节点
    
-   `docker exec -it zookeeper-dev zkCli.sh `
+     `ls <path>`
+   
+   - 查看节点携带数据
+   
+     `get <path>`

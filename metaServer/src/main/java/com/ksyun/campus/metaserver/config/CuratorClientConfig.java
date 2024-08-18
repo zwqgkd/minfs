@@ -9,15 +9,15 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class CuratorClientConfig {
-    @Value("${spring.zookeeper-address}")
-    private String zookeeperAddress;
+    @Value("${spring.zookeeper-address.register}")
+    private String registerAddress;
 
     @Bean
     public CuratorFramework curatorFramework() {
         //重试策略：初始sleep时间1s，最大重试3次
         ExponentialBackoffRetry backOff=new ExponentialBackoffRetry(1000, 3);
         CuratorFramework client= CuratorFrameworkFactory.builder()
-                .connectString(zookeeperAddress)
+                .connectString(registerAddress)
                 .sessionTimeoutMs(5000)
                 .connectionTimeoutMs(5000)
                 .retryPolicy(backOff)

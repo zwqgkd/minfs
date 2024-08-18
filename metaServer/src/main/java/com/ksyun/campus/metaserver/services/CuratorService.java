@@ -5,7 +5,10 @@ import com.ksyun.campus.metaserver.domain.DataServerInfo;
 import com.ksyun.campus.metaserver.domain.StatInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.framework.CuratorFramework;
+import org.apache.curator.framework.CuratorFrameworkFactory;
+import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,31 +17,49 @@ import java.util.List;
 @Slf4j
 @Service
 public class CuratorService {
-    private final CuratorFramework curatorClient;
+
+    @Value("${spring.zookeeper-address.master-meta}")
+    private String masterAddress;
+
+    @Value("${spring.zookeeper-address.slave-meta}")
+    private String slaveAddress;
+
+    private final CuratorFramework curatorMetaClient;
 
     private static final String DS_ZK_PATH = "/dataServer";
 
     private static final String FS_ZK_PATH = "/fileSystem";
 
     @Autowired
-    public CuratorService(CuratorFramework curatorClient){
-        this.curatorClient=curatorClient;
+    public CuratorService(RegistService registService) {
+        String metaAddr = registService.getRole().equals("master") ? masterAddress : slaveAddress;
+        //重试策略：初始sleep时间1s，最大重试3次
+        ExponentialBackoffRetry backOff = new ExponentialBackoffRetry(1000, 3);
+        CuratorFramework client = CuratorFrameworkFactory.builder()
+                .connectString(metaAddr)
+                .sessionTimeoutMs(5000)
+                .connectionTimeoutMs(5000)
+                .retryPolicy(backOff)
+                .build();
+        client.start();
+        this.curatorMetaClient = client;
     }
 
     /**
      * 获取所有ds的信息
+     *
      * @return ds列表
      */
     public List<DataServerInfo> getAllDataServerInfo() throws Exception {
-        List<DataServerInfo> dsList=new ArrayList<>();
-        curatorClient.getChildren().forPath(DS_ZK_PATH).forEach(child->{
+        List<DataServerInfo> dsList = new ArrayList<>();
+        curatorMetaClient.getChildren().forPath(DS_ZK_PATH).forEach(child -> {
             try {
-                byte[] data = curatorClient.getData().forPath(DS_ZK_PATH+"/"+child);
+                byte[] data = curatorMetaClient.getData().forPath(DS_ZK_PATH + "/" + child);
                 ObjectMapper mapper = new ObjectMapper();
                 DataServerInfo ds = mapper.readValue(data, DataServerInfo.class);
                 dsList.add(ds);
             } catch (Exception e) {
-                log.error("get data server info error",e);
+                log.error("get data server info error", e);
                 throw new RuntimeException(e);
             }
         });
@@ -47,63 +68,76 @@ public class CuratorService {
 
     /**
      * 保存元数据
+     *
      * @param fileSystemName 文件系统名称
-     * @param statInfo 元数据
+     * @param statInfo       元数据
      */
-    public void saveMetaData(String fileSystemName, StatInfo statInfo){
+    public void saveMetaData(String fileSystemName, StatInfo statInfo) {
         try {
             ObjectMapper mapper = new ObjectMapper();
             String json = mapper.writeValueAsString(statInfo);
-            curatorClient.create().creatingParentsIfNeeded()
-                    .forPath(FS_ZK_PATH + "/" + fileSystemName + "/" + statInfo.getPath(), json.getBytes());
+            if (curatorMetaClient.checkExists().forPath(FS_ZK_PATH + "/" + fileSystemName + statInfo.getPath()) == null)
+                curatorMetaClient.create().creatingParentsIfNeeded()
+                        .forPath(FS_ZK_PATH + "/" + fileSystemName + statInfo.getPath(), json.getBytes());
+            else
+                curatorMetaClient.setData().forPath(FS_ZK_PATH + "/" + fileSystemName + statInfo.getPath(), json.getBytes());
         } catch (Exception e) {
-            log.error("save meta data error",e);
+            log.error("save meta data error", e);
             throw new RuntimeException(e);
         }
     }
 
     /**
      * 删除元数据
+     *
      * @param fileSystemName 文件系统名称
-     * @param path 文件路径
+     * @param path           文件路径
      */
-    public void deleteMetaData(String fileSystemName, String path){
+    public void deleteMetaData(String fileSystemName, String path) {
         try {
-            curatorClient.delete().forPath(FS_ZK_PATH + "/" + fileSystemName + path);
+            curatorMetaClient.delete().forPath(FS_ZK_PATH + "/" + fileSystemName + path);
         } catch (Exception e) {
-            log.error("delete meta data error",e);
+            log.error("delete meta data error", e);
             throw new RuntimeException(e);
         }
     }
 
-    public StatInfo getStatInfo(String fileSystemName, String path){
+    /**
+     * 获取文件元数据
+     *
+     * @param fileSystemName 文件系统名称
+     * @param path           文件路径
+     * @return 文件元数据
+     */
+    public StatInfo getStatInfo(String fileSystemName, String path) {
         try {
-            byte[] data = curatorClient.getData().forPath(FS_ZK_PATH + "/" + fileSystemName + path);
+            byte[] data = curatorMetaClient.getData().forPath(FS_ZK_PATH + "/" + fileSystemName + path);
             ObjectMapper mapper = new ObjectMapper();
             return mapper.readValue(data, StatInfo.class);
         } catch (Exception e) {
-            log.error("get file:{} stat info error",path,e);
+            log.error("get file:{} stat info error", path, e);
             throw new RuntimeException(e);
         }
     }
 
     /**
      * 获得文件夹下一层的元数据
+     *
      * @param fileSystemName 文件系统名称
-     * @param path 文件夹路径
+     * @param path           文件夹路径
      * @return 文件夹下一层的元数据(文件及文件夹)
      */
-    public List<StatInfo> getChildren(String fileSystemName, String path){
+    public List<StatInfo> getChildren(String fileSystemName, String path) {
         List<StatInfo> statInfoList = new ArrayList<>();
         try {
-            curatorClient.getChildren().forPath(FS_ZK_PATH + "/" + fileSystemName + path).forEach(child->{
+            curatorMetaClient.getChildren().forPath(FS_ZK_PATH + "/" + fileSystemName + path).forEach(child -> {
                 try {
-                    byte[] data = curatorClient.getData().forPath(FS_ZK_PATH + "/" + fileSystemName + path + "/" + child);
+                    byte[] data = curatorMetaClient.getData().forPath(FS_ZK_PATH + "/" + fileSystemName + path + "/" + child);
                     ObjectMapper mapper = new ObjectMapper();
                     StatInfo statInfo = mapper.readValue(data, StatInfo.class);
                     statInfoList.add(statInfo);
                 } catch (Exception e) {
-                    log.error("list dir:{} children error",path,e);
+                    log.error("list dir:{} children error", path, e);
                     throw new RuntimeException(e);
                 }
             });
