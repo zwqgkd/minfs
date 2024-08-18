@@ -25,16 +25,26 @@ public class MetaController {
 
     @RequestMapping("stats")
     public ResponseEntity stats(@RequestHeader String fileSystemName,@RequestParam String path){
-        return new ResponseEntity(HttpStatus.OK);
+//        StatInfo statInfo = metaService.getStats(path);
+//        if(statInfo == null) {
+//            return new ResponseEntity<>("无stats", HttpStatus.valueOf(500));
+//
+//        }
+//        return new ResponseEntity(statInfo, HttpStatus.OK);
+        return ResponseEntity.ok(true);
     }
     @RequestMapping("create")
     public ResponseEntity createFile(@RequestHeader String fileSystemName, @RequestParam String path){
-        return new ResponseEntity(HttpStatus.OK);
+        if(metaService.create(path, fileSystemName)) {
+            return new ResponseEntity(HttpStatus.OK);
+        } else {
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @RequestMapping("mkdir")
     public ResponseEntity mkdir(@RequestHeader String fileSystemName, @RequestParam String path){
-        if(metaService.mkdir(path)) {
+        if(metaService.mkdir(path, fileSystemName)) {
             return new ResponseEntity(HttpStatus.OK);
         } else {
             return new ResponseEntity<>("zookeeper连接失败或找不到对应结点", HttpStatus.valueOf(500));
@@ -52,19 +62,30 @@ public class MetaController {
     }
 
     /**
-     * 保存文件写入成功后的元数据信息，包括文件path、size、三副本信息等
+     * client请求写文件，metaServer返回对应存数据的3个dataServer的ip地址
      * @param fileSystemName
-     * @param path
-     * @param offset
-     * @param length
+     * @param bodyData
      * @return
      */
     @RequestMapping("write")
-    public ResponseEntity commitWrite(@RequestHeader String fileSystemName, @RequestParam String path, @RequestParam int offset, @RequestParam int length, @RequestBody Map<String, Object> bodyData){
+    public ResponseEntity write(@RequestHeader String fileSystemName, @RequestBody Map<String, Object> bodyData){
+        List<String> ipList = metaService.write(bodyData, fileSystemName);
+        return ResponseEntity.ok(ipList);
+    }
 
-        System.out.println(fileSystemName + ":" + path + ":" + offset + ":" + length);
-        System.out.println(bodyData);
-        return new ResponseEntity(HttpStatus.OK);
+    /**
+     * 保存文件写入成功后的元数据信息，包括文件path、size、三副本信息等
+     * @param fileSystemName
+     * @param bodyData
+     * @return
+     */
+    @RequestMapping("commitWrite")
+    public ResponseEntity commitWrite(@RequestHeader String fileSystemName, @RequestBody Map<String, Object> bodyData){
+        if(metaService.commitWrite(bodyData, fileSystemName)) {
+            return new ResponseEntity(HttpStatus.OK);
+        } else {
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**

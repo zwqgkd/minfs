@@ -50,14 +50,17 @@ public class CuratorService {
      * @param fileSystemName 文件系统名称
      * @param statInfo 元数据
      */
-    public void saveMetaData(String fileSystemName, StatInfo statInfo){
+    public void saveMetaData(String fileSystemName, StatInfo statInfo) {
         try {
             ObjectMapper mapper = new ObjectMapper();
             String json = mapper.writeValueAsString(statInfo);
-            curatorClient.create().creatingParentsIfNeeded()
-                    .forPath(FS_ZK_PATH + "/" + fileSystemName + "/" + statInfo.getPath(), json.getBytes());
+            if (curatorClient.checkExists().forPath(FS_ZK_PATH + "/" + fileSystemName + statInfo.getPath()) == null)
+                curatorClient.create().creatingParentsIfNeeded()
+                        .forPath(FS_ZK_PATH + "/" + fileSystemName + statInfo.getPath(), json.getBytes());
+            else
+                curatorClient.setData().forPath(FS_ZK_PATH + "/" + fileSystemName + statInfo.getPath(), json.getBytes());
         } catch (Exception e) {
-            log.error("save meta data error",e);
+            log.error("save meta data error", e);
             throw new RuntimeException(e);
         }
     }
@@ -82,8 +85,9 @@ public class CuratorService {
             ObjectMapper mapper = new ObjectMapper();
             return mapper.readValue(data, StatInfo.class);
         } catch (Exception e) {
-            log.error("get file:{} stat info error",path,e);
-            throw new RuntimeException(e);
+            // Todo: 改一下，一直报错误码
+            log.info("get file:{} stat info null",path,e);
+            return null;
         }
     }
 
