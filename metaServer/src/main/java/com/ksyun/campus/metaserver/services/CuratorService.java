@@ -115,8 +115,9 @@ public class CuratorService {
             ObjectMapper mapper = new ObjectMapper();
             return mapper.readValue(data, StatInfo.class);
         } catch (Exception e) {
-            log.error("get file:{} stat info error", path, e);
-            throw new RuntimeException(e);
+            // todo: 改一下，一直报错误码
+            log.info("get file:{} stat info null",path,e);
+            return null;
         }
     }
 
