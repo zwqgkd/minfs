@@ -28,19 +28,6 @@ public abstract class FileSystem {
 
     protected static ZkUtil zkUtil = new ZkUtil();
 
-//    protected String acquireIpAddress(String param) {
-//        String res = "";
-//        switch (param) {
-//            case "dataServer":
-//                res = zkUtil.getDataServerUrl();
-//                break;
-//            case "metaServer":
-//                res = zkUtil.getMasterMetaDataServerUrl();
-//                break;
-//        }
-//        return res;
-//    }
-
     protected <T> ResponseEntity<T> sendGetRequest(String url, String interfaceName, String path, Class<T> responseType) {
         try {
             String[] parts = url.split(":");
@@ -99,7 +86,7 @@ public abstract class FileSystem {
         }
     }
 
-    protected ResponseEntity sendPostRequest(String url, String interfaceName, Object param) {
+    protected <T> ResponseEntity<T> sendPostRequest(String url, String interfaceName, Object param, Class<T> responseType) {
 
         try {
             // 使用UriComponentsBuilder构建URL
@@ -123,13 +110,13 @@ public abstract class FileSystem {
             HttpEntity<String> entity = new HttpEntity<>(requestBody, httpHeaders);
 
             URI uri = uriBuilder.build().toUri();
-            ResponseEntity<String> responseEntity = restTemplate.exchange(uri, HttpMethod.POST, entity, String.class);
-            return responseEntity;
+            return restTemplate.exchange(uri, HttpMethod.POST, entity, responseType);
 
         } catch (HttpServerErrorException e) {
             HttpStatus status = e.getStatusCode();
             String responseBody = e.getResponseBodyAsString();
-            return ResponseEntity.status(status).body("An error occurred: " + responseBody);
+            // return ResponseEntity.status(status).body("An error occurred: " + responseBody);
+            return ResponseEntity.status(status).body(null);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

@@ -59,6 +59,11 @@ public class ZkUtil {
     }
 
     public ZkUtil() {
+        try {
+            postCons();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -142,6 +147,7 @@ public class ZkUtil {
      */
     public ClusterInfo getClusterInfo() throws Exception {
         ClusterInfo clusterInfo = new ClusterInfo();
+
         //get master address
         clusterInfo.setMasterMetaServer(
                 new MetaServerMsg(

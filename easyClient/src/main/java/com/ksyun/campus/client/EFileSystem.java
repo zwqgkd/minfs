@@ -25,7 +25,6 @@ public class EFileSystem extends FileSystem{
 
     public FSOutputStream create(String path) throws Exception {
 
-
         String url = zkUtil.getMasterMetaAddress();
         HttpStatus status = sendGetRequest(url, "create", path, Void.class).getStatusCode();
         if(status != HttpStatus.OK) {
