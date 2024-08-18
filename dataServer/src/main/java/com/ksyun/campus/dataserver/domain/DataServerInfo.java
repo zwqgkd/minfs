@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 
-@AllArgsConstructor
 @Data
 @Builder
 public class DataServerInfo {
@@ -30,16 +29,18 @@ public class DataServerInfo {
     @JsonProperty("useCapacity")
     private int useCapacity;
 
-    public int getFreeSpace() {
-        return capacity-useCapacity;
+    public DataServerInfo(String ip, int port, String rack, String zone, int capacity, int fileTotal, int useCapacity) {
+        this.ip = ip;
+        this.port = port;
+        this.rack = rack;
+        this.zone = zone;
+        this.capacity = capacity;
+        this.fileTotal = fileTotal;
+        this.useCapacity = useCapacity;
     }
 
     public String getId(){
-        return zone+"-"+rack;
-    }
-
-    public String getDsNode(){
-        return ip+":"+port;
+        return zone + '-' + rack;
     }
 }
 
