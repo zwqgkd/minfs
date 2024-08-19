@@ -11,10 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -140,7 +137,44 @@ public class MetaService {
         }
          */
         // Todo: 将元数据信息持久化到zookeeper？
+        return allRequestsSuccessful;
+    }
 
+    public boolean delete(String path, String fileSystemName) {
+
+        boolean allRequestsSuccessful = true;
+
+        // 不存在子节点，删除当前节点
+        try {
+            List<StatInfo> childrenInfo = curatorService.getChildren(fileSystemName, path);
+            int childrenCount = childrenInfo.size();
+
+            StatInfo statInfo = curatorService.getStatInfo(fileSystemName, path);
+            if (childrenCount == 0) {
+                // Todo: 向dataServer发送删除文件的命令
+//                statInfo.getReplicaData().forEach(e -> {
+//                    Map<String, Object> data = new HashMap<>();
+//                    data.put("path", e.getPath());
+//                    httpService.sendPostRequest(e.dsNode, "delete", data);
+//                });
+                curatorService.deleteMetaData(fileSystemName, path);
+                log.info("Delete File: {}", statInfo.getPath());
+            } else {
+                // 递归删除
+                for (StatInfo child : childrenInfo) {
+                    String childPath = child.getPath(); // 拼接子节点路径
+                    boolean tmp =  delete(childPath, fileSystemName);
+                    if (!tmp) {
+                        allRequestsSuccessful = false;
+                    }
+                }
+                curatorService.deleteMetaData(fileSystemName, path);
+                log.info("Delete Parent File: {}", statInfo.getPath());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
         return allRequestsSuccessful;
     }
 
