@@ -1,8 +1,8 @@
 server:
   port: 9000
 az:
-  rack: rack0
-  zone: zone0
+  rack: ${RACK}
+  zone: ${ZONE}
 spring:
   zookeeper-address:
-    register: localhost:2181
+    register: register:2181

@@ -26,6 +26,75 @@ services:
     networks:
       - minfs_net
 
+  meta-server-1:
+    image: minfs-meta-server:latest
+    ports:
+      - "8000:8000"
+    networks:
+      - minfs_net
+    depends_on:
+      - register
+      - master-meta-db
+      - slave-meta-db
+
+  meta-server-2:
+    image: minfs-meta-server:latest
+    ports:
+      - "8001:8000"
+    networks:
+      - minfs_net
+    depends_on:
+      - register
+      - master-meta-db
+      - slave-meta-db
+
+  data-server-1:
+    image: minfs-data-server:latest
+    ports:
+      - "9000:9000"
+    environment:
+      - ZONE=zone0
+      - RACK=rack0
+    networks:
+      - minfs_net
+    depends_on:
+      - register
+
+  data-server-2:
+    image: minfs-data-server:latest
+    ports:
+      - "9001:9000"
+    environment:
+      - ZONE=zone1
+      - RACK=rack1
+    networks:
+      - minfs_net
+    depends_on:
+      - register
+
+  data-server-3:
+    image: minfs-data-server:latest
+    ports:
+      - "9002:9000"
+    environment:
+      - ZONE=zone2
+      - RACK=rack2
+    networks:
+      - minfs_net
+    depends_on:
+      - register
+
+  data-server-4:
+    image: minfs-data-server:latest
+    ports:
+      - "9003:9000"
+    environment:
+      - ZONE=zone3
+      - RACK=rack3
+    networks:
+      - minfs_net
+    depends_on:
+      - register
 
 
 volumes:

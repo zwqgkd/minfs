@@ -56,7 +56,7 @@ public class DataController {
         if(res == null){
             return new ResponseEntity<>("读取数据失败！", HttpStatus.valueOf(500));
         }
-        return new ResponseEntity<>(res, HttpStatus.OK);
+        return new ResponseEntity(res, HttpStatus.OK);
     }
 
     @RequestMapping("mkdir")

@@ -1,6 +1,7 @@
 package com.ksyun.campus.metaserver.domain;
 
 import lombok.Data;
+import lombok.Getter;
 
 import java.util.List;
 

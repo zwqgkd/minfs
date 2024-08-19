@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ksyun.campus.metaserver.domain.DataServerInfo;
 import com.ksyun.campus.metaserver.domain.FileType;
 import com.ksyun.campus.metaserver.domain.StatInfo;
+import com.ksyun.campus.metaserver.domain.StatInfoWithFSName;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
@@ -58,21 +59,21 @@ public class CuratorService {
         this.curatorMetaClient = client;
     }
 
-    private void dfs(String zkPath, List<StatInfo> statInfoList) {
+    private void dfs(String zkPath, List<StatInfoWithFSName> statInfoWithFSNameList, String fileSystemName){
         try{
             curatorMetaClient.getChildren().forPath(zkPath).forEach(child->{
                 byte[] data= null;
                 try {
                     data = curatorMetaClient.getData().forPath(zkPath+"/"+child);
-                    if(data==null)
-                        dfs(zkPath+"/"+child, statInfoList);
+                    if(data==null)   //文件系统这一级的节点
+                        dfs(zkPath+"/"+child, statInfoWithFSNameList, child);
 
                     ObjectMapper mapper = new ObjectMapper();
                     StatInfo curStatInfo = mapper.readValue(data, StatInfo.class);
                     if(curStatInfo.getType()== FileType.File)
-                        statInfoList.add(curStatInfo);
+                        statInfoWithFSNameList.add(new StatInfoWithFSName(curStatInfo, fileSystemName));
                     else
-                        dfs(zkPath+"/"+child, statInfoList);
+                        dfs(zkPath+"/"+child, statInfoWithFSNameList, fileSystemName);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -193,10 +194,10 @@ public class CuratorService {
      *
      * @return 文件系统元数据列表
      */
-    public List<StatInfo> getAllFileStatInfo(){
-        List<StatInfo> statInfoList = new ArrayList<>();
-        dfs(FS_ZK_PATH, statInfoList);
-        return statInfoList;
+    public List<StatInfoWithFSName> getAllFileStatInfo(){
+        List<StatInfoWithFSName> statInfoWithFSNameList = new ArrayList<>();
+        dfs(FS_ZK_PATH, statInfoWithFSNameList, null);
+        return statInfoWithFSNameList;
     }
 
 }

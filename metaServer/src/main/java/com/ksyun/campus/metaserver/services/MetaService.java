@@ -295,7 +295,10 @@ public class MetaService {
      */
     public List<DataServerInfo> getThreeDataServerList() throws Exception {
         //选择策略
-        return curatorService.getAllDataServerInfo().stream().sorted(Comparator.comparingInt(DataServerInfo::getFreeSpace)).collect(Collectors.toList()).subList(0,3);
+        return curatorService.getAllDataServerInfo().stream()
+                .sorted(Comparator.comparingInt(DataServerInfo::getFreeSpace).reversed())
+                .limit(3)
+                .collect(Collectors.toList());
     }
 
     /**
