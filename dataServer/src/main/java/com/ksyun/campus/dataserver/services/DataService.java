@@ -148,17 +148,27 @@ public class DataService {
         try {
             File file = new File(fileSystemName + registService.getServerInfo().getRack() + registService.getServerInfo().getZone() + "/" + path);
             if (file.exists()) {
-                if (file.isFile()) {
+                // 如果是目录，递归删除目录下的所有文件和子目录
+                if (file.isDirectory()) {
+                    File[] files = file.listFiles();
+                    if (files != null) { // 处理空目录的情况
+                        for (File subFile : files) {
+                            // 递归调用删除方法
+                            delete(fileSystemName, path + "/" + subFile.getName());
+                        }
+                    }
+                } else if (file.isFile()) {
                     DataServerInfo currentNodeData = registService.getServerInfo();
                     currentNodeData.setFileTotal(currentNodeData.getFileTotal() - 1);
                     currentNodeData.setUseCapacity((int) (currentNodeData.getUseCapacity() - file.length()));
                     registService.updateServerInfo(currentNodeData);
                 }
+                // 删除文件或空目录
                 return file.delete();
             } else {
                 return false;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
