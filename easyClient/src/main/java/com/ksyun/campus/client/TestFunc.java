@@ -12,14 +12,14 @@ public class TestFunc {
 //        System.out.println(res);
 //        boolean res1 = eFileSystem.mkdir("/read/456/");
 //        System.out.println(res1);
-        boolean res1 = eFileSystem.mkdir("/readd/123/");
-        boolean res2 = eFileSystem.mkdir("/readd/1234/");
+        boolean res1 = eFileSystem.mkdir("/readd/123");
+        boolean res2 = eFileSystem.mkdir("/readd/1234");
 
 //        eFileSystem.delete("/readd/");
 //        eFileSystem.delete("/anotherTest2.txt");
 //        FSOutputStream fsOutputStream = eFileSystem.create("/anotherTest2.txt");
 //        byte[] buf = new byte[256];
-//        Arrays.fill(buf, (byte) 107);
+//        Arrays.fill(buf, (byte) 107);f
 //
 //        fsOutputStream.write(buf);
 //        fsOutputStream.close();
