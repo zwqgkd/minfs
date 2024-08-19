@@ -14,7 +14,7 @@ public class DataService {
     @Autowired
     private RegistService registService;
 
-    public int write(String fileSystemName, String path, int offset, int length, byte[] data){
+    public int write(String fileSystemName, String path, byte[] data){
         try{
 
             // 写入数据为空
@@ -23,34 +23,36 @@ public class DataService {
                 return 1;
             }
 
-            // 检查 offset 是否合理
-            if (offset < 0 || offset >= data.length) {
-                System.out.println("Offset is out of bounds, skipping write operation.");
-                return 2;
-            }
+//            // 检查 offset 是否合理
+//            if (offset < 0 || offset >= data.length) {
+//                System.out.println("Offset is out of bounds, skipping write operation.");
+//                return 2;
+//            }
+//
+//            // 检查 length 是否合理
+//            if (length < 0) {
+//                System.out.println("Length cannot be negative, skipping write operation.");
+//                return 3;
+//            }
 
-            // 检查 length 是否合理
-            if (length < 0) {
-                System.out.println("Length cannot be negative, skipping write operation.");
-                return 3;
-            }
+//            // 计算实际可写入的字节数
+//            int writableLength = Math.min(length, data.length - offset);
+//
+//            if (writableLength <= 0) {
+//                System.out.println("No data available for writing, skipping write operation.");
+//                return 4;
+//            }
 
-            // 计算实际可写入的字节数
-            int writableLength = Math.min(length, data.length - offset);
-
-            if (writableLength <= 0) {
-                System.out.println("No data available for writing, skipping write operation.");
-                return 4;
-            }
-
-            File file = new File(fileSystemName + "/" + path);
+            File file = new File(fileSystemName + registService.getServerInfo().getRack() + registService.getServerInfo().getZone() + "/" + path);
             // 确保父目录存在
             file.getParentFile().mkdirs();
             // 确保目标文件存在
             file.createNewFile();
 
-            FileOutputStream fos = new FileOutputStream(file, true);
-            fos.write(data, offset, writableLength);
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(data);
+            int writableLength = data.length;
+            // fos.write(data, offset, writableLength);
             fos.close();
             System.out.println("Data written successfully.");
 
@@ -59,16 +61,16 @@ public class DataService {
             currentNodeData.setUseCapacity(currentNodeData.getUseCapacity() + writableLength);
             registService.updateServerInfo(currentNodeData);
 
-            return 0;
+            return writableLength;
         }catch (Exception e){
             e.printStackTrace();
             return -1;
         }
 
     }
-    public byte[] read(String fileSystemName ,String path,int offset,int length){
+    public byte[] read(String fileSystemName, String path, int offset, int length){
         try{
-            File file = new File(fileSystemName + "/" + path);
+            File file = new File(fileSystemName + registService.getServerInfo().getRack() + registService.getServerInfo().getZone() + "/" + path);
 
             // 检查文件是否存在并且可读
             if (!file.exists() || !file.canRead()) {
@@ -86,11 +88,11 @@ public class DataService {
             // 获取文件的长度
             long fileLength = file.length();
 
-            // 检查 offset 是否合理
-            if (offset < 0 || offset >= fileLength) {
-                System.out.println("Offset is out of bounds, skipping read operation.");
-                return null;
-            }
+//            // 检查 offset 是否合理
+//            if (offset < 0 || offset >= fileLength) {
+//                System.out.println("Offset is out of bounds, skipping read operation.");
+//                return null;
+//            }
 
             // 计算实际可读取的字节数
             int readableLength = Math.min(length, (int) (fileLength - offset));
@@ -111,12 +113,12 @@ public class DataService {
             e.printStackTrace();
             return null;
         }
-
     }
 
     public boolean mkdir(String fileSystemName, String path) {
         try {
-            File directory = new File(fileSystemName + "/" + path);
+            // localTest
+            File directory = new File(fileSystemName + registService.getServerInfo().getRack() + registService.getServerInfo().getZone() + "/" + path);
             directory.mkdirs();
             return true;
         }catch (Exception e){
@@ -127,7 +129,7 @@ public class DataService {
 
     public boolean create(String fileSystemName, String path) {
         try {
-            File file = new File(fileSystemName + "/" + path);
+            File file = new File(fileSystemName + registService.getServerInfo().getRack() + registService.getServerInfo().getZone() + "/" + path);
             // 确保父目录存在
             file.getParentFile().mkdirs();
             // 确保目标文件存在
@@ -144,7 +146,7 @@ public class DataService {
 
     public boolean delete(String fileSystemName, String path){
         try {
-            File file = new File(fileSystemName + "/" + path);
+            File file = new File(fileSystemName + registService.getServerInfo().getRack() + registService.getServerInfo().getZone() + "/" + path);
             if (file.exists()) {
                 if (file.isFile()) {
                     DataServerInfo currentNodeData = registService.getServerInfo();

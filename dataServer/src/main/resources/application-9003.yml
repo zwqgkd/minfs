@@ -1,8 +1,8 @@
 server:
-  port: 9000
+  port: 9003
 az:
-  rack: rack0
-  zone: zone0
+  rack: rack3
+  zone: zone3
 spring:
   zookeeper-address:
     register: localhost:2181
