@@ -15,8 +15,8 @@ public class TestFunc {
         boolean res1 = eFileSystem.mkdir("/readd/123/");
         boolean res2 = eFileSystem.mkdir("/readd/1234/");
 
-        eFileSystem.delete("/readd/");
-        eFileSystem.delete("/anotherTest2.txt");
+//        eFileSystem.delete("/readd/");
+//        eFileSystem.delete("/anotherTest2.txt");
 //        FSOutputStream fsOutputStream = eFileSystem.create("/anotherTest2.txt");
 //        byte[] buf = new byte[256];
 //        Arrays.fill(buf, (byte) 107);

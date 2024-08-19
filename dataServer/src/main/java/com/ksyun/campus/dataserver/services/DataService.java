@@ -88,11 +88,11 @@ public class DataService {
             // 获取文件的长度
             long fileLength = file.length();
 
-//            // 检查 offset 是否合理
-//            if (offset < 0 || offset >= fileLength) {
-//                System.out.println("Offset is out of bounds, skipping read operation.");
-//                return null;
-//            }
+            // 检查是否将文件读完
+            if (offset < 0 || offset >= fileLength) {
+                System.out.println("Offset is out of bounds, skipping read operation.");
+                return null;
+            }
 
             // 计算实际可读取的字节数
             int readableLength = Math.min(length, (int) (fileLength - offset));
