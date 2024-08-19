@@ -37,6 +37,10 @@ public class EFileSystem extends FileSystem{
     }
 
     public FSOutputStream create(String path) throws Exception {
+        if (getFileStats(path) != null) {
+            throw new IOException("File has already existed!");
+        }
+
         if (path.endsWith("/")) {
             path = path.substring(0, path.length() - 1);
         }
@@ -51,6 +55,10 @@ public class EFileSystem extends FileSystem{
     }
 
     public boolean mkdir(String path) throws Exception {
+        if (getFileStats(path) != null) {
+            throw new IOException("Dir has already existed!");
+        }
+
         if (path.endsWith("/")) {
             path = path.substring(0, path.length() - 1);
         }
@@ -61,6 +69,10 @@ public class EFileSystem extends FileSystem{
     }
 
     public boolean delete(String path) throws Exception {
+        if (getFileStats(path) == null) {
+            throw new IOException("File or dir does not exist!");
+        }
+
         if (path.endsWith("/")) {
             path = path.substring(0, path.length() - 1);
         }

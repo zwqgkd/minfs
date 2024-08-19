@@ -8,7 +8,6 @@ import com.ksyun.campus.metaserver.domain.DataServerInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -80,16 +79,12 @@ public class MetaService {
     public boolean mkdir(String path, String fileSystemName) {
         boolean allRequestsSuccessful = true;
 
-        // Todo: 替换成正式功能
-        // List<DataServerInfo> randomServerInfos = getRandomServerInfos(3);
         List<DataServerInfo> randomServerInfos = null;
         try {
             randomServerInfos = getThreeDataServerList();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        String[] pathParts = path.split("/");
-        StringBuilder pathBuilder = new StringBuilder();
 
         for (DataServerInfo e : randomServerInfos) {
             Map<String, Object> param = new HashMap<>();
@@ -106,33 +101,17 @@ public class MetaService {
             return false;
         }
 
-        for (String part : pathParts) {
-            if (!part.isEmpty()) {
-                pathBuilder.append("/").append(part);
-                String nodePath = pathBuilder.toString();
-                // 检查节点是否存在
-                try {
-                    log.info("dir path: {}", nodePath);
-                    StatInfo statInfo = curatorService.getStatInfo(fileSystemName, nodePath);
-                    if (statInfo != null) {
-                        statInfo.setMtime(System.currentTimeMillis());
-                        curatorService.saveMetaData(fileSystemName, statInfo);
-                        log.info("Update node: {}", statInfo);
-                        continue;
-                    }
+        // 更新新创建的dir信息
+        String[] pathParts = path.split("/");
+        pathParts = Arrays.copyOfRange(pathParts, 1, pathParts.length);
+        StringBuilder pathBuilder = new StringBuilder();
 
-                    statInfo = createStatInfo(FileType.Directory, nodePath, randomServerInfos);
-                    log.info(String.valueOf(statInfo));
+        // 先更新里面文件/文件夹的修改时间，然后更新外面的
+        StatInfo statInfo = createStatInfo(FileType.File, path, randomServerInfos);
+        log.info(String.valueOf(statInfo));
+        curatorService.saveMetaData(fileSystemName, statInfo);
 
-                    curatorService.saveMetaData(fileSystemName, statInfo);
-
-                    log.info("Created node: {}", statInfo);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return false;
-                }
-            }
-        }
+        updateRecMetaDataInfo(fileSystemName, pathParts, pathBuilder, randomServerInfos);
 
         return allRequestsSuccessful;
     }
@@ -148,6 +127,7 @@ public class MetaService {
 
             // dataServer进行递归删除操作
             StatInfo statInfo = curatorService.getStatInfo(fileSystemName, path);
+            System.out.println(statInfo);
             statInfo.getReplicaData().forEach(e -> {
                 Map<String, Object> data = new HashMap<>();
                 data.put("path", e.getPath());
@@ -155,12 +135,6 @@ public class MetaService {
             });
 
             if (childrenCount == 0) {
-//                // Todo: 向dataServer发送删除文件的命令
-//                statInfo.getReplicaData().forEach(e -> {
-//                    Map<String, Object> data = new HashMap<>();
-//                    data.put("path", e.getPath());
-//                    httpService.sendPostRequest(e.dsNode, "delete", fileSystemName, data);
-//                });
                 curatorService.deleteMetaData(fileSystemName, path);
                 log.info("Delete File: {}", statInfo.getPath());
             } else {
@@ -202,22 +176,10 @@ public class MetaService {
         return statInfo;
     }
 
-    public List<DataServerInfo> getRandomServerInfos(int count) {
-
-        List<DataServerInfo> serverInfos = new ArrayList<>();
-        for (int i = 0; i < count; i++) {
-            DataServerInfo data = DataServerInfo.builder().rack("rack" + i).zone("-zone" + i).ip("127.0.0.1").port(900 + i).build();
-            serverInfos.add(data);
-        }
-        return serverInfos;
-    }
-
     public boolean create(String path, String fileSystemName) {
         boolean allRequestsSuccessful = true;
 
-        // Todo: 替换成正式功能
         // 获取dataServer的信息
-        // List<DataServerInfo> randomServerInfos = getRandomServerInfos(3);
         List<DataServerInfo> randomServerInfos = null;
         try {
             randomServerInfos = getThreeDataServerList();
@@ -239,6 +201,7 @@ public class MetaService {
 
         // 逐级创建节点，并存储数据
         String[] pathParts = path.split("/");
+        pathParts = Arrays.copyOfRange(pathParts, 1, pathParts.length - 1);
         StringBuilder pathBuilder = new StringBuilder();
 
         // 先更新里面文件/文件夹的修改时间，然后更新外面的
@@ -246,40 +209,39 @@ public class MetaService {
         log.info(String.valueOf(statInfo));
         curatorService.saveMetaData(fileSystemName, statInfo);
 
-        for (int i = 0; i < pathParts.length - 1; i++) {
-            if (!pathParts[i].isEmpty()) {
-                pathBuilder.append("/").append(pathParts[i]);
-                String nodePath = pathBuilder.toString();
-
-                try {
-                    log.info("dir path: {}", nodePath);
-                    StatInfo statInfoInside = curatorService.getStatInfo(fileSystemName, nodePath);
-                    if (statInfoInside != null) {
-                        statInfoInside.setMtime(System.currentTimeMillis());
-                        curatorService.saveMetaData(fileSystemName, statInfoInside);
-                        log.info("Update node: {}", statInfoInside);
-                        continue;
-                    }
-
-                    statInfoInside = createStatInfo(FileType.Directory, nodePath, randomServerInfos);
-                    log.info(String.valueOf(statInfoInside));
-                    curatorService.saveMetaData(fileSystemName, statInfoInside);
-                    log.info("Created node: {}", statInfoInside);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return false;
-                }
-            }
-        }
-
-//        pathBuilder.append("/").append(pathParts[pathParts.length - 1]);
-//        String filePath = pathBuilder.toString();
-//
-//        StatInfo statInfo = createStatInfo(FileType.File, filePath, randomServerInfos);
-//        log.info(String.valueOf(statInfo));
-//        curatorService.saveMetaData(fileSystemName, statInfo);
+        updateRecMetaDataInfo(fileSystemName, pathParts, pathBuilder, randomServerInfos);
 
         return allRequestsSuccessful;
+    }
+
+    public void updateRecMetaDataInfo(String fileSystemName, String[] pathParts, StringBuilder pathBuilder, List<DataServerInfo> randomServerInfos) {
+
+        if (pathParts.length == 0) {
+            return;
+        }
+
+        String part = pathParts[0];
+        String[] remainingParts = Arrays.copyOfRange(pathParts, 1, pathParts.length);
+
+        if (!part.isEmpty()) {
+            pathBuilder.append("/").append(part);
+            String nodePath = pathBuilder.toString();
+
+            // 递归处理子目录
+            updateRecMetaDataInfo(fileSystemName, remainingParts, pathBuilder, randomServerInfos);
+
+            StatInfo statInfo = curatorService.getStatInfo(fileSystemName, nodePath);
+            if (statInfo != null) {
+                statInfo.setMtime(System.currentTimeMillis());
+                curatorService.saveMetaData(fileSystemName, statInfo);
+                log.info("Create: Updated metaData with historical time: {}", statInfo);
+            } else {
+                // 如果节点不存在，则创建它
+                statInfo = createStatInfo(FileType.Directory, nodePath, randomServerInfos);
+                curatorService.saveMetaData(fileSystemName, statInfo);
+                log.info("Create: Created dir node: {}", statInfo);
+            }
+        }
     }
 
     public List<String> getDsNodes(StatInfo statInfo) {

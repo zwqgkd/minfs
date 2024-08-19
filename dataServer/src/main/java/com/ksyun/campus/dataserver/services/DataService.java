@@ -173,4 +173,24 @@ public class DataService {
             return false;
         }
     }
+
+//    public boolean delete(String fileSystemName, String path){
+//        try {
+//            File file = new File(fileSystemName + registService.getServerInfo().getRack() + registService.getServerInfo().getZone() + "/" + path);
+//            if (file.exists()) {
+//                if (file.isFile()) {
+//                    DataServerInfo currentNodeData = registService.getServerInfo();
+//                    currentNodeData.setFileTotal(currentNodeData.getFileTotal() - 1);
+//                    currentNodeData.setUseCapacity((int) (currentNodeData.getUseCapacity() - file.length()));
+//                    registService.updateServerInfo(currentNodeData);
+//                }
+//                return file.delete();
+//            } else {
+//                return false;
+//            }
+//        }catch (Exception e){
+//            e.printStackTrace();
+//            return false;
+//        }
+//    }
 }
