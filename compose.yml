@@ -26,27 +26,27 @@ services:
     networks:
       - minfs_net
 
-  meta-server-1:
-    image: minfs-meta-server:latest
-    ports:
-      - "8000:8000"
-    networks:
-      - minfs_net
-    depends_on:
-      - register
-      - master-meta-db
-      - slave-meta-db
-
-  meta-server-2:
-    image: minfs-meta-server:latest
-    ports:
-      - "8001:8000"
-    networks:
-      - minfs_net
-    depends_on:
-      - register
-      - master-meta-db
-      - slave-meta-db
+#  meta-server-1:
+#    image: minfs-meta-server:latest
+#    ports:
+#      - "8000:8000"
+#    networks:
+#      - minfs_net
+#    depends_on:
+#      - register
+#      - master-meta-db
+#      - slave-meta-db
+#
+#  meta-server-2:
+#    image: minfs-meta-server:latest
+#    ports:
+#      - "8001:8000"
+#    networks:
+#      - minfs_net
+#    depends_on:
+#      - register
+#      - master-meta-db
+#      - slave-meta-db
 
   data-server-1:
     image: minfs-data-server:latest

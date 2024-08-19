@@ -3,9 +3,9 @@ server:
 
 spring:
   zookeeper-address:
-    register: register:2181
-    master-meta: master-meta-db:2182
-    slave-meta: slave-meta-db:2183
+    register: localhost:2181
+    master-meta: localhost:2182
+    slave-meta: localhost:2183
   task:
     execution:
       pool:

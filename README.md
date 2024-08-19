@@ -36,22 +36,5 @@
 
 ## HOW TO USE
 
-1. 准备工作
-
-   `docker compose -p minfs up -d` 
-
-2. 停掉所有服务
-
-   `docker compose -p minfs down -v`
-
-3. 如何查看**zookeeper**数据
-   - 进入zk
-     `docker exec -it <container-name> zkCli.sh `
-   
-   - 查看节点
-   
-     `ls <path>`
-   
-   - 查看节点携带数据
-   
-     `get <path>`
+1. `start.sh`
+2. `down.sh`

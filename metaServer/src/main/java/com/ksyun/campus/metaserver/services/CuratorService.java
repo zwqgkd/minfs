@@ -45,7 +45,7 @@ public class CuratorService {
     }
 
     @PostConstruct
-    public void init() {
+    public void init() throws Exception {
         String metaAddr = registService.getRole().equals("master") ? masterAddress : slaveAddress;
         //重试策略：初始sleep时间1s，最大重试3次
         ExponentialBackoffRetry backOff = new ExponentialBackoffRetry(1000, 3);
@@ -57,6 +57,9 @@ public class CuratorService {
                 .build();
         client.start();
         this.curatorMetaClient = client;
+        //
+        if(this.curatorMetaClient.checkExists().forPath(FS_ZK_PATH)==null)
+            this.curatorMetaClient.create().forPath(FS_ZK_PATH);
     }
 
     private void dfs(String zkPath, List<StatInfoWithFSName> statInfoWithFSNameList, String fileSystemName){
