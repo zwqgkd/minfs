@@ -53,7 +53,7 @@ public class RegistService {
             role = "master";
         else
             role = "slave";
-        log.info("register to zk center, role:{}", role);
+        log.info("register to zk center, role:{}, addr:{}", role, serverHost + ":" + serverPort);
         curatorRegisterClient.create().creatingParentsIfNeeded()
                 .withMode(CreateMode.EPHEMERAL).forPath(META_ZK_PATH + "/" + role + "/"+ serverHost + ":" + serverPort);
     }

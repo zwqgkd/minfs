@@ -2,6 +2,7 @@ package com.ksyun.campus.metaserver.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ksyun.campus.metaserver.domain.DataServerInfo;
+import com.ksyun.campus.metaserver.domain.FileType;
 import com.ksyun.campus.metaserver.domain.StatInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.framework.CuratorFramework;
@@ -11,33 +12,39 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 @Slf4j
 @Service
 public class CuratorService {
 
-//    @Value("${spring.zookeeper-address.master-meta}")
-//    private String masterAddress;
-//
-//    @Value("${spring.zookeeper-address.slave-meta}")
-//    private String slaveAddress;
+    private final RegistService registService;
 
     @Value("${spring.zookeeper-address.master-meta}")
-    private String masterAddress="localhost:2182";
+    private String masterAddress;
 
     @Value("${spring.zookeeper-address.slave-meta}")
-    private String slaveAddress="localhost:2183";
+    private String slaveAddress;
 
-    private final CuratorFramework curatorMetaClient;
+    private final CuratorFramework curatorRegisterClient;
+
+    private CuratorFramework curatorMetaClient;
 
     private static final String DS_ZK_PATH = "/dataServer";
 
     private static final String FS_ZK_PATH = "/fileSystem";
 
     @Autowired
-    public CuratorService(RegistService registService) {
+    public CuratorService(RegistService registService, CuratorFramework curatorRegisterClient) {
+        this.registService = registService;
+        this.curatorRegisterClient = curatorRegisterClient;
+    }
+
+    @PostConstruct
+    public void init() {
         String metaAddr = registService.getRole().equals("master") ? masterAddress : slaveAddress;
         //重试策略：初始sleep时间1s，最大重试3次
         ExponentialBackoffRetry backOff = new ExponentialBackoffRetry(1000, 3);
@@ -51,6 +58,32 @@ public class CuratorService {
         this.curatorMetaClient = client;
     }
 
+    private void dfs(String zkPath, List<StatInfo> statInfoList) {
+        try{
+            curatorMetaClient.getChildren().forPath(zkPath).forEach(child->{
+                byte[] data= null;
+                try {
+                    data = curatorMetaClient.getData().forPath(zkPath+"/"+child);
+                    if(data==null)
+                        dfs(zkPath+"/"+child, statInfoList);
+
+                    ObjectMapper mapper = new ObjectMapper();
+                    StatInfo curStatInfo = mapper.readValue(data, StatInfo.class);
+                    if(curStatInfo.getType()== FileType.File)
+                        statInfoList.add(curStatInfo);
+                    else
+                        dfs(zkPath+"/"+child, statInfoList);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+
+            });
+        }catch (Exception e){
+            log.error("dfs error", e);
+            throw new RuntimeException(e);
+        }
+    }
+
     /**
      * 获取所有ds的信息
      *
@@ -58,9 +91,9 @@ public class CuratorService {
      */
     public List<DataServerInfo> getAllDataServerInfo() throws Exception {
         List<DataServerInfo> dsList = new ArrayList<>();
-        curatorMetaClient.getChildren().forPath(DS_ZK_PATH).forEach(child -> {
+        curatorRegisterClient.getChildren().forPath(DS_ZK_PATH).forEach(child -> {
             try {
-                byte[] data = curatorMetaClient.getData().forPath(DS_ZK_PATH + "/" + child);
+                byte[] data = curatorRegisterClient.getData().forPath(DS_ZK_PATH + "/" + child);
                 ObjectMapper mapper = new ObjectMapper();
                 DataServerInfo ds = mapper.readValue(data, DataServerInfo.class);
                 dsList.add(ds);
@@ -122,7 +155,7 @@ public class CuratorService {
             return mapper.readValue(data, StatInfo.class);
         } catch (Exception e) {
             // todo: 改一下，一直报错误码
-            log.info("get file:{} stat info null",path,e);
+            log.info("get file:{} stat info null", path, e);
             return null;
         }
     }
@@ -152,6 +185,17 @@ public class CuratorService {
             log.error("list dir children error", e);
             throw new RuntimeException(e);
         }
+        return statInfoList;
+    }
+
+    /**
+     * 获取所有文件系统的元数据
+     *
+     * @return 文件系统元数据列表
+     */
+    public List<StatInfo> getAllFileStatInfo(){
+        List<StatInfo> statInfoList = new ArrayList<>();
+        dfs(FS_ZK_PATH, statInfoList);
         return statInfoList;
     }
 
