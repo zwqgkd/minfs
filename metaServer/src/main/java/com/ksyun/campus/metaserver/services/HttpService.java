@@ -35,7 +35,6 @@ public class HttpService {
             httpHeaders.setContentType(MediaType.APPLICATION_JSON);
 
             String requestBody = mapper.writeValueAsString(param);
-            System.out.println(requestBody);
             HttpEntity<String> entity = new HttpEntity<>(requestBody, httpHeaders);
 
 

@@ -100,42 +100,6 @@ public class MetaController {
         }
     }
 
-    @RequestMapping("readTest")
-    public ResponseEntity readTest(@RequestHeader String fileSystemName, @RequestBody Map<String, Object> bodyData){
-        String path = (String) bodyData.get("path");
-        int offset = (Integer) bodyData.get("offset");
-        int length = (Integer) bodyData.get("length");
-        String winPath = path.substring(1);
-
-        File file = new File(winPath);
-        try {
-            // 创建一个 FileInputStream 对象来读取文件
-            FileInputStream fis = new FileInputStream(file);
-
-            // 跳过偏移量
-            fis.skip(offset);
-
-            // 创建一个字节数组来存储读取的数据
-            byte[] data = new byte[length];
-
-            // 读取数据到字节数组
-            int bytesRead = fis.read(data);
-            if (bytesRead != length) {
-                data = Arrays.copyOf(data, bytesRead);
-            }
-
-            log.info("{}", bytesRead);
-
-            // 关闭 FileInputStream
-            fis.close();
-
-            return ResponseEntity.ok(Arrays.toString(data));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null; // 发生异常
-        }
-    }
-
     /**
      * 根据文件path查询三副本的位置，返回客户端具体ds、文件分块信息
      * @param fileSystemName

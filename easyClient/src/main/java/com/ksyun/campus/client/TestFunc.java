@@ -8,38 +8,42 @@ import java.util.Arrays;
 public class TestFunc {
     public static void main(String[] args) throws Exception {
         EFileSystem eFileSystem = new EFileSystem();
-        boolean res = eFileSystem.mkdir("/read/123/");
-        System.out.println(res);
-        boolean res1 = eFileSystem.mkdir("/read/456/");
-        System.out.println(res1);
+//        boolean res = eFileSystem.mkdir("/read/123/");
+//        System.out.println(res);
+//        boolean res1 = eFileSystem.mkdir("/read/456/");
+//        System.out.println(res1);
+        boolean res1 = eFileSystem.mkdir("/readd/123/");
+        boolean res2 = eFileSystem.mkdir("/readd/1234/");
 
-        FSOutputStream fsOutputStream = eFileSystem.create("/read/anotherTest.txt");
-        byte[] buf = new byte[256];
-        Arrays.fill(buf, (byte) 107);
+        eFileSystem.delete("/readd/");
+        eFileSystem.delete("/anotherTest2.txt");
+//        FSOutputStream fsOutputStream = eFileSystem.create("/anotherTest2.txt");
+//        byte[] buf = new byte[256];
+//        Arrays.fill(buf, (byte) 107);
+//
+//        fsOutputStream.write(buf);
+//        fsOutputStream.close();
 
-        fsOutputStream.write(buf);
-        fsOutputStream.close();
-
-        FSInputStream fsInputStream = eFileSystem.open("/read/anotherTest.txt");
-        byte[] buffer = new byte[300];
-
-        int bytesRead;
-        bytesRead = fsInputStream.read(buffer); // 最多读取5个字节
-
-        if (bytesRead != -1) {
-            String data = new String(buffer, 0, bytesRead);
-            System.out.println("Read data: " + data);
-        } else {
-            System.out.println("No more data to read.");
-        }
-        fsInputStream.close();
+//        FSInputStream fsInputStream = eFileSystem.open("/read/anotherTest.txt");
+//        byte[] buffer = new byte[300];
+//
+//        int bytesRead;
+//        bytesRead = fsInputStream.read(buffer); // 最多读取5个字节
+//
+//        if (bytesRead != -1) {
+//            String data = new String(buffer, 0, bytesRead);
+//            System.out.println("Read data: " + data);
+//        } else {
+//            System.out.println("No more data to read.");
+//        }
+//        fsInputStream.close();
 
         // System.out.println(eFileSystem.getClusterInfo().toString());
-        System.out.println(eFileSystem.getFileStats("/read"));
-        List<StatInfo> ll = eFileSystem.listFileStats("/read");
-        for (StatInfo statInfo : ll) {
-            System.out.println(statInfo);
-        }
+//        System.out.println(eFileSystem.getFileStats("/read"));
+//        List<StatInfo> ll = eFileSystem.listFileStats("/read");
+//        for (StatInfo statInfo : ll) {
+//            System.out.println(statInfo);
+//        }
 
 //        FSOutputStream fsOutputStream = eFileSystem.create("/read/test.txt");
 //        for (int i = 0; i < 1; ++i) {
