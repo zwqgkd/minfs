@@ -9,13 +9,14 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Map;
 
 @Service
 public class HttpService {
 
     protected static ObjectMapper mapper = new ObjectMapper();
 
-    public ResponseEntity sendPostRequest(String url, String interfaceName, Object param) {
+    public ResponseEntity sendPostRequest(String url, String interfaceName, String fileSystemName, Object param) {
         try {
             String[] parts = url.split(":");
 
@@ -30,9 +31,11 @@ public class HttpService {
 
             RestTemplate restTemplate = new RestTemplate();
             HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.add("fileSystemName", fileSystemName);
             httpHeaders.setContentType(MediaType.APPLICATION_JSON);
 
             String requestBody = mapper.writeValueAsString(param);
+            System.out.println(requestBody);
             HttpEntity<String> entity = new HttpEntity<>(requestBody, httpHeaders);
 
 

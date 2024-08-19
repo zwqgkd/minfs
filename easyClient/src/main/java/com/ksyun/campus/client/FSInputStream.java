@@ -1,13 +1,11 @@
 package com.ksyun.campus.client;
 
-import org.apache.hc.client5.http.impl.async.H2AsyncClientBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -77,30 +75,28 @@ public class FSInputStream extends InputStream {
         data.put("offset", filePos);
         data.put("length", length);
 
-        try {
-            dataUrl = fileSystem.zkUtil.getMasterMetaAddress();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        ResponseEntity<String> response = fileSystem.sendPostRequest(dataUrl, "readTest", data, String.class);
+        ResponseEntity<String> response = fileSystem.sendPostRequest(dataUrl, "read", data, String.class);
         System.out.println(response.getBody());
 
         if (response.getStatusCode() == HttpStatus.OK) {
             String str = response.getBody();
-            String trimmedStr = response.getBody().substring(1, str.length() - 1);
+//            String trimmedStr = response.getBody().substring(1, str.length() - 1);
+//
+//            // 按逗号分割字符串，得到每个数字的字符串
+//            String[] stringValues = trimmedStr.split("\\s*,\\s*");
+//
+//            // 转换为字节数组
+//            byte[] byteArray = new byte[stringValues.length];
 
-            // 按逗号分割字符串，得到每个数字的字符串
-            String[] stringValues = trimmedStr.split("\\s*,\\s*");
-
-            // 转换为字节数组
-            byte[] byteArray = new byte[stringValues.length];
 
             // 转换每个数字为字节
-            for (int i = 0; i < stringValues.length; i++) {
-                byteArray[i] = Byte.parseByte(stringValues[i]);
-            }
+//            for (int i = 0; i < stringValues.length; i++) {
+//                byteArray[i] = Byte.parseByte(stringValues[i]);
+//            }
 
-            if (byteArray.length > 0) {
+//            if (byteArray.length > 0) {
+            if (str != null) {
+                byte[] byteArray = str.getBytes();
                 int count = 0;
                 for (byte b : byteArray) {
                     readBuffer.add(b);

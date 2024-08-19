@@ -1,11 +1,14 @@
 package com.ksyun.campus.dataserver.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class DataServerInfo {
 
     @JsonProperty("ip")
@@ -29,18 +32,19 @@ public class DataServerInfo {
     @JsonProperty("useCapacity")
     private int useCapacity;
 
-    public DataServerInfo(String ip, int port, String rack, String zone, int capacity, int fileTotal, int useCapacity) {
-        this.ip = ip;
-        this.port = port;
-        this.rack = rack;
-        this.zone = zone;
-        this.capacity = capacity;
-        this.fileTotal = fileTotal;
-        this.useCapacity = useCapacity;
+    @JsonIgnore
+    public int getFreeSpace() {
+        return capacity-useCapacity;
     }
 
+    @JsonIgnore
     public String getId(){
-        return zone + '-' + rack;
+        return rack+"-"+zone;
+    }
+
+    @JsonIgnore
+    public String getDsNode(){
+        return ip+":"+port;
     }
 }
 

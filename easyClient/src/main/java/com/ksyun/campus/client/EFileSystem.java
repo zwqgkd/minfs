@@ -37,6 +37,10 @@ public class EFileSystem extends FileSystem{
     }
 
     public FSOutputStream create(String path) throws Exception {
+        if (path.endsWith("/")) {
+            path = path.substring(0, path.length() - 1);
+        }
+
         String url = zkUtil.getMasterMetaAddress();
         HttpStatus status = sendGetRequest(url, "create", path, Void.class).getStatusCode();
         if(status != HttpStatus.OK) {
@@ -47,6 +51,10 @@ public class EFileSystem extends FileSystem{
     }
 
     public boolean mkdir(String path) throws Exception {
+        if (path.endsWith("/")) {
+            path = path.substring(0, path.length() - 1);
+        }
+
         String url = zkUtil.getMasterMetaAddress();
         HttpStatus status = this.sendGetRequest(url, "mkdir", path, Void.class).getStatusCode();
         return status == HttpStatus.OK ? true : false;
@@ -56,6 +64,7 @@ public class EFileSystem extends FileSystem{
         if (path.endsWith("/")) {
             path = path.substring(0, path.length() - 1);
         }
+
         String url = zkUtil.getMasterMetaAddress();
         HttpStatus status = sendGetRequest(url, "delete", path, Void.class).getStatusCode();
         return status == HttpStatus.OK ? true : false;

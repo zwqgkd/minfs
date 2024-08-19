@@ -1,20 +1,14 @@
 package com.ksyun.campus.client;
 
-import com.ksyun.campus.client.domain.StatInfo;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class FSOutputStream extends OutputStream {
-
-    // private static final int BUFFER_SIZE = 1024; // 1KB buffer size
 
     @Getter
     private String path;
@@ -39,6 +33,7 @@ public class FSOutputStream extends OutputStream {
     @Override
     public void write(byte[] b) {
         for (byte value : b) {
+            System.out.println(value);
             writeBuffer.add(value);
         }
         try {
@@ -84,21 +79,21 @@ public class FSOutputStream extends OutputStream {
             String url = FileSystem.zkUtil.getMasterMetaAddress();
             ResponseEntity<List> response = fileSystem.sendPostRequest(url, "write", postData, List.class);
             List<String> ipList = response.getBody();
-            postData.put("data", data);
+            System.out.println(Arrays.toString(data));
+            postData.put("data", Arrays.toString(data));
 
             boolean isSuccess = true;
             long fileSize = 0;
 
             // Todo: 向dataServer发送写的内容
-//            for (String ip : ipList) {
-//                ResponseEntity<Integer> responseFromDataServer = fileSystem.sendPostRequest(ip, "write", postData, Integer.class);
-//                if (responseFromDataServer.getStatusCode() != HttpStatus.OK) {
-//                    isSuccess = false;
-//                }
-//                fileSize = responseFromDataServer.getBody();
-//            }
+            for (String ip : ipList) {
+                ResponseEntity<Integer> responseFromDataServer = fileSystem.sendPostRequest(ip, "write", postData, Integer.class);
+                if (responseFromDataServer.getStatusCode() != HttpStatus.OK) {
+                    isSuccess = false;
+                }
+                fileSize = (long) responseFromDataServer.getBody();
+            }
 
-            fileSize = 1000;
             postData.remove("data");
             postData.put("size", fileSize);
 

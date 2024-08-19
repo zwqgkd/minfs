@@ -36,22 +36,8 @@ public class MetaService {
 
         StatInfo statInfo = curatorService.getStatInfo(fileSystemName, path);
         List<String> ipList = getDsNodes(statInfo);
-        boolean isSuccessful = true;
-
-        // Todo: 向选择的dataServer发送所写的数据，但此处应该是client完成
-//        for (String ip : ipList) {
-//            ResponseEntity write = httpService.sendPostRequest(ip, "write", dataNeedWriting);
-//            // ResponseEntity write = forwardService.call(ip, "write", dataTransferInfo);
-//            if (write.getStatusCode() != HttpStatus.OK) {
-//                isSuccessful = false;
-//            }
-//        }
 
         return ipList;
-//        statInfo.setMtime(System.currentTimeMillis());
-//        statInfo.setSize(statInfo.getSize() + dataTransferInfo.getData().length);
-//        registService.updateNodeData(dataTransferInfo.getPath(), statInfo);
-//        return isSuccessful;
     }
 
     public boolean commitWrite(Map<String, Object> dataNeedWriting, String fileSystemName) {
@@ -63,26 +49,26 @@ public class MetaService {
         String[] pathParts = path.split("/");
         StringBuilder pathBuilder = new StringBuilder();
 
-        for (int i = 0; i < pathParts.length - 1; i++) {
-            if (!pathParts[i].isEmpty()) {
-                pathBuilder.append("/").append(pathParts[i]);
-                String nodePath = pathBuilder.toString();
-
-                try {
-                    log.info("dir path: {}", nodePath);
-                    StatInfo statInfoInside = curatorService.getStatInfo(fileSystemName, nodePath);
-                    if (statInfoInside != null) {
-                        statInfoInside.setMtime(System.currentTimeMillis());
-                        curatorService.saveMetaData(fileSystemName, statInfoInside);
-                        log.info("Update node: {}", statInfoInside);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return false;
-                }
-            }
-        }
-
+        // write功能，写存在的文件则不修改前置目录的修改时间
+//        for (int i = 0; i < pathParts.length - 1; i++) {
+//            if (!pathParts[i].isEmpty()) {
+//                pathBuilder.append("/").append(pathParts[i]);
+//                String nodePath = pathBuilder.toString();
+//
+//                try {
+//                    log.info("dir path: {}", nodePath);
+//                    StatInfo statInfoInside = curatorService.getStatInfo(fileSystemName, nodePath);
+//                    if (statInfoInside != null) {
+//                        statInfoInside.setMtime(System.currentTimeMillis());
+//                        curatorService.saveMetaData(fileSystemName, statInfoInside);
+//                        log.info("Update node: {}", statInfoInside);
+//                    }
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                    return false;
+//                }
+//            }
+//        }
 
         statInfo.setMtime(System.currentTimeMillis());
         statInfo.setSize(statInfo.getSize() + size);
@@ -95,20 +81,45 @@ public class MetaService {
         boolean allRequestsSuccessful = true;
 
         // Todo: 替换成正式功能
-        List<DataServerInfo> randomServerInfos = getRandomServerInfos(3);
+        // List<DataServerInfo> randomServerInfos = getRandomServerInfos(3);
+        List<DataServerInfo> randomServerInfos = null;
+        try {
+            randomServerInfos = getThreeDataServerList();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         String[] pathParts = path.split("/");
         StringBuilder pathBuilder = new StringBuilder();
+
+        for (DataServerInfo e : randomServerInfos) {
+            Map<String, Object> param = new HashMap<>();
+            param.put("path", path);
+            HttpStatus statusCode = httpService.sendPostRequest(e.getDsNode(), "mkdir", fileSystemName, param).getStatusCode();
+            System.out.println(statusCode);
+            if (statusCode != HttpStatus.OK) {
+                allRequestsSuccessful = false;
+                break;
+            }
+        }
+
+        if (!allRequestsSuccessful) {
+            return false;
+        }
 
         for (String part : pathParts) {
             if (!part.isEmpty()) {
                 pathBuilder.append("/").append(part);
                 String nodePath = pathBuilder.toString();
-                // StatInfo statInfo = curatorService.getStatInfo(fileSystemName, part);
                 // 检查节点是否存在
                 try {
                     log.info("dir path: {}", nodePath);
                     StatInfo statInfo = curatorService.getStatInfo(fileSystemName, nodePath);
-                    if (statInfo != null) {continue;}
+                    if (statInfo != null) {
+                        statInfo.setMtime(System.currentTimeMillis());
+                        curatorService.saveMetaData(fileSystemName, statInfo);
+                        log.info("Update node: {}", statInfo);
+                        continue;
+                    }
 
                     statInfo = createStatInfo(FileType.Directory, nodePath, randomServerInfos);
                     log.info(String.valueOf(statInfo));
@@ -123,20 +134,6 @@ public class MetaService {
             }
         }
 
-        // Todo: 向所有的选中DataServer发送文件目录信息
-        /*
-        for (DataServerInfo e : randomServerInfos) {
-            Map<String, Object> param = new HashMap<>();
-            param.put("path", path);
-            HttpStatus statusCode = httpService.sendPostRequest(e.getDsNode(), "mkdir", param).getStatusCode();
-            System.out.println(statusCode);
-            if (statusCode != HttpStatus.OK) {
-                allRequestsSuccessful = false;
-                break; // Exit the loop since we encountered a failure
-            }
-        }
-         */
-        // Todo: 将元数据信息持久化到zookeeper？
         return allRequestsSuccessful;
     }
 
@@ -149,13 +146,20 @@ public class MetaService {
             List<StatInfo> childrenInfo = curatorService.getChildren(fileSystemName, path);
             int childrenCount = childrenInfo.size();
 
+            // dataServer进行递归删除操作
             StatInfo statInfo = curatorService.getStatInfo(fileSystemName, path);
+            statInfo.getReplicaData().forEach(e -> {
+                Map<String, Object> data = new HashMap<>();
+                data.put("path", e.getPath());
+                httpService.sendPostRequest(e.dsNode, "delete", fileSystemName, data);
+            });
+
             if (childrenCount == 0) {
-                // Todo: 向dataServer发送删除文件的命令
+//                // Todo: 向dataServer发送删除文件的命令
 //                statInfo.getReplicaData().forEach(e -> {
 //                    Map<String, Object> data = new HashMap<>();
 //                    data.put("path", e.getPath());
-//                    httpService.sendPostRequest(e.dsNode, "delete", data);
+//                    httpService.sendPostRequest(e.dsNode, "delete", fileSystemName, data);
 //                });
                 curatorService.deleteMetaData(fileSystemName, path);
                 log.info("Delete File: {}", statInfo.getPath());
@@ -213,25 +217,34 @@ public class MetaService {
 
         // Todo: 替换成正式功能
         // 获取dataServer的信息
-        List<DataServerInfo> randomServerInfos = getRandomServerInfos(3);
+        // List<DataServerInfo> randomServerInfos = getRandomServerInfos(3);
+        List<DataServerInfo> randomServerInfos = null;
+        try {
+            randomServerInfos = getThreeDataServerList();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
         // Todo: 向所有的选中DataServer发送所创建文件信息
-        /*
         for (DataServerInfo e : randomServerInfos) {
             Map<String, Object> param = new HashMap<>();
             param.put("path", path);
-            HttpStatus statusCode = httpService.sendPostRequest(e.getDsNode(), "create", param).getStatusCode();
+            HttpStatus statusCode = httpService.sendPostRequest(e.getDsNode(), "create", fileSystemName, param).getStatusCode();
             System.out.println(statusCode);
             if (statusCode != HttpStatus.OK) {
                 allRequestsSuccessful = false;
-                break; // Exit the loop since we encountered a failure
+                break;
             }
         }
-         */
 
         // 逐级创建节点，并存储数据
         String[] pathParts = path.split("/");
         StringBuilder pathBuilder = new StringBuilder();
+
+        // 先更新里面文件/文件夹的修改时间，然后更新外面的
+        StatInfo statInfo = createStatInfo(FileType.File, path, randomServerInfos);
+        log.info(String.valueOf(statInfo));
+        curatorService.saveMetaData(fileSystemName, statInfo);
 
         for (int i = 0; i < pathParts.length - 1; i++) {
             if (!pathParts[i].isEmpty()) {
@@ -241,7 +254,12 @@ public class MetaService {
                 try {
                     log.info("dir path: {}", nodePath);
                     StatInfo statInfoInside = curatorService.getStatInfo(fileSystemName, nodePath);
-                    if (statInfoInside != null) {continue;}
+                    if (statInfoInside != null) {
+                        statInfoInside.setMtime(System.currentTimeMillis());
+                        curatorService.saveMetaData(fileSystemName, statInfoInside);
+                        log.info("Update node: {}", statInfoInside);
+                        continue;
+                    }
 
                     statInfoInside = createStatInfo(FileType.Directory, nodePath, randomServerInfos);
                     log.info(String.valueOf(statInfoInside));
@@ -254,12 +272,12 @@ public class MetaService {
             }
         }
 
-        pathBuilder.append("/").append(pathParts[pathParts.length - 1]);
-        String filePath = pathBuilder.toString();
-
-        StatInfo statInfo = createStatInfo(FileType.File, filePath, randomServerInfos);
-        log.info(String.valueOf(statInfo));
-        curatorService.saveMetaData(fileSystemName, statInfo);
+//        pathBuilder.append("/").append(pathParts[pathParts.length - 1]);
+//        String filePath = pathBuilder.toString();
+//
+//        StatInfo statInfo = createStatInfo(FileType.File, filePath, randomServerInfos);
+//        log.info(String.valueOf(statInfo));
+//        curatorService.saveMetaData(fileSystemName, statInfo);
 
         return allRequestsSuccessful;
     }
@@ -271,21 +289,6 @@ public class MetaService {
         });
         return res;
     }
-
-//    public StatInfo getStats(String path) {
-//        String res = "";
-//        StatInfo statInfo = null;
-//        try {
-//            byte[] data = client.getData().forPath(ZK_REGISTRY_PATH + path);
-//            res = new String(data);
-//            System.out.println(res);
-//            statInfo = objectMapper.readValue(res, StatInfo.class);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//        return statInfo;
-//    }
 
     /**
      * @return 负载均衡，选3个空间最大的DataServer

@@ -25,21 +25,30 @@ public class DataController {
     private DataService dataService;
 
     @RequestMapping("write")
-    public ResponseEntity writeFile(@RequestHeader String fileSystemName, @RequestParam Map<String, Object> fileData){
+    public ResponseEntity writeFile(@RequestHeader String fileSystemName, @RequestBody Map<String, Object> fileData){
         String path = fileData.get("path").toString();
-        int offset = (Integer) fileData.get("offset");
-        int length = (Integer) fileData.get("length");
-        byte[] data = (byte[]) fileData.get("data");
-        int res = dataService.write(fileSystemName, path, offset, length, data);
-        if(res != 0){
-            return new ResponseEntity<>("插入数据失败！", HttpStatus.valueOf(500));
+        // int offset = (Integer) fileData.get("offset");
+        // int length = (Integer) fileData.get("length");
+        String str = (String) fileData.get("data");
+        System.out.println(str);
+
+        String trimmedStr = str.substring(1, str.length() - 1);
+
+        String[] stringValues = trimmedStr.split("\\s*,\\s*");
+
+        byte[] byteArray = new byte[stringValues.length];
+
+        for (int i = 0; i < stringValues.length; i++) {
+            byteArray[i] = Byte.parseByte(stringValues[i]);
         }
-        return new ResponseEntity(HttpStatus.OK);
+
+        int res = dataService.write(fileSystemName, path, byteArray);
+        return ResponseEntity.ok(res);
     }
 
 
     @RequestMapping("read")
-    public ResponseEntity readFile(@RequestHeader String fileSystemName, @RequestParam Map<String, Object> fileData){
+    public ResponseEntity readFile(@RequestHeader String fileSystemName, @RequestBody Map<String, Object> fileData){
         String path = fileData.get("path").toString();
         int offset = (Integer) fileData.get("offset");
         int length = (Integer) fileData.get("length");
@@ -47,12 +56,12 @@ public class DataController {
         if(res == null){
             return new ResponseEntity<>("读取数据失败！", HttpStatus.valueOf(500));
         }
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
     @RequestMapping("mkdir")
-    public ResponseEntity mkdir(@RequestHeader String fileSystemName, @RequestParam Map<String, Object> fileData){
-        String path = fileData.get("path").toString();
+    public ResponseEntity mkdir(@RequestHeader String fileSystemName, @RequestBody Map<String, Object> fileData){
+        String path = (String) fileData.get("path");
         boolean res = dataService.mkdir(fileSystemName, path);
         if(!res){
             return new ResponseEntity<>("目录创建失败", HttpStatus.valueOf(500));
@@ -61,7 +70,7 @@ public class DataController {
     }
 
     @RequestMapping("create")
-    public ResponseEntity create(@RequestHeader String fileSystemName, @RequestParam Map<String, Object> fileData){
+    public ResponseEntity create(@RequestHeader String fileSystemName, @RequestBody Map<String, Object> fileData){
         String path = fileData.get("path").toString();
         boolean res = dataService.create(fileSystemName, path);
         if(!res){
@@ -71,7 +80,7 @@ public class DataController {
     }
 
     @RequestMapping("delete")
-    public ResponseEntity delete(@RequestHeader String fileSystemName, @RequestParam Map<String, Object> fileData){
+    public ResponseEntity delete(@RequestHeader String fileSystemName, @RequestBody Map<String, Object> fileData){
         String path = fileData.get("path").toString();
         boolean res = dataService.delete(fileSystemName, path);
         if(!res){
