@@ -1,5 +1,6 @@
 package com.ksyun.campus.metaserver.controller;
 
+import com.ksyun.campus.metaserver.domain.DataServerInfo;
 import com.ksyun.campus.metaserver.domain.StatInfo;
 import com.ksyun.campus.metaserver.services.CuratorService;
 import com.ksyun.campus.metaserver.services.MetaService;
@@ -9,18 +10,25 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Map;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
 
 @Slf4j
 @RestController("/")
 public class MetaController {
 
     private final MetaService metaService;
+    private final CuratorService curatorService;
 
     @Autowired
-    public MetaController(MetaService metaService) {
+    public MetaController(MetaService metaService, CuratorService curatorService) {
         this.metaService = metaService;
+        this.curatorService = curatorService;
     }
 
     @RequestMapping("stats")
@@ -58,7 +66,11 @@ public class MetaController {
 
     @RequestMapping("delete")
     public ResponseEntity delete(@RequestHeader String fileSystemName, @RequestParam String path){
-        return new ResponseEntity(HttpStatus.OK);
+        if(metaService.delete(path, fileSystemName)) {
+            return new ResponseEntity(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("存在子节点无法删除", HttpStatus.valueOf(500));
+        }
     }
 
     /**
@@ -88,6 +100,42 @@ public class MetaController {
         }
     }
 
+    @RequestMapping("readTest")
+    public ResponseEntity readTest(@RequestHeader String fileSystemName, @RequestBody Map<String, Object> bodyData){
+        String path = (String) bodyData.get("path");
+        int offset = (Integer) bodyData.get("offset");
+        int length = (Integer) bodyData.get("length");
+        String winPath = path.substring(1);
+
+        File file = new File(winPath);
+        try {
+            // 创建一个 FileInputStream 对象来读取文件
+            FileInputStream fis = new FileInputStream(file);
+
+            // 跳过偏移量
+            fis.skip(offset);
+
+            // 创建一个字节数组来存储读取的数据
+            byte[] data = new byte[length];
+
+            // 读取数据到字节数组
+            int bytesRead = fis.read(data);
+            if (bytesRead != length) {
+                data = Arrays.copyOf(data, bytesRead);
+            }
+
+            log.info("{}", bytesRead);
+
+            // 关闭 FileInputStream
+            fis.close();
+
+            return ResponseEntity.ok(Arrays.toString(data));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null; // 发生异常
+        }
+    }
+
     /**
      * 根据文件path查询三副本的位置，返回客户端具体ds、文件分块信息
      * @param fileSystemName
@@ -96,7 +144,21 @@ public class MetaController {
      */
     @RequestMapping("open")
     public ResponseEntity open(@RequestHeader String fileSystemName,@RequestParam String path){
-        return new ResponseEntity(HttpStatus.OK);
+
+        StatInfo statInfo = curatorService.getStatInfo(fileSystemName, path);
+        if(statInfo == null) {
+            return new ResponseEntity<>("No exist status", HttpStatus.valueOf(500));
+
+        }
+
+        Random random = new Random();
+        List<String> res = new ArrayList<>();
+        statInfo.getReplicaData().forEach(e -> {
+            res.add(e.dsNode);
+        });
+        String ip = res.get(random.nextInt(res.size()));
+
+        return ResponseEntity.ok(ip);
     }
 
     /**

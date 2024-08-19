@@ -18,11 +18,17 @@ import java.util.List;
 @Service
 public class CuratorService {
 
+//    @Value("${spring.zookeeper-address.master-meta}")
+//    private String masterAddress;
+//
+//    @Value("${spring.zookeeper-address.slave-meta}")
+//    private String slaveAddress;
+
     @Value("${spring.zookeeper-address.master-meta}")
-    private String masterAddress;
+    private String masterAddress="localhost:2182";
 
     @Value("${spring.zookeeper-address.slave-meta}")
-    private String slaveAddress;
+    private String slaveAddress="localhost:2183";
 
     private final CuratorFramework curatorMetaClient;
 

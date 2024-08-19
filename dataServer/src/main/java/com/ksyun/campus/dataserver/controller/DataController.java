@@ -10,6 +10,16 @@ import java.util.Map;
 
 @RestController("/")
 public class DataController {
+    /**
+     * 1、读取request content内容并保存在本地磁盘下的文件内
+     * 2、同步调用其他ds服务的write，完成另外2副本的写入
+     * 3、返回写成功的结果及三副本的位置
+     * @param fileSystemName
+     * @param path
+     * @param offset
+     * @param length
+     * @return
+     */
 
     @Autowired
     private DataService dataService;

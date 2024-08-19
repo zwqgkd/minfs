@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class FSOutputStream extends OutputStream {
 
-    private static final int BUFFER_SIZE = 1024; // 1KB buffer size
+    // private static final int BUFFER_SIZE = 1024; // 1KB buffer size
 
     @Getter
     private String path;
@@ -28,7 +28,12 @@ public class FSOutputStream extends OutputStream {
 
     @Override
     public void write(int b) throws IOException {
-
+        writeBuffer.add((byte)b);
+        try {
+            flushWriteBuffer();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

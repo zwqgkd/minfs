@@ -5,7 +5,9 @@ import com.ksyun.campus.client.domain.StatInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
+import java.io.IOException;
 import java.util.List;
 
 @Slf4j
@@ -19,12 +21,22 @@ public class EFileSystem extends FileSystem{
         this.fileSystemName = fileSystemName;
     }
 
-    public FSInputStream open(String path){
-        return null;
+    public FSInputStream open(String path) throws Exception {
+        if (getFileStats(path) == null) {
+            throw new IOException("File does not exist!");
+        }
+
+        if (path.endsWith("/")) {
+            path = path.substring(0, path.length() - 1);
+        }
+
+        String url = zkUtil.getMasterMetaAddress();
+        ResponseEntity<String> open = sendGetRequest(url, "open", path, String.class);
+        FSInputStream fsInputStream = new FSInputStream(path, this, open.getBody());
+        return fsInputStream;
     }
 
     public FSOutputStream create(String path) throws Exception {
-
         String url = zkUtil.getMasterMetaAddress();
         HttpStatus status = sendGetRequest(url, "create", path, Void.class).getStatusCode();
         if(status != HttpStatus.OK) {
@@ -40,8 +52,14 @@ public class EFileSystem extends FileSystem{
         return status == HttpStatus.OK ? true : false;
     }
 
-    public boolean delete(String path){return false;}
-
+    public boolean delete(String path) throws Exception {
+        if (path.endsWith("/")) {
+            path = path.substring(0, path.length() - 1);
+        }
+        String url = zkUtil.getMasterMetaAddress();
+        HttpStatus status = sendGetRequest(url, "delete", path, Void.class).getStatusCode();
+        return status == HttpStatus.OK ? true : false;
+    }
 
     /**
      * @param path 文件路径
