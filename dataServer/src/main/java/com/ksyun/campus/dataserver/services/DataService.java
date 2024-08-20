@@ -113,6 +113,7 @@ public class DataService {
             if (bytesRead != readableLength) {
                 System.out.println("Unexpected number of bytes read.");
             }
+            fis.close();
             return data;
         }catch (Exception e) {
             e.printStackTrace();
