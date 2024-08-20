@@ -37,7 +37,6 @@ public class HttpService {
             String requestBody = mapper.writeValueAsString(param);
             HttpEntity<String> entity = new HttpEntity<>(requestBody, httpHeaders);
 
-
             URI uri = uriBuilder.build().toUri();
             ResponseEntity<String> responseEntity = restTemplate.exchange(uri, HttpMethod.POST, entity, String.class);
             return responseEntity;

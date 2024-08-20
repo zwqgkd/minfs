@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.framework.recipes.cache.CuratorCache;
+import org.apache.curator.framework.recipes.cache.CuratorCacheListener;
 import org.apache.curator.framework.recipes.cache.NodeCache;
 import org.apache.curator.framework.recipes.cache.NodeCacheListener;
 import org.apache.curator.retry.ExponentialBackoffRetry;
@@ -34,29 +35,34 @@ public class ZkUtil {
 
     private CuratorFramework curatorClient;
 
-    /**
-     * 监听metaServer，当master挂掉时，换master,尝试恢复老的master
-     */
-    protected void metaServerListener() {
-        CuratorCache cache = CuratorCache.build(curatorClient, MASTER_META_ZK_PATH);
-        cache.listenable().addListener((type, oldData, data) -> {
-            if (data != null) {
-                log.info("Node changed: {} = {}", data.getPath(), new String(data.getData()));
-            } else {
-                log.info("Node removed: {}", oldData.getPath());
-                try {
-                    //change master
-                    curatorClient.create().creatingParentsIfNeeded().forPath(MASTER_META_ZK_PATH+"/"+this.getSlaveMetaAddress());
-                    curatorClient.delete().forPath(SLAVE_META_ZK_PATH);
-                    //docker compose try to recover old master
-                } catch (Exception e) {
-                    log.error("recover master error",e);
-                    throw new RuntimeException(e);
-                }
+//    /**
+//     * 监听metaServer，当master挂掉时，换master,尝试恢复老的master
+//     */
+//    protected void metaServerListener() throws Exception {
+//        CuratorCache cache = CuratorCache.build(curatorClient, MASTER_META_ZK_PATH);
+//        cache.listenable().addListener((type, oldData, data) -> {
+//            if (type == CuratorCacheListener.Type.NODE_CREATED) {
+//                log.info("Listen.....Node created: {} ", data.getPath());
+//            } else if (type == CuratorCacheListener.Type.NODE_CHANGED) {
+//                log.info("Listen.....Node changed: {} ", data.getPath());
+//            } else if (type == CuratorCacheListener.Type.NODE_DELETED) {
+//                log.info("Listen.....Node removed: {}", oldData.getPath());
+//                try {
+//                    if(this.curatorClient.getChildren().forPath(MASTER_META_ZK_PATH).isEmpty()){
+//                        //change master
+//                        curatorClient.create().creatingParentsIfNeeded().forPath(MASTER_META_ZK_PATH+"/"+this.getSlaveMetaAddress());
+//                        curatorClient.delete().forPath(SLAVE_META_ZK_PATH);
+//                        //docker compose try to recover old master
+//                    }
+//                } catch (Exception e) {
+//                    log.error("recover master error",e);
+//                    throw new RuntimeException(e);
+//                }
+//            }
+//        });
+//        cache.start();
+//    }
 
-            }
-        });
-    }
 
     public ZkUtil() {
         try {
@@ -84,7 +90,7 @@ public class ZkUtil {
         client.start();
         this.curatorClient = client;
         //监听metaServer
-
+        //this.metaServerListener();
     }
 
     @PreDestroy

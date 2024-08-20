@@ -1,6 +1,7 @@
 package com.ksyun.campus.metaserver.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.ksyun.campus.metaserver.domain.DataServerInfo;
 import com.ksyun.campus.metaserver.domain.FileType;
 import com.ksyun.campus.metaserver.domain.StatInfo;
@@ -11,11 +12,16 @@ import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
 @Slf4j
@@ -32,6 +38,8 @@ public class CuratorService {
 
     private final CuratorFramework curatorRegisterClient;
 
+    private final HttpService httpService;
+
     private CuratorFramework curatorMetaClient;
 
     private static final String DS_ZK_PATH = "/dataServer";
@@ -39,9 +47,10 @@ public class CuratorService {
     private static final String FS_ZK_PATH = "/fileSystem";
 
     @Autowired
-    public CuratorService(RegistService registService, CuratorFramework curatorRegisterClient) {
+    public CuratorService(RegistService registService, CuratorFramework curatorRegisterClient, HttpService httpService) {
         this.registService = registService;
         this.curatorRegisterClient = curatorRegisterClient;
+        this.httpService = httpService;
     }
 
     @PostConstruct
@@ -125,6 +134,12 @@ public class CuratorService {
                         .forPath(FS_ZK_PATH + "/" + fileSystemName + statInfo.getPath(), json.getBytes());
             else
                 curatorMetaClient.setData().forPath(FS_ZK_PATH + "/" + fileSystemName + statInfo.getPath(), json.getBytes());
+
+            if(this.registService.getRole().equals("master")){
+                //sync metaData
+                syncMetaData("saveMetaData", fileSystemName, statInfo);
+            }
+
         } catch (Exception e) {
             log.error("save meta data error", e);
             throw new RuntimeException(e);
@@ -140,6 +155,10 @@ public class CuratorService {
     public void deleteMetaData(String fileSystemName, String path) {
         try {
             curatorMetaClient.delete().forPath(FS_ZK_PATH + "/" + fileSystemName + path);
+            //sync metaData
+            if(this.registService.getRole().equals("master")){
+                syncMetaData("deleteMetaData", fileSystemName, path);
+            }
         } catch (Exception e) {
             log.error("delete meta data error", e);
             throw new RuntimeException(e);
@@ -202,6 +221,33 @@ public class CuratorService {
         List<StatInfoWithFSName> statInfoWithFSNameList = new ArrayList<>();
         dfs(FS_ZK_PATH, statInfoWithFSNameList, null);
         return statInfoWithFSNameList;
+    }
+
+    /**
+     * 同步元数据
+     *
+     * @param interfaceName 接口名称
+     * @param fileSystemName 文件系统名称
+     * @param param 参数
+     */
+    public <T> void syncMetaData(String interfaceName, String fileSystemName, T param) throws Exception {
+        String slaveUrl=this.registService.getSlaveMetaAddress();
+        if(slaveUrl==null){
+            log.error("no slave address in zk when sync meta data");
+        }else{
+//            this.httpService.sendPostRequest(slaveUrl, interfaceName, fileSystemName, param);
+            RestTemplate restTemplate = new RestTemplate();
+            HttpHeaders headers= new HttpHeaders();
+            headers.add("fileSystemName", fileSystemName);
+            headers.add("Content-Type", "application/json");
+
+            String url = "http://" + slaveUrl + "/" + interfaceName;
+
+            HttpEntity<T> httpEntity=new HttpEntity<>(param, headers);
+            restTemplate.postForObject(url, httpEntity, String.class);
+        }
+
+
     }
 
 }

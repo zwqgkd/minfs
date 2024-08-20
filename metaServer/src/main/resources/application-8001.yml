@@ -1,0 +1,14 @@
+server:
+  port: 8001
+
+spring:
+  zookeeper-address:
+    register: localhost:2181
+    master-meta: localhost:2182
+    slave-meta: localhost:2183
+  task:
+    execution:
+      pool:
+        core-size: 10
+        max-size: 20
+        queue-capacity: 1000
