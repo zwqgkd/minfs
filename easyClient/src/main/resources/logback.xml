@@ -1,0 +1,7 @@
+<configuration>
+
+    <logger name="org.springframework.web" level="OFF"/>
+
+    <logger name="org.apache.zookeeper" level="OFF"/>
+
+</configuration>

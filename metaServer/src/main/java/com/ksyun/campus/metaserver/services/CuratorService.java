@@ -68,15 +68,16 @@ public class CuratorService {
                 byte[] data= null;
                 try {
                     data = curatorMetaClient.getData().forPath(zkPath+"/"+child);
-                    if(data==null)   //文件系统这一级的节点
+                    if(data.length==0){
                         dfs(zkPath+"/"+child, statInfoWithFSNameList, child);
-
-                    ObjectMapper mapper = new ObjectMapper();
-                    StatInfo curStatInfo = mapper.readValue(data, StatInfo.class);
-                    if(curStatInfo.getType()== FileType.File)
-                        statInfoWithFSNameList.add(new StatInfoWithFSName(curStatInfo, fileSystemName));
-                    else
-                        dfs(zkPath+"/"+child, statInfoWithFSNameList, fileSystemName);
+                    }else{
+                        ObjectMapper mapper = new ObjectMapper();
+                        StatInfo curStatInfo = mapper.readValue(data, StatInfo.class);
+                        if(curStatInfo.getType()== FileType.File)
+                            statInfoWithFSNameList.add(new StatInfoWithFSName(curStatInfo, fileSystemName));
+                        else
+                            dfs(zkPath+"/"+child, statInfoWithFSNameList, fileSystemName);
+                    }
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }

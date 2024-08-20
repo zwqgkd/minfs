@@ -88,7 +88,7 @@ public class EFileSystem extends FileSystem{
      */
     public StatInfo getFileStats(String path) {
         try{
-            return sendGetRequest(zkUtil.getMasterMetaAddress(), "getFileStats", path, StatInfo.class).getBody();
+            return sendGetRequest(zkUtil.getMasterMetaAddress(), "stats", path, StatInfo.class).getBody();
         }catch (Exception e){
             log.error("get file stats error",e);
             return null;
@@ -101,7 +101,7 @@ public class EFileSystem extends FileSystem{
      */
     public List<StatInfo> listFileStats(String path){
         try{
-            return sendGetRequest(zkUtil.getMasterMetaAddress(), "listFileStats", path, new ParameterizedTypeReference<List<StatInfo>>(){}).getBody();
+            return sendGetRequest(zkUtil.getMasterMetaAddress(), "listdir", path, new ParameterizedTypeReference<List<StatInfo>>(){}).getBody();
         }catch(Exception e){
             log.error("list file stats error",e);
             return null;

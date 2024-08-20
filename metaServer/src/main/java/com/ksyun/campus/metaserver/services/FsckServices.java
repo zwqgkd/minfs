@@ -25,8 +25,8 @@ public class FsckServices {
         this.curatorService = curatorService;
     }
 
-    //@Scheduled(cron = "0 0 0 * * ?") // 每天 0 点执行
-    @Scheduled(fixedRate = 30 * 60 * 1000) // 每隔 30 分钟执行一次
+    // @Scheduled(fixedRate = 30 * 60 * 1000) // 每隔 30 分钟执行一次
+    @Scheduled(fixedRate = 20000) // test
     public void fsckTask() {
         log.info("start fsck task....................");
         //全量扫描文件列表
@@ -38,7 +38,7 @@ public class FsckServices {
                 //检查文件副本是否存在
                 Map<String, Object> data = new HashMap<>();
                 data.put("path", replicaData.getPath());
-                boolean isExist = httpService.sendPostRequest(replicaData.getDsNode(), "", statInfo.getFileSystemName(),data).getStatusCode().is2xxSuccessful();
+                boolean isExist = httpService.sendPostRequest(replicaData.getDsNode(), "checkFileExist", statInfo.getFileSystemName(), data).getStatusCode().is2xxSuccessful();
                 status.add(isExist);
             }
             if(status.contains(false)) {
@@ -64,8 +64,19 @@ public class FsckServices {
         //get file content
         Map<String, Object> data= new HashMap<>();
         data.put("path", statInfo.getPath());
-        this.httpService.sendPostRequest(statInfo.getReplicaData().get(0).getDsNode(), "read",statInfo.getFileSystemName(), data);
-        String content="";
+        data.put("offset", 0);
+        data.put("length", statInfo.getSize());
+
+        String ip = "";
+        for (int i = 0; i < status.size(); i++) {
+            if (status.get(i)) {
+                ip = statInfo.getReplicaData().get(i).getDsNode();
+            }
+        }
+
+        String content = (String) this.httpService.sendPostRequest(ip, "read",statInfo.getFileSystemName(), data).getBody();
+        byte[] contentBytes = content.getBytes();
+
         for(int i=0;i<statInfo.getReplicaData().size();i++){
             if(status.get(i)){
                 continue;
@@ -73,13 +84,12 @@ public class FsckServices {
             //write file content
             Map<String, Object> writeData = new HashMap<>();
             writeData.put("path", statInfo.getPath());
-            writeData.put("data", content);
-            writeData.put("offset", 0);
-            writeData.put("length", content.length());
+            writeData.put("data", Arrays.toString(contentBytes));
             ResponseEntity tryWriteResponse=this.httpService.sendPostRequest(statInfo.getReplicaData().get(i).getDsNode(), "write", statInfo.getFileSystemName(), writeData);
             if(!tryWriteResponse.getStatusCode().is2xxSuccessful()){
                 return false;
             }
+            log.info("Fsck: Recovery on {}", statInfo.getReplicaData().get(i).getDsNode());
         }
         return true;
     }

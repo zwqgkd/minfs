@@ -31,16 +31,6 @@ public class MetaController {
         this.curatorService = curatorService;
     }
 
-    @RequestMapping("stats")
-    public ResponseEntity stats(@RequestHeader String fileSystemName, @RequestParam String path){
-//        StatInfo statInfo = metaService.getStats(path);
-//        if(statInfo == null) {
-//            return new ResponseEntity<>("无stats", HttpStatus.valueOf(500));
-//
-//        }
-//        return new ResponseEntity(statInfo, HttpStatus.OK);
-        return ResponseEntity.ok(true);
-    }
     @RequestMapping("create")
     public ResponseEntity createFile(@RequestHeader String fileSystemName, @RequestParam String path){
         if(metaService.create(path, fileSystemName)) {
@@ -57,11 +47,6 @@ public class MetaController {
         } else {
             return new ResponseEntity<>("zookeeper连接失败或找不到对应结点", HttpStatus.valueOf(500));
         }
-    }
-
-    @RequestMapping("listdir")
-    public ResponseEntity listdir(@RequestHeader String fileSystemName,@RequestParam String path){
-        return new ResponseEntity(HttpStatus.OK);
     }
 
     @RequestMapping("delete")
@@ -139,7 +124,7 @@ public class MetaController {
      * @param path
      * @return StatInfo
      */
-    @RequestMapping("getFileStats")
+    @RequestMapping("stats")
     public ResponseEntity<StatInfo> getFileStats(@RequestHeader String fileSystemName, @RequestParam String path){
         return new ResponseEntity<>(metaService.getStatInfo(fileSystemName,path), HttpStatus.OK);
     }
@@ -150,7 +135,7 @@ public class MetaController {
      * @param path
      * @return List<StatInfo>
      */
-    @RequestMapping("listFileStats")
+    @RequestMapping("listdir")
     public ResponseEntity<List<StatInfo>> listFileStats(@RequestHeader String fileSystemName, @RequestParam String path){
         return new ResponseEntity<>(metaService.listFileStats(fileSystemName,path), HttpStatus.OK);
     }

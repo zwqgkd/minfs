@@ -49,7 +49,7 @@ public class DataService {
             // 确保目标文件存在
             file.createNewFile();
 
-            FileOutputStream fos = new FileOutputStream(file);
+            FileOutputStream fos = new FileOutputStream(file, true);
             fos.write(data);
             int writableLength = data.length;
             // fos.write(data, offset, writableLength);
@@ -89,8 +89,13 @@ public class DataService {
             long fileLength = file.length();
 
             // 检查是否将文件读完
-            if (offset < 0 || offset >= fileLength) {
+            if (offset < 0) {
                 System.out.println("Offset is out of bounds, skipping read operation.");
+                return null;
+            }
+
+            if (offset >= fileLength) {
+                System.out.println("Read file ends.");
                 return null;
             }
 
@@ -174,23 +179,18 @@ public class DataService {
         }
     }
 
-//    public boolean delete(String fileSystemName, String path){
-//        try {
-//            File file = new File(fileSystemName + registService.getServerInfo().getRack() + registService.getServerInfo().getZone() + "/" + path);
-//            if (file.exists()) {
-//                if (file.isFile()) {
-//                    DataServerInfo currentNodeData = registService.getServerInfo();
-//                    currentNodeData.setFileTotal(currentNodeData.getFileTotal() - 1);
-//                    currentNodeData.setUseCapacity((int) (currentNodeData.getUseCapacity() - file.length()));
-//                    registService.updateServerInfo(currentNodeData);
-//                }
-//                return file.delete();
-//            } else {
-//                return false;
-//            }
-//        }catch (Exception e){
-//            e.printStackTrace();
-//            return false;
-//        }
-//    }
+    public boolean checkStats(String fileSystemName, String path){
+        try {
+            File file = new File(fileSystemName + registService.getServerInfo().getRack() + registService.getServerInfo().getZone() + "/" + path);
+            if (file.exists()) {
+                return true;
+            } else if (file.isDirectory()) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
