@@ -50,7 +50,7 @@ public class RegistService {
      * @return 获取当前salve metaServer地址
      */
     public String getSlaveMetaAddress() throws Exception{
-        if(curatorRegisterClient.checkExists().forPath(SLAVE_META_ZK_PATH)!=null) {
+        if(!curatorRegisterClient.getChildren().forPath(SLAVE_META_ZK_PATH).isEmpty()) {
             log.info("get slave address from zk");
             return curatorRegisterClient.getChildren().forPath(SLAVE_META_ZK_PATH).get(0);
         }else{

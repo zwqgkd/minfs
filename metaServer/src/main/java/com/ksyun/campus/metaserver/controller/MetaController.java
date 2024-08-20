@@ -3,6 +3,7 @@ package com.ksyun.campus.metaserver.controller;
 import com.ksyun.campus.metaserver.domain.DataServerInfo;
 import com.ksyun.campus.metaserver.domain.StatInfo;
 import com.ksyun.campus.metaserver.services.CuratorService;
+import com.ksyun.campus.metaserver.services.HttpService;
 import com.ksyun.campus.metaserver.services.MetaService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +25,13 @@ public class MetaController {
 
     private final MetaService metaService;
     private final CuratorService curatorService;
+    private final HttpService httpService;
 
     @Autowired
-    public MetaController(MetaService metaService, CuratorService curatorService) {
+    public MetaController(MetaService metaService, CuratorService curatorService, HttpService httpService) {
         this.metaService = metaService;
         this.curatorService = curatorService;
+        this.httpService = httpService;
     }
 
     @RequestMapping("create")
@@ -102,11 +105,26 @@ public class MetaController {
 
         Random random = new Random();
         List<String> res = new ArrayList<>();
-        statInfo.getReplicaData().forEach(e -> {
-            res.add(e.dsNode);
-        });
-        String ip = res.get(random.nextInt(res.size()));
+        statInfo.getReplicaData().forEach(v -> {
 
+            try {
+                Map<String, Object> data = new HashMap<>();
+                data.put("path", path);
+                ResponseEntity response = httpService.sendPostRequest(v.dsNode, "checkFileExist", fileSystemName, data);
+                int responseCode = response.getStatusCodeValue();
+
+                if (responseCode == 200) {
+                    log.info("File exists and dataServer available.");
+                    res.add(v.dsNode);
+                } else {
+                    log.info("File missing.");
+                }
+            } catch (Exception e) {
+                log.info("The dataServer is down.");
+            }
+        });
+
+        String ip = res.get(random.nextInt(res.size()));
         return ResponseEntity.ok(ip);
     }
 
