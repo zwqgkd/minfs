@@ -104,14 +104,13 @@ public class ZkUtil {
      * @return 获取当前master metaServer地址
      */
     public String getMasterMetaAddress() throws Exception {
-        return "localhost:8000";
-//         if(!curatorClient.getChildren().forPath(MASTER_META_ZK_PATH).isEmpty()) {
-//             log.info("get master address from zk");
-//             return curatorClient.getChildren().forPath(MASTER_META_ZK_PATH).get(0);
-//         }else {
-//             log.error("no master address in zk");
-//             return null;
-//         }
+         if(!curatorClient.getChildren().forPath(MASTER_META_ZK_PATH).isEmpty()) {
+             log.info("get master address from zk");
+             return curatorClient.getChildren().forPath(MASTER_META_ZK_PATH).get(0);
+         }else {
+             log.error("no master address in zk");
+             return null;
+         }
     }
 
     /**
@@ -119,14 +118,13 @@ public class ZkUtil {
      * @return 获取当前salve metaServer地址
      */
     public String getSlaveMetaAddress() throws Exception{
-        return "localhost:8001";
-//        if(curatorClient.checkExists().forPath(SLAVE_META_ZK_PATH)!=null) {
-//            log.info("get slave address from zk");
-//            return curatorClient.getChildren().forPath(SLAVE_META_ZK_PATH).get(0);
-//        }else{
-//            log.error("no slave address in zk");
-//            return null;
-//        }
+        if(curatorClient.checkExists().forPath(SLAVE_META_ZK_PATH)!=null) {
+            log.info("get slave address from zk");
+            return curatorClient.getChildren().forPath(SLAVE_META_ZK_PATH).get(0);
+        }else{
+            log.error("no slave address in zk");
+            return null;
+        }
     }
 
     /**

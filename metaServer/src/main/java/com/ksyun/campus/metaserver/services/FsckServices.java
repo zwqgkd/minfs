@@ -24,7 +24,7 @@ public class FsckServices {
     }
 
     // @Scheduled(fixedRate = 30 * 60 * 1000) // 每隔 30 分钟执行一次
-    @Scheduled(fixedRate = 20000) // test
+    //@Scheduled(fixedRate = 20000) // test
     public void fsckTask() {
         log.info("start fsck task....................");
         //全量扫描文件列表

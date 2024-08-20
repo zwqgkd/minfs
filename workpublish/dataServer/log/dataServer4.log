@@ -7,41 +7,43 @@
  =========|_|==============|___/=/_/_/_/
  :: Spring Boot ::               (v2.7.11)
 
-2024-08-20 16:36:10.701  INFO 4688 --- [           main] c.k.c.dataserver.DataServerApplication   : Starting DataServerApplication v1.0 using Java 1.8.0_422 on PC-zwq with PID 4688 (/mnt/c/Projects/kc/minfs_student/workpublish/dataServer/dataServer-1.0.jar started by zwq in /mnt/c/Projects/kc/minfs_student/workpublish)
-2024-08-20 16:36:10.727  INFO 4688 --- [           main] c.k.c.dataserver.DataServerApplication   : No active profile set, falling back to 1 default profile: "default"
-2024-08-20 16:36:15.248  INFO 4688 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 9003 (http)
-2024-08-20 16:36:15.298  INFO 4688 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2024-08-20 16:36:15.298  INFO 4688 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.74]
-2024-08-20 16:36:15.566  INFO 4688 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2024-08-20 16:36:15.566  INFO 4688 --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 4488 ms
-2024-08-20 16:36:16.554  INFO 4688 --- [           main] o.a.c.f.imps.CuratorFrameworkImpl        : Starting
-2024-08-20 16:36:16.608  INFO 4688 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:zookeeper.version=3.6.0--b4c89dc7f6083829e18fae6e446907ae0b1f22d7, built on 02/25/2020 14:38 GMT
-2024-08-20 16:36:16.609  INFO 4688 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:host.name=PC-zwq.
-2024-08-20 16:36:16.609  INFO 4688 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:java.version=1.8.0_422
-2024-08-20 16:36:16.609  INFO 4688 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:java.vendor=Private Build
-2024-08-20 16:36:16.610  INFO 4688 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:java.home=/usr/lib/jvm/java-8-openjdk-amd64/jre
-2024-08-20 16:36:16.610  INFO 4688 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:java.class.path=./dataServer/dataServer-1.0.jar
-2024-08-20 16:36:16.611  INFO 4688 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:java.library.path=/usr/java/packages/lib/amd64:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib
-2024-08-20 16:36:16.611  INFO 4688 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:java.io.tmpdir=/tmp
-2024-08-20 16:36:16.612  INFO 4688 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:java.compiler=<NA>
-2024-08-20 16:36:16.612  INFO 4688 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:os.name=Linux
-2024-08-20 16:36:16.613  INFO 4688 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:os.arch=amd64
-2024-08-20 16:36:16.613  INFO 4688 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:os.version=5.15.153.1-microsoft-standard-WSL2
-2024-08-20 16:36:16.614  INFO 4688 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:user.name=zwq
-2024-08-20 16:36:16.614  INFO 4688 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:user.home=/home/zwq
-2024-08-20 16:36:16.616  INFO 4688 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:user.dir=/mnt/c/Projects/kc/minfs_student/workpublish
-2024-08-20 16:36:16.616  INFO 4688 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:os.memory.free=34MB
-2024-08-20 16:36:16.616  INFO 4688 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:os.memory.max=1732MB
-2024-08-20 16:36:16.617  INFO 4688 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:os.memory.total=67MB
-2024-08-20 16:36:16.638  INFO 4688 --- [           main] org.apache.zookeeper.ZooKeeper           : Initiating client connection, connectString=localhost:2181 sessionTimeout=5000 watcher=org.apache.curator.ConnectionState@43ee72e6
-2024-08-20 16:36:16.666  INFO 4688 --- [           main] org.apache.zookeeper.common.X509Util     : Setting -D jdk.tls.rejectClientInitiatedRenegotiation=true to disable client-initiated TLS renegotiation
-2024-08-20 16:36:16.685  INFO 4688 --- [           main] org.apache.zookeeper.ClientCnxnSocket    : jute.maxbuffer value is 1048575 Bytes
-2024-08-20 16:36:16.723  INFO 4688 --- [           main] org.apache.zookeeper.ClientCnxn          : zookeeper.request.timeout value is 0. feature enabled=false
-2024-08-20 16:36:16.765  INFO 4688 --- [localhost:2181)] org.apache.zookeeper.ClientCnxn          : Opening socket connection to server localhost/127.0.0.1:2181.
-2024-08-20 16:36:16.765  INFO 4688 --- [localhost:2181)] org.apache.zookeeper.ClientCnxn          : SASL config status: Will not attempt to authenticate using SASL (unknown error)
-2024-08-20 16:36:16.775  INFO 4688 --- [localhost:2181)] org.apache.zookeeper.ClientCnxn          : Socket connection established, initiating session, client: /127.0.0.1:48728, server: localhost/127.0.0.1:2181
-2024-08-20 16:36:16.823  INFO 4688 --- [           main] o.a.c.f.imps.CuratorFrameworkImpl        : Default schema
-2024-08-20 16:36:16.825  INFO 4688 --- [localhost:2181)] org.apache.zookeeper.ClientCnxn          : Session establishment complete on server localhost/127.0.0.1:2181, session id = 0x100017f50600000, negotiated timeout = 5000
-2024-08-20 16:36:16.897  INFO 4688 --- [ain-EventThread] o.a.c.f.state.ConnectionStateManager     : State change: CONNECTED
-2024-08-20 16:36:16.960  INFO 4688 --- [ain-EventThread] o.a.c.framework.imps.EnsembleTracker     : New config event received: {}
-2024-08-20 16:36:16.961  INFO 4688 --- [ain-EventThread] o.a.c.framework.imps.EnsembleTracker     : New config event received: {}
+2024-08-20 17:50:46.677  INFO 8972 --- [           main] c.k.c.dataserver.DataServerApplication   : Starting DataServerApplication v1.0 using Java 1.8.0_422 on PC-zwq with PID 8972 (/mnt/c/Projects/kc/minfs_student/workpublish/dataServer/dataServer-1.0.jar started by zwq in /mnt/c/Projects/kc/minfs_student/workpublish)
+2024-08-20 17:50:46.696  INFO 8972 --- [           main] c.k.c.dataserver.DataServerApplication   : No active profile set, falling back to 1 default profile: "default"
+2024-08-20 17:50:51.104  INFO 8972 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 9003 (http)
+2024-08-20 17:50:51.141  INFO 8972 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-08-20 17:50:51.141  INFO 8972 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.74]
+2024-08-20 17:50:51.355  INFO 8972 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-08-20 17:50:51.356  INFO 8972 --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 4359 ms
+2024-08-20 17:50:52.399  INFO 8972 --- [           main] o.a.c.f.imps.CuratorFrameworkImpl        : Starting
+2024-08-20 17:50:52.450  INFO 8972 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:zookeeper.version=3.6.0--b4c89dc7f6083829e18fae6e446907ae0b1f22d7, built on 02/25/2020 14:38 GMT
+2024-08-20 17:50:52.451  INFO 8972 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:host.name=PC-zwq.
+2024-08-20 17:50:52.451  INFO 8972 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:java.version=1.8.0_422
+2024-08-20 17:50:52.452  INFO 8972 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:java.vendor=Private Build
+2024-08-20 17:50:52.452  INFO 8972 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:java.home=/usr/lib/jvm/java-8-openjdk-amd64/jre
+2024-08-20 17:50:52.453  INFO 8972 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:java.class.path=./dataServer/dataServer-1.0.jar
+2024-08-20 17:50:52.453  INFO 8972 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:java.library.path=/usr/java/packages/lib/amd64:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib
+2024-08-20 17:50:52.454  INFO 8972 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:java.io.tmpdir=/tmp
+2024-08-20 17:50:52.455  INFO 8972 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:java.compiler=<NA>
+2024-08-20 17:50:52.455  INFO 8972 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:os.name=Linux
+2024-08-20 17:50:52.455  INFO 8972 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:os.arch=amd64
+2024-08-20 17:50:52.456  INFO 8972 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:os.version=5.15.153.1-microsoft-standard-WSL2
+2024-08-20 17:50:52.456  INFO 8972 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:user.name=zwq
+2024-08-20 17:50:52.456  INFO 8972 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:user.home=/home/zwq
+2024-08-20 17:50:52.457  INFO 8972 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:user.dir=/mnt/c/Projects/kc/minfs_student/workpublish
+2024-08-20 17:50:52.457  INFO 8972 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:os.memory.free=61MB
+2024-08-20 17:50:52.458  INFO 8972 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:os.memory.max=1732MB
+2024-08-20 17:50:52.458  INFO 8972 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:os.memory.total=100MB
+2024-08-20 17:50:52.478  INFO 8972 --- [           main] org.apache.zookeeper.ZooKeeper           : Initiating client connection, connectString=localhost:2181 sessionTimeout=5000 watcher=org.apache.curator.ConnectionState@43ee72e6
+2024-08-20 17:50:52.506  INFO 8972 --- [           main] org.apache.zookeeper.common.X509Util     : Setting -D jdk.tls.rejectClientInitiatedRenegotiation=true to disable client-initiated TLS renegotiation
+2024-08-20 17:50:52.528  INFO 8972 --- [           main] org.apache.zookeeper.ClientCnxnSocket    : jute.maxbuffer value is 1048575 Bytes
+2024-08-20 17:50:52.563  INFO 8972 --- [           main] org.apache.zookeeper.ClientCnxn          : zookeeper.request.timeout value is 0. feature enabled=false
+2024-08-20 17:50:52.596  INFO 8972 --- [localhost:2181)] org.apache.zookeeper.ClientCnxn          : Opening socket connection to server localhost/127.0.0.1:2181.
+2024-08-20 17:50:52.597  INFO 8972 --- [localhost:2181)] org.apache.zookeeper.ClientCnxn          : SASL config status: Will not attempt to authenticate using SASL (unknown error)
+2024-08-20 17:50:52.601  INFO 8972 --- [localhost:2181)] org.apache.zookeeper.ClientCnxn          : Socket connection established, initiating session, client: /127.0.0.1:40130, server: localhost/127.0.0.1:2181
+2024-08-20 17:50:52.630  INFO 8972 --- [           main] o.a.c.f.imps.CuratorFrameworkImpl        : Default schema
+2024-08-20 17:50:52.632  INFO 8972 --- [localhost:2181)] org.apache.zookeeper.ClientCnxn          : Session establishment complete on server localhost/127.0.0.1:2181, session id = 0x10001c39fe80002, negotiated timeout = 5000
+2024-08-20 17:50:52.715  INFO 8972 --- [ain-EventThread] o.a.c.f.state.ConnectionStateManager     : State change: CONNECTED
+2024-08-20 17:50:52.782  INFO 8972 --- [ain-EventThread] o.a.c.framework.imps.EnsembleTracker     : New config event received: {}
+2024-08-20 17:50:52.783  INFO 8972 --- [ain-EventThread] o.a.c.framework.imps.EnsembleTracker     : New config event received: {}
+2024-08-20 17:50:54.708  INFO 8972 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 9003 (http) with context path ''
+2024-08-20 17:50:54.741  INFO 8972 --- [           main] c.k.c.dataserver.DataServerApplication   : Started DataServerApplication in 10.614 seconds (JVM running for 11.931)

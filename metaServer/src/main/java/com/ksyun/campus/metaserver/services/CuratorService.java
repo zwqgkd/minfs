@@ -232,8 +232,9 @@ public class CuratorService {
     public <T> void syncMetaData(String interfaceName, String fileSystemName, T param) throws Exception {
         String slaveUrl=this.registService.getSlaveMetaAddress();
         if(slaveUrl==null){
-            log.error("no slave address in zk when sync meta data");
+            log.info("no slave address in zk when sync meta data");
         }else{
+            log.error("slave address in zk when sync meta data:{}",slaveUrl);
 //            this.httpService.sendPostRequest(slaveUrl, interfaceName, fileSystemName, param);
             RestTemplate restTemplate = new RestTemplate();
             HttpHeaders headers= new HttpHeaders();

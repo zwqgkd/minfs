@@ -1,3 +1,5 @@
+# debug
+cd /mnt/c/Projects/kc/minfs_student/workpublish/bin
 cd ..
 ## kill java
 ps -ef | grep java | grep -v grep | awk '{print $2}' | xargs kill -9

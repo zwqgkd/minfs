@@ -5,14 +5,11 @@ import com.ksyun.campus.metaserver.domain.StatInfo;
 import com.ksyun.campus.metaserver.services.CuratorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
-@Controller
+@RestController
 public class MetaSyncController {
     private CuratorService curatorService;
 

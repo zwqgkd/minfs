@@ -7,58 +7,272 @@
  =========|_|==============|___/=/_/_/_/
  :: Spring Boot ::               (v2.7.11)
 
-2024-08-20 16:36:10.724  INFO 4690 --- [           main] c.k.c.metaserver.MetaServerApplication   : Starting MetaServerApplication v1.0 using Java 1.8.0_422 on PC-zwq with PID 4690 (/mnt/c/Projects/kc/minfs_student/workpublish/metaServer/metaServer-1.0.jar started by zwq in /mnt/c/Projects/kc/minfs_student/workpublish)
-2024-08-20 16:36:10.746  INFO 4690 --- [           main] c.k.c.metaserver.MetaServerApplication   : No active profile set, falling back to 1 default profile: "default"
-2024-08-20 16:36:15.655  INFO 4690 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8000 (http)
-2024-08-20 16:36:15.711  INFO 4690 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2024-08-20 16:36:15.712  INFO 4690 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.74]
-2024-08-20 16:36:15.988  INFO 4690 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2024-08-20 16:36:15.989  INFO 4690 --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 4860 ms
-2024-08-20 16:36:16.958  INFO 4690 --- [           main] o.a.c.f.imps.CuratorFrameworkImpl        : Starting
-2024-08-20 16:36:17.001  INFO 4690 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:zookeeper.version=3.6.0--b4c89dc7f6083829e18fae6e446907ae0b1f22d7, built on 02/25/2020 14:38 GMT
-2024-08-20 16:36:17.001  INFO 4690 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:host.name=PC-zwq.
-2024-08-20 16:36:17.002  INFO 4690 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:java.version=1.8.0_422
-2024-08-20 16:36:17.002  INFO 4690 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:java.vendor=Private Build
-2024-08-20 16:36:17.002  INFO 4690 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:java.home=/usr/lib/jvm/java-8-openjdk-amd64/jre
-2024-08-20 16:36:17.003  INFO 4690 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:java.class.path=./metaServer/metaServer-1.0.jar
-2024-08-20 16:36:17.003  INFO 4690 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:java.library.path=/usr/java/packages/lib/amd64:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib
-2024-08-20 16:36:17.003  INFO 4690 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:java.io.tmpdir=/tmp
-2024-08-20 16:36:17.004  INFO 4690 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:java.compiler=<NA>
-2024-08-20 16:36:17.004  INFO 4690 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:os.name=Linux
-2024-08-20 16:36:17.004  INFO 4690 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:os.arch=amd64
-2024-08-20 16:36:17.005  INFO 4690 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:os.version=5.15.153.1-microsoft-standard-WSL2
-2024-08-20 16:36:17.005  INFO 4690 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:user.name=zwq
-2024-08-20 16:36:17.006  INFO 4690 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:user.home=/home/zwq
-2024-08-20 16:36:17.006  INFO 4690 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:user.dir=/mnt/c/Projects/kc/minfs_student/workpublish
-2024-08-20 16:36:17.007  INFO 4690 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:os.memory.free=50MB
-2024-08-20 16:36:17.007  INFO 4690 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:os.memory.max=1732MB
-2024-08-20 16:36:17.007  INFO 4690 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:os.memory.total=96MB
-2024-08-20 16:36:17.026  INFO 4690 --- [           main] org.apache.zookeeper.ZooKeeper           : Initiating client connection, connectString=localhost:2181 sessionTimeout=5000 watcher=org.apache.curator.ConnectionState@2b6faea6
-2024-08-20 16:36:17.061  INFO 4690 --- [           main] org.apache.zookeeper.common.X509Util     : Setting -D jdk.tls.rejectClientInitiatedRenegotiation=true to disable client-initiated TLS renegotiation
-2024-08-20 16:36:17.091  INFO 4690 --- [           main] org.apache.zookeeper.ClientCnxnSocket    : jute.maxbuffer value is 1048575 Bytes
-2024-08-20 16:36:17.129  INFO 4690 --- [           main] org.apache.zookeeper.ClientCnxn          : zookeeper.request.timeout value is 0. feature enabled=false
-2024-08-20 16:36:17.168  INFO 4690 --- [localhost:2181)] org.apache.zookeeper.ClientCnxn          : Opening socket connection to server localhost/127.0.0.1:2181.
-2024-08-20 16:36:17.168  INFO 4690 --- [localhost:2181)] org.apache.zookeeper.ClientCnxn          : SASL config status: Will not attempt to authenticate using SASL (unknown error)
-2024-08-20 16:36:17.178  INFO 4690 --- [localhost:2181)] org.apache.zookeeper.ClientCnxn          : Socket connection established, initiating session, client: /127.0.0.1:48792, server: localhost/127.0.0.1:2181
-2024-08-20 16:36:17.216  INFO 4690 --- [           main] o.a.c.f.imps.CuratorFrameworkImpl        : Default schema
-2024-08-20 16:36:17.283  INFO 4690 --- [localhost:2181)] org.apache.zookeeper.ClientCnxn          : Session establishment complete on server localhost/127.0.0.1:2181, session id = 0x100017f50600004, negotiated timeout = 5000
-2024-08-20 16:36:17.353  INFO 4690 --- [ain-EventThread] o.a.c.f.state.ConnectionStateManager     : State change: CONNECTED
-2024-08-20 16:36:17.413  INFO 4690 --- [ain-EventThread] o.a.c.framework.imps.EnsembleTracker     : New config event received: {}
-2024-08-20 16:36:17.414  INFO 4690 --- [ain-EventThread] o.a.c.framework.imps.EnsembleTracker     : New config event received: {}
-2024-08-20 16:36:17.480  INFO 4690 --- [           main] c.k.c.metaserver.services.RegistService  : register to zk center, role:master, addr:127.0.1.1:8000
-2024-08-20 16:36:17.649  INFO 4690 --- [           main] org.apache.curator.utils.Compatibility   : Using org.apache.zookeeper.server.quorum.MultipleAddresses
-2024-08-20 16:36:17.696  INFO 4690 --- [           main] c.k.c.m.services.CuratorService          : debuggggggggggggggggggggggg:role:master metaAddr:localhost:2182
-2024-08-20 16:36:17.697  INFO 4690 --- [           main] o.a.c.f.imps.CuratorFrameworkImpl        : Starting
-2024-08-20 16:36:17.698  INFO 4690 --- [           main] org.apache.zookeeper.ZooKeeper           : Initiating client connection, connectString=localhost:2182 sessionTimeout=5000 watcher=org.apache.curator.ConnectionState@69b2283a
-2024-08-20 16:36:17.699  INFO 4690 --- [           main] org.apache.zookeeper.ClientCnxnSocket    : jute.maxbuffer value is 1048575 Bytes
-2024-08-20 16:36:17.699  INFO 4690 --- [           main] org.apache.zookeeper.ClientCnxn          : zookeeper.request.timeout value is 0. feature enabled=false
-2024-08-20 16:36:17.701  INFO 4690 --- [           main] o.a.c.f.imps.CuratorFrameworkImpl        : Default schema
-2024-08-20 16:36:17.702  INFO 4690 --- [localhost:2182)] org.apache.zookeeper.ClientCnxn          : Opening socket connection to server localhost/127.0.0.1:2182.
-2024-08-20 16:36:17.703  INFO 4690 --- [localhost:2182)] org.apache.zookeeper.ClientCnxn          : SASL config status: Will not attempt to authenticate using SASL (unknown error)
-2024-08-20 16:36:17.704  INFO 4690 --- [localhost:2182)] org.apache.zookeeper.ClientCnxn          : Socket connection established, initiating session, client: /127.0.0.1:51706, server: localhost/127.0.0.1:2182
-2024-08-20 16:36:17.722  INFO 4690 --- [localhost:2182)] org.apache.zookeeper.ClientCnxn          : Session establishment complete on server localhost/127.0.0.1:2182, session id = 0x100017f51630000, negotiated timeout = 5000
-2024-08-20 16:36:17.722  INFO 4690 --- [ain-EventThread] o.a.c.f.state.ConnectionStateManager     : State change: CONNECTED
-2024-08-20 16:36:17.729  INFO 4690 --- [ain-EventThread] o.a.c.framework.imps.EnsembleTracker     : New config event received: {}
-2024-08-20 16:36:17.730  INFO 4690 --- [ain-EventThread] o.a.c.framework.imps.EnsembleTracker     : New config event received: {}
-2024-08-20 16:36:17.733  INFO 4690 --- [NotifyService-0] c.k.c.metaserver.services.RegistService  : Listening.....Node created: /metaServer/master 
-2024-08-20 16:36:17.756  INFO 4690 --- [NotifyService-0] c.k.c.metaserver.services.RegistService  : Listening.....Node created: /metaServer/master/127.0.1.1:8000 
+2024-08-20 17:50:46.651  INFO 8974 --- [           main] c.k.c.metaserver.MetaServerApplication   : Starting MetaServerApplication v1.0 using Java 1.8.0_422 on PC-zwq with PID 8974 (/mnt/c/Projects/kc/minfs_student/workpublish/metaServer/metaServer-1.0.jar started by zwq in /mnt/c/Projects/kc/minfs_student/workpublish)
+2024-08-20 17:50:46.670  INFO 8974 --- [           main] c.k.c.metaserver.MetaServerApplication   : No active profile set, falling back to 1 default profile: "default"
+2024-08-20 17:50:51.296  INFO 8974 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8000 (http)
+2024-08-20 17:50:51.344  INFO 8974 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-08-20 17:50:51.345  INFO 8974 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.74]
+2024-08-20 17:50:51.692  INFO 8974 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-08-20 17:50:51.693  INFO 8974 --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 4685 ms
+2024-08-20 17:50:52.608  INFO 8974 --- [           main] o.a.c.f.imps.CuratorFrameworkImpl        : Starting
+2024-08-20 17:50:52.654  INFO 8974 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:zookeeper.version=3.6.0--b4c89dc7f6083829e18fae6e446907ae0b1f22d7, built on 02/25/2020 14:38 GMT
+2024-08-20 17:50:52.655  INFO 8974 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:host.name=PC-zwq.
+2024-08-20 17:50:52.655  INFO 8974 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:java.version=1.8.0_422
+2024-08-20 17:50:52.656  INFO 8974 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:java.vendor=Private Build
+2024-08-20 17:50:52.656  INFO 8974 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:java.home=/usr/lib/jvm/java-8-openjdk-amd64/jre
+2024-08-20 17:50:52.657  INFO 8974 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:java.class.path=./metaServer/metaServer-1.0.jar
+2024-08-20 17:50:52.657  INFO 8974 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:java.library.path=/usr/java/packages/lib/amd64:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib
+2024-08-20 17:50:52.658  INFO 8974 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:java.io.tmpdir=/tmp
+2024-08-20 17:50:52.659  INFO 8974 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:java.compiler=<NA>
+2024-08-20 17:50:52.660  INFO 8974 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:os.name=Linux
+2024-08-20 17:50:52.660  INFO 8974 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:os.arch=amd64
+2024-08-20 17:50:52.661  INFO 8974 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:os.version=5.15.153.1-microsoft-standard-WSL2
+2024-08-20 17:50:52.662  INFO 8974 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:user.name=zwq
+2024-08-20 17:50:52.663  INFO 8974 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:user.home=/home/zwq
+2024-08-20 17:50:52.663  INFO 8974 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:user.dir=/mnt/c/Projects/kc/minfs_student/workpublish
+2024-08-20 17:50:52.663  INFO 8974 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:os.memory.free=41MB
+2024-08-20 17:50:52.664  INFO 8974 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:os.memory.max=1732MB
+2024-08-20 17:50:52.665  INFO 8974 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:os.memory.total=74MB
+2024-08-20 17:50:52.685  INFO 8974 --- [           main] org.apache.zookeeper.ZooKeeper           : Initiating client connection, connectString=localhost:2181 sessionTimeout=5000 watcher=org.apache.curator.ConnectionState@2b6faea6
+2024-08-20 17:50:52.711  INFO 8974 --- [           main] org.apache.zookeeper.common.X509Util     : Setting -D jdk.tls.rejectClientInitiatedRenegotiation=true to disable client-initiated TLS renegotiation
+2024-08-20 17:50:52.730  INFO 8974 --- [           main] org.apache.zookeeper.ClientCnxnSocket    : jute.maxbuffer value is 1048575 Bytes
+2024-08-20 17:50:52.756  INFO 8974 --- [           main] org.apache.zookeeper.ClientCnxn          : zookeeper.request.timeout value is 0. feature enabled=false
+2024-08-20 17:50:52.801  INFO 8974 --- [localhost:2181)] org.apache.zookeeper.ClientCnxn          : Opening socket connection to server localhost/127.0.0.1:2181.
+2024-08-20 17:50:52.801  INFO 8974 --- [localhost:2181)] org.apache.zookeeper.ClientCnxn          : SASL config status: Will not attempt to authenticate using SASL (unknown error)
+2024-08-20 17:50:52.806  INFO 8974 --- [localhost:2181)] org.apache.zookeeper.ClientCnxn          : Socket connection established, initiating session, client: /127.0.0.1:40180, server: localhost/127.0.0.1:2181
+2024-08-20 17:50:52.838  INFO 8974 --- [localhost:2181)] org.apache.zookeeper.ClientCnxn          : Session establishment complete on server localhost/127.0.0.1:2181, session id = 0x10001c39fe80005, negotiated timeout = 5000
+2024-08-20 17:50:52.849  INFO 8974 --- [           main] o.a.c.f.imps.CuratorFrameworkImpl        : Default schema
+2024-08-20 17:50:52.915  INFO 8974 --- [ain-EventThread] o.a.c.f.state.ConnectionStateManager     : State change: CONNECTED
+2024-08-20 17:50:52.986  INFO 8974 --- [ain-EventThread] o.a.c.framework.imps.EnsembleTracker     : New config event received: {}
+2024-08-20 17:50:52.987  INFO 8974 --- [ain-EventThread] o.a.c.framework.imps.EnsembleTracker     : New config event received: {}
+2024-08-20 17:50:53.077  INFO 8974 --- [           main] c.k.c.metaserver.services.RegistService  : register to zk center, role:master, addr:127.0.1.1:8000
+2024-08-20 17:50:53.260  INFO 8974 --- [           main] org.apache.curator.utils.Compatibility   : Using org.apache.zookeeper.server.quorum.MultipleAddresses
+2024-08-20 17:50:53.294  INFO 8974 --- [           main] c.k.c.m.services.CuratorService          : debuggggggggggggggggggggggg:role:master metaAddr:localhost:2182
+2024-08-20 17:50:53.295  INFO 8974 --- [           main] o.a.c.f.imps.CuratorFrameworkImpl        : Starting
+2024-08-20 17:50:53.297  INFO 8974 --- [           main] org.apache.zookeeper.ZooKeeper           : Initiating client connection, connectString=localhost:2182 sessionTimeout=5000 watcher=org.apache.curator.ConnectionState@69b2283a
+2024-08-20 17:50:53.298  INFO 8974 --- [           main] org.apache.zookeeper.ClientCnxnSocket    : jute.maxbuffer value is 1048575 Bytes
+2024-08-20 17:50:53.298  INFO 8974 --- [           main] org.apache.zookeeper.ClientCnxn          : zookeeper.request.timeout value is 0. feature enabled=false
+2024-08-20 17:50:53.301  INFO 8974 --- [           main] o.a.c.f.imps.CuratorFrameworkImpl        : Default schema
+2024-08-20 17:50:53.301  INFO 8974 --- [localhost:2182)] org.apache.zookeeper.ClientCnxn          : Opening socket connection to server localhost/127.0.0.1:2182.
+2024-08-20 17:50:53.302  INFO 8974 --- [localhost:2182)] org.apache.zookeeper.ClientCnxn          : SASL config status: Will not attempt to authenticate using SASL (unknown error)
+2024-08-20 17:50:53.303  INFO 8974 --- [localhost:2182)] org.apache.zookeeper.ClientCnxn          : Socket connection established, initiating session, client: /127.0.0.1:46572, server: localhost/127.0.0.1:2182
+2024-08-20 17:50:53.318  INFO 8974 --- [localhost:2182)] org.apache.zookeeper.ClientCnxn          : Session establishment complete on server localhost/127.0.0.1:2182, session id = 0x10001c3a0f60000, negotiated timeout = 5000
+2024-08-20 17:50:53.319  INFO 8974 --- [ain-EventThread] o.a.c.f.state.ConnectionStateManager     : State change: CONNECTED
+2024-08-20 17:50:53.327  INFO 8974 --- [ain-EventThread] o.a.c.framework.imps.EnsembleTracker     : New config event received: {}
+2024-08-20 17:50:53.328  INFO 8974 --- [NotifyService-0] c.k.c.metaserver.services.RegistService  : Listening.....Node created: /metaServer/master 
+2024-08-20 17:50:53.329  INFO 8974 --- [ain-EventThread] o.a.c.framework.imps.EnsembleTracker     : New config event received: {}
+2024-08-20 17:50:53.353  INFO 8974 --- [NotifyService-0] c.k.c.metaserver.services.RegistService  : Listening.....Node created: /metaServer/master/127.0.1.1:8000 
+2024-08-20 17:50:54.984  INFO 8974 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8000 (http) with context path ''
+2024-08-20 17:50:55.001  INFO 8974 --- [   scheduling-1] c.k.c.metaserver.services.FsckServices   : start fsck task....................
+2024-08-20 17:50:55.011  INFO 8974 --- [           main] c.k.c.metaserver.MetaServerApplication   : Started MetaServerApplication in 10.825 seconds (JVM running for 12.196)
+2024-08-20 17:51:14.254  INFO 8974 --- [nio-8000-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-08-20 17:51:14.254  INFO 8974 --- [nio-8000-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-08-20 17:51:14.255  INFO 8974 --- [nio-8000-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2024-08-20 17:51:14.353  INFO 8974 --- [nio-8000-exec-1] c.k.c.m.services.CuratorService          : get file:/read/anothermsg.txt stat info null
+
+org.apache.zookeeper.KeeperException$NoNodeException: KeeperErrorCode = NoNode for /fileSystem/default/read/anothermsg.txt
+	at org.apache.zookeeper.KeeperException.create(KeeperException.java:118) ~[zookeeper-3.6.0.jar!/:3.6.0]
+	at org.apache.zookeeper.KeeperException.create(KeeperException.java:54) ~[zookeeper-3.6.0.jar!/:3.6.0]
+	at org.apache.zookeeper.ZooKeeper.getData(ZooKeeper.java:2348) ~[zookeeper-3.6.0.jar!/:3.6.0]
+	at org.apache.curator.framework.imps.GetDataBuilderImpl$4.call(GetDataBuilderImpl.java:327) ~[curator-framework-5.1.0.jar!/:5.1.0]
+	at org.apache.curator.framework.imps.GetDataBuilderImpl$4.call(GetDataBuilderImpl.java:316) ~[curator-framework-5.1.0.jar!/:5.1.0]
+	at org.apache.curator.RetryLoop.callWithRetry(RetryLoop.java:93) ~[curator-client-5.1.0.jar!/:na]
+	at org.apache.curator.framework.imps.GetDataBuilderImpl.pathInForeground(GetDataBuilderImpl.java:313) ~[curator-framework-5.1.0.jar!/:5.1.0]
+	at org.apache.curator.framework.imps.GetDataBuilderImpl.forPath(GetDataBuilderImpl.java:304) ~[curator-framework-5.1.0.jar!/:5.1.0]
+	at org.apache.curator.framework.imps.GetDataBuilderImpl.forPath(GetDataBuilderImpl.java:35) ~[curator-framework-5.1.0.jar!/:5.1.0]
+	at com.ksyun.campus.metaserver.services.CuratorService.getStatInfo(CuratorService.java:176) ~[classes!/:1.0]
+	at com.ksyun.campus.metaserver.services.MetaService.getStatInfo(MetaService.java:271) [classes!/:1.0]
+	at com.ksyun.campus.metaserver.controller.MetaController.getFileStats(MetaController.java:147) [classes!/:1.0]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.8.0_422]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[na:1.8.0_422]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:1.8.0_422]
+	at java.lang.reflect.Method.invoke(Method.java:498) ~[na:1.8.0_422]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:205) [spring-web-5.3.27.jar!/:5.3.27]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:150) [spring-web-5.3.27.jar!/:5.3.27]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:117) [spring-webmvc-5.3.27.jar!/:5.3.27]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:895) [spring-webmvc-5.3.27.jar!/:5.3.27]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:808) [spring-webmvc-5.3.27.jar!/:5.3.27]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) [spring-webmvc-5.3.27.jar!/:5.3.27]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1072) [spring-webmvc-5.3.27.jar!/:5.3.27]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:965) [spring-webmvc-5.3.27.jar!/:5.3.27]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1006) [spring-webmvc-5.3.27.jar!/:5.3.27]
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:898) [spring-webmvc-5.3.27.jar!/:5.3.27]
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:529) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:883) [spring-webmvc-5.3.27.jar!/:5.3.27]
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:623) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:209) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) [tomcat-embed-websocket-9.0.74.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) [spring-web-5.3.27.jar!/:5.3.27]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) [spring-web-5.3.27.jar!/:5.3.27]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) [spring-web-5.3.27.jar!/:5.3.27]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) [spring-web-5.3.27.jar!/:5.3.27]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) [spring-web-5.3.27.jar!/:5.3.27]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) [spring-web-5.3.27.jar!/:5.3.27]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:481) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:130) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:389) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:926) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1791) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) [tomcat-embed-core-9.0.74.jar!/:na]
+	at java.lang.Thread.run(Thread.java:750) [na:1.8.0_422]
+
+2024-08-20 17:51:14.999  INFO 8974 --- [   scheduling-1] c.k.c.metaserver.services.FsckServices   : start fsck task....................
+200 OK
+200 OK
+200 OK
+2024-08-20 17:51:16.451  INFO 8974 --- [nio-8000-exec-2] c.k.c.metaserver.services.MetaService    : StatInfo(path=/read/anothermsg.txt, size=0, mtime=1724147476451, type=File, replicaData=[ReplicaData(id=rack0-zone0, dsNode=127.0.1.1:9000, path=/read/anothermsg.txt), ReplicaData(id=rack2-zone2, dsNode=127.0.1.1:9002, path=/read/anothermsg.txt), ReplicaData(id=rack1-zone1, dsNode=127.0.1.1:9001, path=/read/anothermsg.txt)])
+2024-08-20 17:51:16.473  INFO 8974 --- [nio-8000-exec-2] c.k.c.metaserver.services.RegistService  : get slave address from zk
+2024-08-20 17:51:17.484 ERROR 8974 --- [nio-8000-exec-2] c.k.c.m.services.CuratorService          : save meta data error
+
+org.springframework.web.client.HttpServerErrorException$InternalServerError: 500 : "{"timestamp":"2024-08-20T09:51:17.323+00:00","status":500,"error":"Internal Server Error","path":"/saveMetaData"}"
+	at org.springframework.web.client.HttpServerErrorException.create(HttpServerErrorException.java:100) ~[spring-web-5.3.27.jar!/:5.3.27]
+	at org.springframework.web.client.DefaultResponseErrorHandler.handleError(DefaultResponseErrorHandler.java:170) ~[spring-web-5.3.27.jar!/:5.3.27]
+	at org.springframework.web.client.DefaultResponseErrorHandler.handleError(DefaultResponseErrorHandler.java:122) ~[spring-web-5.3.27.jar!/:5.3.27]
+	at org.springframework.web.client.ResponseErrorHandler.handleError(ResponseErrorHandler.java:63) ~[spring-web-5.3.27.jar!/:5.3.27]
+	at org.springframework.web.client.RestTemplate.handleResponse(RestTemplate.java:825) ~[spring-web-5.3.27.jar!/:5.3.27]
+	at org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:783) ~[spring-web-5.3.27.jar!/:5.3.27]
+	at org.springframework.web.client.RestTemplate.execute(RestTemplate.java:717) ~[spring-web-5.3.27.jar!/:5.3.27]
+	at org.springframework.web.client.RestTemplate.postForObject(RestTemplate.java:443) ~[spring-web-5.3.27.jar!/:5.3.27]
+	at com.ksyun.campus.metaserver.services.CuratorService.syncMetaData(CuratorService.java:246) ~[classes!/:1.0]
+	at com.ksyun.campus.metaserver.services.CuratorService.saveMetaData(CuratorService.java:139) ~[classes!/:1.0]
+	at com.ksyun.campus.metaserver.services.MetaService.create(MetaService.java:210) [classes!/:1.0]
+	at com.ksyun.campus.metaserver.controller.MetaController.createFile(MetaController.java:39) [classes!/:1.0]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.8.0_422]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[na:1.8.0_422]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:1.8.0_422]
+	at java.lang.reflect.Method.invoke(Method.java:498) ~[na:1.8.0_422]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:205) [spring-web-5.3.27.jar!/:5.3.27]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:150) [spring-web-5.3.27.jar!/:5.3.27]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:117) [spring-webmvc-5.3.27.jar!/:5.3.27]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:895) [spring-webmvc-5.3.27.jar!/:5.3.27]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:808) [spring-webmvc-5.3.27.jar!/:5.3.27]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) [spring-webmvc-5.3.27.jar!/:5.3.27]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1072) [spring-webmvc-5.3.27.jar!/:5.3.27]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:965) [spring-webmvc-5.3.27.jar!/:5.3.27]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1006) [spring-webmvc-5.3.27.jar!/:5.3.27]
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:898) [spring-webmvc-5.3.27.jar!/:5.3.27]
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:529) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:883) [spring-webmvc-5.3.27.jar!/:5.3.27]
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:623) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:209) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) [tomcat-embed-websocket-9.0.74.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) [spring-web-5.3.27.jar!/:5.3.27]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) [spring-web-5.3.27.jar!/:5.3.27]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) [spring-web-5.3.27.jar!/:5.3.27]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) [spring-web-5.3.27.jar!/:5.3.27]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) [spring-web-5.3.27.jar!/:5.3.27]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) [spring-web-5.3.27.jar!/:5.3.27]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:481) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:130) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:389) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:926) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1791) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) [tomcat-embed-core-9.0.74.jar!/:na]
+	at java.lang.Thread.run(Thread.java:750) [na:1.8.0_422]
+
+2024-08-20 17:51:17.502 ERROR 8974 --- [nio-8000-exec-2] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is java.lang.RuntimeException: org.springframework.web.client.HttpServerErrorException$InternalServerError: 500 : "{"timestamp":"2024-08-20T09:51:17.323+00:00","status":500,"error":"Internal Server Error","path":"/saveMetaData"}"] with root cause
+
+org.springframework.web.client.HttpServerErrorException$InternalServerError: 500 : "{"timestamp":"2024-08-20T09:51:17.323+00:00","status":500,"error":"Internal Server Error","path":"/saveMetaData"}"
+	at org.springframework.web.client.HttpServerErrorException.create(HttpServerErrorException.java:100) ~[spring-web-5.3.27.jar!/:5.3.27]
+	at org.springframework.web.client.DefaultResponseErrorHandler.handleError(DefaultResponseErrorHandler.java:170) ~[spring-web-5.3.27.jar!/:5.3.27]
+	at org.springframework.web.client.DefaultResponseErrorHandler.handleError(DefaultResponseErrorHandler.java:122) ~[spring-web-5.3.27.jar!/:5.3.27]
+	at org.springframework.web.client.ResponseErrorHandler.handleError(ResponseErrorHandler.java:63) ~[spring-web-5.3.27.jar!/:5.3.27]
+	at org.springframework.web.client.RestTemplate.handleResponse(RestTemplate.java:825) ~[spring-web-5.3.27.jar!/:5.3.27]
+	at org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:783) ~[spring-web-5.3.27.jar!/:5.3.27]
+	at org.springframework.web.client.RestTemplate.execute(RestTemplate.java:717) ~[spring-web-5.3.27.jar!/:5.3.27]
+	at org.springframework.web.client.RestTemplate.postForObject(RestTemplate.java:443) ~[spring-web-5.3.27.jar!/:5.3.27]
+	at com.ksyun.campus.metaserver.services.CuratorService.syncMetaData(CuratorService.java:246) ~[classes!/:1.0]
+	at com.ksyun.campus.metaserver.services.CuratorService.saveMetaData(CuratorService.java:139) ~[classes!/:1.0]
+	at com.ksyun.campus.metaserver.services.MetaService.create(MetaService.java:210) ~[classes!/:1.0]
+	at com.ksyun.campus.metaserver.controller.MetaController.createFile(MetaController.java:39) ~[classes!/:1.0]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.8.0_422]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[na:1.8.0_422]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:1.8.0_422]
+	at java.lang.reflect.Method.invoke(Method.java:498) ~[na:1.8.0_422]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:205) ~[spring-web-5.3.27.jar!/:5.3.27]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:150) ~[spring-web-5.3.27.jar!/:5.3.27]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:117) ~[spring-webmvc-5.3.27.jar!/:5.3.27]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:895) ~[spring-webmvc-5.3.27.jar!/:5.3.27]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:808) ~[spring-webmvc-5.3.27.jar!/:5.3.27]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-5.3.27.jar!/:5.3.27]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1072) ~[spring-webmvc-5.3.27.jar!/:5.3.27]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:965) ~[spring-webmvc-5.3.27.jar!/:5.3.27]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1006) ~[spring-webmvc-5.3.27.jar!/:5.3.27]
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:898) ~[spring-webmvc-5.3.27.jar!/:5.3.27]
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:529) ~[tomcat-embed-core-9.0.74.jar!/:na]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:883) ~[spring-webmvc-5.3.27.jar!/:5.3.27]
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:623) ~[tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:209) ~[tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) ~[tomcat-embed-websocket-9.0.74.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) ~[tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.74.jar!/:na]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-5.3.27.jar!/:5.3.27]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.27.jar!/:5.3.27]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) ~[tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.74.jar!/:na]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-5.3.27.jar!/:5.3.27]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.27.jar!/:5.3.27]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) ~[tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.74.jar!/:na]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-5.3.27.jar!/:5.3.27]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.27.jar!/:5.3.27]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) ~[tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167) ~[tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:481) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:130) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:389) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:926) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1791) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) [tomcat-embed-core-9.0.74.jar!/:na]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) [tomcat-embed-core-9.0.74.jar!/:na]
+	at java.lang.Thread.run(Thread.java:750) [na:1.8.0_422]
+
+2024-08-20 17:51:34.997  INFO 8974 --- [   scheduling-1] c.k.c.metaserver.services.FsckServices   : start fsck task....................
+2024-08-20 17:51:35.051 ERROR 8974 --- [   scheduling-1] c.k.c.metaserver.services.FsckServices   : all replica is lost, path:/read/anothermsg.txt, update meta data
+2024-08-20 17:51:54.997  INFO 8974 --- [   scheduling-1] c.k.c.metaserver.services.FsckServices   : start fsck task....................
+2024-08-20 17:51:55.045 ERROR 8974 --- [   scheduling-1] c.k.c.metaserver.services.FsckServices   : all replica is lost, path:/read/anothermsg.txt, update meta data
