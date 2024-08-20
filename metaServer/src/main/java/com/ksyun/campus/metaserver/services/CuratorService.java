@@ -38,8 +38,6 @@ public class CuratorService {
 
     private final CuratorFramework curatorRegisterClient;
 
-    private final HttpService httpService;
-
     private CuratorFramework curatorMetaClient;
 
     private static final String DS_ZK_PATH = "/dataServer";
@@ -47,15 +45,15 @@ public class CuratorService {
     private static final String FS_ZK_PATH = "/fileSystem";
 
     @Autowired
-    public CuratorService(RegistService registService, CuratorFramework curatorRegisterClient, HttpService httpService) {
+    public CuratorService(RegistService registService, CuratorFramework curatorRegisterClient) {
         this.registService = registService;
         this.curatorRegisterClient = curatorRegisterClient;
-        this.httpService = httpService;
     }
 
     @PostConstruct
     public void init() throws Exception {
         String metaAddr = registService.getRole().equals("master") ? masterAddress : slaveAddress;
+        log.info("debuggggggggggggggggggggggg:role:{} metaAddr:{}",registService.getRole(),metaAddr);
         //重试策略：初始sleep时间1s，最大重试3次
         ExponentialBackoffRetry backOff = new ExponentialBackoffRetry(1000, 3);
         CuratorFramework client = CuratorFrameworkFactory.builder()
@@ -65,6 +63,7 @@ public class CuratorService {
                 .retryPolicy(backOff)
                 .build();
         client.start();
+        //check is connected
         this.curatorMetaClient = client;
         //
         if(this.curatorMetaClient.checkExists().forPath(FS_ZK_PATH)==null)

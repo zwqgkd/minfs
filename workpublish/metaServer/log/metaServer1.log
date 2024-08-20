@@ -1,0 +1,64 @@
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::               (v2.7.11)
+
+2024-08-20 16:36:10.724  INFO 4690 --- [           main] c.k.c.metaserver.MetaServerApplication   : Starting MetaServerApplication v1.0 using Java 1.8.0_422 on PC-zwq with PID 4690 (/mnt/c/Projects/kc/minfs_student/workpublish/metaServer/metaServer-1.0.jar started by zwq in /mnt/c/Projects/kc/minfs_student/workpublish)
+2024-08-20 16:36:10.746  INFO 4690 --- [           main] c.k.c.metaserver.MetaServerApplication   : No active profile set, falling back to 1 default profile: "default"
+2024-08-20 16:36:15.655  INFO 4690 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8000 (http)
+2024-08-20 16:36:15.711  INFO 4690 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-08-20 16:36:15.712  INFO 4690 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.74]
+2024-08-20 16:36:15.988  INFO 4690 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-08-20 16:36:15.989  INFO 4690 --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 4860 ms
+2024-08-20 16:36:16.958  INFO 4690 --- [           main] o.a.c.f.imps.CuratorFrameworkImpl        : Starting
+2024-08-20 16:36:17.001  INFO 4690 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:zookeeper.version=3.6.0--b4c89dc7f6083829e18fae6e446907ae0b1f22d7, built on 02/25/2020 14:38 GMT
+2024-08-20 16:36:17.001  INFO 4690 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:host.name=PC-zwq.
+2024-08-20 16:36:17.002  INFO 4690 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:java.version=1.8.0_422
+2024-08-20 16:36:17.002  INFO 4690 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:java.vendor=Private Build
+2024-08-20 16:36:17.002  INFO 4690 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:java.home=/usr/lib/jvm/java-8-openjdk-amd64/jre
+2024-08-20 16:36:17.003  INFO 4690 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:java.class.path=./metaServer/metaServer-1.0.jar
+2024-08-20 16:36:17.003  INFO 4690 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:java.library.path=/usr/java/packages/lib/amd64:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib
+2024-08-20 16:36:17.003  INFO 4690 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:java.io.tmpdir=/tmp
+2024-08-20 16:36:17.004  INFO 4690 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:java.compiler=<NA>
+2024-08-20 16:36:17.004  INFO 4690 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:os.name=Linux
+2024-08-20 16:36:17.004  INFO 4690 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:os.arch=amd64
+2024-08-20 16:36:17.005  INFO 4690 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:os.version=5.15.153.1-microsoft-standard-WSL2
+2024-08-20 16:36:17.005  INFO 4690 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:user.name=zwq
+2024-08-20 16:36:17.006  INFO 4690 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:user.home=/home/zwq
+2024-08-20 16:36:17.006  INFO 4690 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:user.dir=/mnt/c/Projects/kc/minfs_student/workpublish
+2024-08-20 16:36:17.007  INFO 4690 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:os.memory.free=50MB
+2024-08-20 16:36:17.007  INFO 4690 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:os.memory.max=1732MB
+2024-08-20 16:36:17.007  INFO 4690 --- [           main] org.apache.zookeeper.ZooKeeper           : Client environment:os.memory.total=96MB
+2024-08-20 16:36:17.026  INFO 4690 --- [           main] org.apache.zookeeper.ZooKeeper           : Initiating client connection, connectString=localhost:2181 sessionTimeout=5000 watcher=org.apache.curator.ConnectionState@2b6faea6
+2024-08-20 16:36:17.061  INFO 4690 --- [           main] org.apache.zookeeper.common.X509Util     : Setting -D jdk.tls.rejectClientInitiatedRenegotiation=true to disable client-initiated TLS renegotiation
+2024-08-20 16:36:17.091  INFO 4690 --- [           main] org.apache.zookeeper.ClientCnxnSocket    : jute.maxbuffer value is 1048575 Bytes
+2024-08-20 16:36:17.129  INFO 4690 --- [           main] org.apache.zookeeper.ClientCnxn          : zookeeper.request.timeout value is 0. feature enabled=false
+2024-08-20 16:36:17.168  INFO 4690 --- [localhost:2181)] org.apache.zookeeper.ClientCnxn          : Opening socket connection to server localhost/127.0.0.1:2181.
+2024-08-20 16:36:17.168  INFO 4690 --- [localhost:2181)] org.apache.zookeeper.ClientCnxn          : SASL config status: Will not attempt to authenticate using SASL (unknown error)
+2024-08-20 16:36:17.178  INFO 4690 --- [localhost:2181)] org.apache.zookeeper.ClientCnxn          : Socket connection established, initiating session, client: /127.0.0.1:48792, server: localhost/127.0.0.1:2181
+2024-08-20 16:36:17.216  INFO 4690 --- [           main] o.a.c.f.imps.CuratorFrameworkImpl        : Default schema
+2024-08-20 16:36:17.283  INFO 4690 --- [localhost:2181)] org.apache.zookeeper.ClientCnxn          : Session establishment complete on server localhost/127.0.0.1:2181, session id = 0x100017f50600004, negotiated timeout = 5000
+2024-08-20 16:36:17.353  INFO 4690 --- [ain-EventThread] o.a.c.f.state.ConnectionStateManager     : State change: CONNECTED
+2024-08-20 16:36:17.413  INFO 4690 --- [ain-EventThread] o.a.c.framework.imps.EnsembleTracker     : New config event received: {}
+2024-08-20 16:36:17.414  INFO 4690 --- [ain-EventThread] o.a.c.framework.imps.EnsembleTracker     : New config event received: {}
+2024-08-20 16:36:17.480  INFO 4690 --- [           main] c.k.c.metaserver.services.RegistService  : register to zk center, role:master, addr:127.0.1.1:8000
+2024-08-20 16:36:17.649  INFO 4690 --- [           main] org.apache.curator.utils.Compatibility   : Using org.apache.zookeeper.server.quorum.MultipleAddresses
+2024-08-20 16:36:17.696  INFO 4690 --- [           main] c.k.c.m.services.CuratorService          : debuggggggggggggggggggggggg:role:master metaAddr:localhost:2182
+2024-08-20 16:36:17.697  INFO 4690 --- [           main] o.a.c.f.imps.CuratorFrameworkImpl        : Starting
+2024-08-20 16:36:17.698  INFO 4690 --- [           main] org.apache.zookeeper.ZooKeeper           : Initiating client connection, connectString=localhost:2182 sessionTimeout=5000 watcher=org.apache.curator.ConnectionState@69b2283a
+2024-08-20 16:36:17.699  INFO 4690 --- [           main] org.apache.zookeeper.ClientCnxnSocket    : jute.maxbuffer value is 1048575 Bytes
+2024-08-20 16:36:17.699  INFO 4690 --- [           main] org.apache.zookeeper.ClientCnxn          : zookeeper.request.timeout value is 0. feature enabled=false
+2024-08-20 16:36:17.701  INFO 4690 --- [           main] o.a.c.f.imps.CuratorFrameworkImpl        : Default schema
+2024-08-20 16:36:17.702  INFO 4690 --- [localhost:2182)] org.apache.zookeeper.ClientCnxn          : Opening socket connection to server localhost/127.0.0.1:2182.
+2024-08-20 16:36:17.703  INFO 4690 --- [localhost:2182)] org.apache.zookeeper.ClientCnxn          : SASL config status: Will not attempt to authenticate using SASL (unknown error)
+2024-08-20 16:36:17.704  INFO 4690 --- [localhost:2182)] org.apache.zookeeper.ClientCnxn          : Socket connection established, initiating session, client: /127.0.0.1:51706, server: localhost/127.0.0.1:2182
+2024-08-20 16:36:17.722  INFO 4690 --- [localhost:2182)] org.apache.zookeeper.ClientCnxn          : Session establishment complete on server localhost/127.0.0.1:2182, session id = 0x100017f51630000, negotiated timeout = 5000
+2024-08-20 16:36:17.722  INFO 4690 --- [ain-EventThread] o.a.c.f.state.ConnectionStateManager     : State change: CONNECTED
+2024-08-20 16:36:17.729  INFO 4690 --- [ain-EventThread] o.a.c.framework.imps.EnsembleTracker     : New config event received: {}
+2024-08-20 16:36:17.730  INFO 4690 --- [ain-EventThread] o.a.c.framework.imps.EnsembleTracker     : New config event received: {}
+2024-08-20 16:36:17.733  INFO 4690 --- [NotifyService-0] c.k.c.metaserver.services.RegistService  : Listening.....Node created: /metaServer/master 
+2024-08-20 16:36:17.756  INFO 4690 --- [NotifyService-0] c.k.c.metaserver.services.RegistService  : Listening.....Node created: /metaServer/master/127.0.1.1:8000 

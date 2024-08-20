@@ -36,6 +36,10 @@ services:
 #      - register
 #      - master-meta-db
 #      - slave-meta-db
+#      - data-server-1
+#      - data-server-2
+#      - data-server-3
+#      - data-server-4
 #
 #  meta-server-2:
 #    image: minfs-meta-server:latest
@@ -47,7 +51,12 @@ services:
 #      - register
 #      - master-meta-db
 #      - slave-meta-db
-
+#      - data-server-1
+#      - data-server-2
+#      - data-server-3
+#      - data-server-4
+#      - meta-server-1
+#
 #  data-server-1:
 #    image: minfs-data-server:latest
 #    ports:

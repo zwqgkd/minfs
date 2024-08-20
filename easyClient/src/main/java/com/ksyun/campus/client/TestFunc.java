@@ -11,7 +11,6 @@ public class TestFunc {
 
         // delete功能
         // eFileSystem.delete("/read/anothermsg.txt");
-
 //        FSOutputStream fsOutputStream = eFileSystem.create("/read/anothermsg.txt");
 //        byte[] buf = new byte[1024];
 //        Arrays.fill(buf, (byte) 114);
