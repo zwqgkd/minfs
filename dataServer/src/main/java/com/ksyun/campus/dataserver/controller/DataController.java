@@ -54,9 +54,10 @@ public class DataController {
         int length = (Integer) fileData.get("length");
         byte[] res = dataService.read(fileSystemName, path, offset, length);
         if(res == null){
-            return new ResponseEntity<>("读取数据失败！", HttpStatus.valueOf(500));
+            return new ResponseEntity("No more data!", HttpStatus.valueOf(500));
+        } else {
+            return new ResponseEntity(res, HttpStatus.OK);
         }
-        return new ResponseEntity(res, HttpStatus.OK);
     }
 
     @RequestMapping("mkdir")
@@ -87,6 +88,17 @@ public class DataController {
             return new ResponseEntity<>("删除失败", HttpStatus.valueOf(500));
         }
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @RequestMapping("checkFileExist")
+    public ResponseEntity checkFileExisr(@RequestHeader String fileSystemName, @RequestBody Map<String, Object> fileData){
+        String path = fileData.get("path").toString();
+        boolean res = dataService.checkStats(fileSystemName, path);
+        if (!res){
+            return new ResponseEntity<>("查询文件信息失败", HttpStatus.valueOf(500));
+        } else {
+            return new ResponseEntity(HttpStatus.OK);
+        }
     }
 
     @RequestMapping("shutdown")

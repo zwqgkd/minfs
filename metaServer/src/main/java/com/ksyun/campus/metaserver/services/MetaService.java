@@ -224,6 +224,7 @@ public class MetaService {
         String[] remainingParts = Arrays.copyOfRange(pathParts, 1, pathParts.length);
 
         if (!part.isEmpty()) {
+            log.info("part msg: {}", part);
             pathBuilder.append("/").append(part);
             String nodePath = pathBuilder.toString();
 

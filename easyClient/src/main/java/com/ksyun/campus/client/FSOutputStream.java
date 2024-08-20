@@ -7,6 +7,10 @@ import org.springframework.http.ResponseEntity;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class FSOutputStream extends OutputStream {
 
@@ -33,7 +37,7 @@ public class FSOutputStream extends OutputStream {
     @Override
     public void write(byte[] b) {
         for (byte value : b) {
-            System.out.println(value);
+            // System.out.println(value);
             writeBuffer.add(value);
         }
         try {
@@ -72,44 +76,73 @@ public class FSOutputStream extends OutputStream {
 
             Map<String, Object> postData = new HashMap<>();
             postData.put("path", path);
-            // postData.put("data", data);
-            // postData.put("offset", off);
-            // postData.put("length", len);
 
             String url = FileSystem.zkUtil.getMasterMetaAddress();
             ResponseEntity<List> response = fileSystem.sendPostRequest(url, "write", postData, List.class);
             List<String> ipList = response.getBody();
-            System.out.println(Arrays.toString(data));
+            // System.out.println(Arrays.toString(data));
             postData.put("data", Arrays.toString(data));
 
-            boolean isSuccess = true;
-            long fileSize = 0;
+            // boolean isSuccess = true;
+            // long fileSize = 0;
 
-            // Todo: 向dataServer发送写的内容
+            AtomicBoolean isSuccess = new AtomicBoolean(true);
+            AtomicReference<Long> fileSize = new AtomicReference<>(null);
+            CompletableFuture<Void> allTasksCompleted = new CompletableFuture<>();
+
+            List<CompletableFuture<Void>> futures = new ArrayList<>();
+
             for (String ip : ipList) {
-                ResponseEntity<Integer> responseFromDataServer = fileSystem.sendPostRequest(ip, "write", postData, Integer.class);
-                if (responseFromDataServer.getStatusCode() != HttpStatus.OK) {
-                    isSuccess = false;
-                }
-                fileSize = (long) responseFromDataServer.getBody();
+                AtomicBoolean finalIsSuccess = isSuccess;
+                AtomicReference<Long> finalFileSize = fileSize;
+                CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
+                    ResponseEntity<Integer> responseFromDataServer = fileSystem.sendPostRequest(ip, "write", postData, Integer.class);
+                    if (responseFromDataServer.getStatusCode() != HttpStatus.OK) {
+                        finalIsSuccess.set(false);
+                    } else if (finalFileSize.get() == null) {
+                        finalFileSize.compareAndSet(null, responseFromDataServer.getBody().longValue());
+                    }
+                });
+                futures.add(future);
             }
 
-            postData.remove("data");
-            postData.put("size", fileSize);
+            CompletableFuture<Void> allOf = CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));
+            allOf.whenComplete((v, ex) -> {
+                if (ex == null) {
+                    allTasksCompleted.complete(null); // Complete when all tasks are done
+                } else {
+                    allTasksCompleted.completeExceptionally(ex);
+                }
+            });
 
-            if (isSuccess) {
+            try {
+                allTasksCompleted.get(); // Wait for all tasks to complete
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+
+            boolean finalSuccess = isSuccess.get();
+            Long finalFileSize = fileSize.get(); // 获取第一个成功的 fileSize
+            // System.out.println("fileSize = " + finalFileSize);
+
+//            // 向dataServer发送写的内容
+//            for (String ip : ipList) {
+//                ResponseEntity<Integer> responseFromDataServer = fileSystem.sendPostRequest(ip, "write", postData, Integer.class);
+//                if (responseFromDataServer.getStatusCode() != HttpStatus.OK) {
+//                    isSuccess = false;
+//                }
+//                fileSize = (long) responseFromDataServer.getBody();
+//            }
+
+            postData.remove("data");
+            postData.put("size", finalFileSize);
+
+            if (finalSuccess) {
                 url = FileSystem.zkUtil.getMasterMetaAddress();
                 ResponseEntity responseFromMetaServer = fileSystem.sendPostRequest(url, "commitWrite", postData, Void.class);
-                System.out.println(responseFromMetaServer.getBody());
             }
 
             writeBuffer.clear();
         }
     }
-
-//    private void tryFlushWriteBuffer() throws Exception {
-//        if (writeBuffer.size() >= BUFFER_SIZE) {
-//            flushWriteBuffer();
-//        }
-//    }
 }

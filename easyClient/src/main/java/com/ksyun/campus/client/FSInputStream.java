@@ -49,7 +49,6 @@ public class FSInputStream extends InputStream {
     public int read(byte[] b, int off, int len) throws IOException {
         loadReadBuffer(len);
 
-        System.out.println(readBufferPos);
         if (readBufferPos == -1) {
             cleanUpReadBuffer();
             return -1;
@@ -76,7 +75,6 @@ public class FSInputStream extends InputStream {
         data.put("length", length);
 
         ResponseEntity<String> response = fileSystem.sendPostRequest(dataUrl, "read", data, String.class);
-        System.out.println(response.getBody());
 
         if (response.getStatusCode() == HttpStatus.OK) {
             String str = response.getBody();
@@ -107,6 +105,8 @@ public class FSInputStream extends InputStream {
             } else {
                 readBufferPos = -1;
             }
+        } else {
+            readBufferPos = -1;
         }
     }
 

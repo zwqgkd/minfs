@@ -55,7 +55,7 @@ public class RegistService {
 
     public void registerToCenter() throws Exception {
         //将本实例信息注册至zk中心，包含信息 ip、port、capacity、rack、zone
-        DataServerInfo dataServerInfo = new DataServerInfo(serverHost, serverPort, rack, zone, 100, 0, 0);
+        DataServerInfo dataServerInfo = new DataServerInfo(serverHost, serverPort, rack, zone, 102400000, 0, 0);
         ObjectMapper mapper = new ObjectMapper();
         String json = mapper.writeValueAsString(dataServerInfo);
         curatorClient.create()
