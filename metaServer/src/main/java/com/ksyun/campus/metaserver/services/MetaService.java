@@ -107,7 +107,7 @@ public class MetaService {
         StringBuilder pathBuilder = new StringBuilder();
 
         // 先更新里面文件/文件夹的修改时间，然后更新外面的
-        StatInfo statInfo = createStatInfo(FileType.File, path, randomServerInfos);
+        StatInfo statInfo = createStatInfo(FileType.Directory, path, randomServerInfos);
         log.info(String.valueOf(statInfo));
         curatorService.saveMetaData(fileSystemName, statInfo);
 
