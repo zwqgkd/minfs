@@ -48,6 +48,7 @@ public class FSInputStream extends InputStream {
     @Override
     public int read(byte[] b, int off, int len) throws IOException {
         loadReadBuffer(len);
+        System.out.println(readBufferPos);
 
         if (readBufferPos == -1) {
             cleanUpReadBuffer();
@@ -74,32 +75,32 @@ public class FSInputStream extends InputStream {
         data.put("offset", filePos);
         data.put("length", length);
 
+        System.out.println("read pos: " + filePos);
+        System.out.println("length: " + length);
+        System.out.println("bufferPos: " + readBufferPos);
+
         ResponseEntity<String> response = fileSystem.sendPostRequest(dataUrl, "read", data, String.class);
 
         if (response.getStatusCode() == HttpStatus.OK) {
             String str = response.getBody();
-//            String trimmedStr = response.getBody().substring(1, str.length() - 1);
-//
-//            // 按逗号分割字符串，得到每个数字的字符串
-//            String[] stringValues = trimmedStr.split("\\s*,\\s*");
-//
-//            // 转换为字节数组
-//            byte[] byteArray = new byte[stringValues.length];
 
+            String trimmedStr = str.substring(1, str.length() - 1);
 
-            // 转换每个数字为字节
-//            for (int i = 0; i < stringValues.length; i++) {
-//                byteArray[i] = Byte.parseByte(stringValues[i]);
-//            }
+            String[] stringValues = trimmedStr.split("\\s*,\\s*");
 
-//            if (byteArray.length > 0) {
-            if (str != null) {
-                byte[] byteArray = str.getBytes();
+            byte[] byteArray = new byte[stringValues.length];
+
+            for (int i = 0; i < stringValues.length; i++) {
+                byteArray[i] = Byte.parseByte(stringValues[i]);
+            }
+
+            if (byteArray.length > 0) {
                 int count = 0;
                 for (byte b : byteArray) {
                     readBuffer.add(b);
                     count++;
                 }
+                // System.out.println(count);
                 readBufferPos = count;
                 filePos += byteArray.length; // 更新已读取的位置
             } else {
