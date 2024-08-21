@@ -87,7 +87,6 @@ public class TestFunc {
         // delete功能
         eFileSystem.delete("/test/deleteDir/");
 
-        // 有问题
         // System.out.println(eFileSystem.getClusterInfo().toString());
         System.out.println(eFileSystem.getFileStats("/test/newDir/File1.txt"));
         List<StatInfo> ll = eFileSystem.listFileStats("/test/");
