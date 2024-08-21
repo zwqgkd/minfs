@@ -24,7 +24,7 @@ public class FsckServices {
     }
 
     // @Scheduled(fixedRate = 30 * 60 * 1000) // 每隔 30 分钟执行一次
-    //@Scheduled(fixedRate = 20000) // test
+    @Scheduled(fixedRate = 24000) // test
     public void fsckTask() {
         log.info("start fsck task....................");
         //全量扫描文件列表
@@ -102,7 +102,10 @@ public class FsckServices {
         }
 
         String content = (String) this.httpService.sendPostRequest(ip, "read",statInfo.getFileSystemName(), data).getBody();
-        byte[] contentBytes = content.getBytes();
+        byte[] contentBytes = {};
+        if (content != null) {
+            contentBytes = convertData(content);
+        }
 
         for(int i=0;i<statInfo.getReplicaData().size();i++){
             if(status.get(i)){
@@ -112,7 +115,7 @@ public class FsckServices {
             Map<String, Object> writeData = new HashMap<>();
             writeData.put("path", statInfo.getPath());
             writeData.put("data", Arrays.toString(contentBytes));
-            ResponseEntity tryWriteResponse=this.httpService.sendPostRequest(statInfo.getReplicaData().get(i).getDsNode(), "write", statInfo.getFileSystemName(), writeData);
+            ResponseEntity tryWriteResponse=this.httpService.sendPostRequest(statInfo.getReplicaData().get(i).getDsNode(), "recoveryWrite", statInfo.getFileSystemName(), writeData);
             if(!tryWriteResponse.getStatusCode().is2xxSuccessful()){
                 return false;
             }
@@ -137,7 +140,10 @@ public class FsckServices {
         }
 
         String content = (String) this.httpService.sendPostRequest(ip, "read",statInfo.getFileSystemName(), data).getBody();
-        byte[] contentBytes = content.getBytes();
+        byte[] contentBytes = {};
+        if (content != null) {
+            contentBytes = convertData(content);
+        }
 
         for(int i=0;i<statInfo.getReplicaData().size();i++){
             if(status.get(i)){
@@ -152,7 +158,7 @@ public class FsckServices {
             Map<String, Object> writeData = new HashMap<>();
             writeData.put("path", statInfo.getPath());
             writeData.put("data", Arrays.toString(contentBytes));
-            ResponseEntity tryWriteResponse=this.httpService.sendPostRequest(statInfo.getReplicaData().get(i).getDsNode(), "write", statInfo.getFileSystemName(), writeData);
+            ResponseEntity tryWriteResponse=this.httpService.sendPostRequest(statInfo.getReplicaData().get(i).getDsNode(), "recoveryWrite", statInfo.getFileSystemName(), writeData);
             if(!tryWriteResponse.getStatusCode().is2xxSuccessful()){
                 return false;
             }
@@ -233,17 +239,9 @@ public class FsckServices {
         pathParts = Arrays.copyOfRange(pathParts, 1, pathParts.length - 1);
         StringBuilder pathBuilder = new StringBuilder();
 
-//        List<DataServerInfo> dataServerInfos = new ArrayList<>();
-//
-//        for (ReplicaData replicaData : tmp) {
-//            DataServerInfo dataServerInfo = new DataServerInfo();
-//            dataServerInfo.setDsNode(replicaData.getDsNode());
-//        }
-
         updateRecMetaDataInfo(statInfo.getFileSystemName(), pathParts, pathBuilder, tmp);
 
-
-        log.info("Fsck: Recovery on {}", newReplicaIp);
+        log.info("Fsck: Recovery on online dataServer {}", newReplicaIp);
 
         return true;
     }
@@ -275,5 +273,16 @@ public class FsckServices {
                 log.info("Recovery: Updated metaData with historical time: {}", statInfo);
             }
         }
+    }
+
+    public byte[] convertData(String str) {
+        String trimmedStr = str.substring(1, str.length() - 1);
+        String[] stringValues = trimmedStr.split("\\s*,\\s*");
+        byte[] byteArray = new byte[stringValues.length];
+
+        for (int i = 0; i < stringValues.length; i++) {
+            byteArray[i] = Byte.parseByte(stringValues[i]);
+        }
+        return byteArray;
     }
 }

@@ -22,12 +22,12 @@ public class EFileSystem extends FileSystem{
     }
 
     public FSInputStream open(String path) throws Exception {
-        if (getFileStats(path) == null) {
-            throw new IOException("File does not exist!");
-        }
-
         if (path.endsWith("/")) {
             path = path.substring(0, path.length() - 1);
+        }
+
+        if (getFileStats(path) == null) {
+            throw new IOException("File does not exist!");
         }
 
         String url = zkUtil.getMasterMetaAddress();
@@ -37,12 +37,12 @@ public class EFileSystem extends FileSystem{
     }
 
     public FSOutputStream create(String path) throws Exception {
-        if (getFileStats(path) != null) {
-            throw new IOException("File has already existed!");
-        }
-
         if (path.endsWith("/")) {
             path = path.substring(0, path.length() - 1);
+        }
+
+        if (getFileStats(path) != null) {
+            throw new IOException("File has already existed!");
         }
 
         String url = zkUtil.getMasterMetaAddress();
@@ -55,12 +55,12 @@ public class EFileSystem extends FileSystem{
     }
 
     public boolean mkdir(String path) throws Exception {
-        if (getFileStats(path) != null) {
-            throw new IOException("Dir has already existed!");
-        }
-
         if (path.endsWith("/")) {
             path = path.substring(0, path.length() - 1);
+        }
+
+        if (getFileStats(path) != null) {
+            throw new IOException("Dir has already existed!");
         }
 
         String url = zkUtil.getMasterMetaAddress();
@@ -69,12 +69,12 @@ public class EFileSystem extends FileSystem{
     }
 
     public boolean delete(String path) throws Exception {
-        if (getFileStats(path) == null) {
-            throw new IOException("File or dir does not exist!");
-        }
-
         if (path.endsWith("/")) {
             path = path.substring(0, path.length() - 1);
+        }
+
+        if (getFileStats(path) == null) {
+            throw new IOException("File or dir does not exist!");
         }
 
         String url = zkUtil.getMasterMetaAddress();
@@ -87,6 +87,10 @@ public class EFileSystem extends FileSystem{
      * @return 返回文件的元数据信息
      */
     public StatInfo getFileStats(String path) {
+        if (path.endsWith("/")) {
+            path = path.substring(0, path.length() - 1);
+        }
+
         try{
             return sendGetRequest(zkUtil.getMasterMetaAddress(), "stats", path, StatInfo.class).getBody();
         }catch (Exception e){
@@ -100,6 +104,10 @@ public class EFileSystem extends FileSystem{
      * @return 返回文件夹下的文件元数据信息
      */
     public List<StatInfo> listFileStats(String path){
+        if (path.endsWith("/")) {
+            path = path.substring(0, path.length() - 1);
+        }
+
         try{
             return sendGetRequest(zkUtil.getMasterMetaAddress(), "listdir", path, new ParameterizedTypeReference<List<StatInfo>>(){}).getBody();
         }catch(Exception e){

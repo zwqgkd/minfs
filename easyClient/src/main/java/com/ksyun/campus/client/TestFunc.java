@@ -2,124 +2,98 @@ package com.ksyun.campus.client;
 
 import com.ksyun.campus.client.domain.StatInfo;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.util.List;
-import java.util.Arrays;
+import java.util.Random;
 
 public class TestFunc {
     public static void main(String[] args) throws Exception {
         EFileSystem eFileSystem = new EFileSystem();
 
-        // delete功能
-        // eFileSystem.delete("/read/anothermsg.txt");
-        FSOutputStream fsOutputStream = eFileSystem.create("/read/anothermsg.txt");
-//        byte[] buf = new byte[1024];
-//        Arrays.fill(buf, (byte) 114);
+//        FSOutputStream fsOutputStream1 = eFileSystem.create("/test/newDir/File1.txt");
+//        fsOutputStream1.write("Hello World and ppppppppppppppppp!!!".getBytes(StandardCharsets.UTF_8));
+//        fsOutputStream1.close();
+
+
+
+//        // mkdir功能
+//        eFileSystem.mkdir("/test/newDir/");
+//        eFileSystem.mkdir("/test/deleteDir/");
 //
-//        fsOutputStream.write(buf);
-        fsOutputStream.close();
-
-        FSInputStream fsInputStream = eFileSystem.open("/read/anothermsg.txt");
-
-        int bytesRead = 0;
-        while ((bytesRead = fsInputStream.read()) != -1) {
-            System.out.print(bytesRead);
-        }
-        System.out.println();
-        fsInputStream.close();
-
-//        boolean res = eFileSystem.mkdir("/read/123/");
-//        System.out.println(res);
-//        boolean res1 = eFileSystem.mkdir("/read/456/");
-//        System.out.println(res1);
-//        boolean res1 = eFileSystem.mkdir("/read/123");
-//        boolean res2 = eFileSystem.mkdir("/read/1234");
-//        FSOutputStream fsOutputStream = eFileSystem.create("/read/anotherTest2.txt");
-
-//        byte[] buf = new byte[1024];
-//        Arrays.fill(buf, (byte) 100);
+//        // create功能
+//        FSOutputStream fsOutputStream1 = eFileSystem.create("/test/newDir/File1.txt");
+//        FSOutputStream fsOutputStream2 = eFileSystem.create("/test/deleteDir/File2.txt");
+//        fsOutputStream2.close();
 //
-//        fsOutputStream.write(buf);
-//        fsOutputStream.close();
-
-//        FSInputStream fsInputStream = eFileSystem.open("/read/anotherTest2.txt");
-//        byte[] buffer = new byte[300];
+//        // write功能
+//        String charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;':,.<>/?`~";
+//        Random random = new Random();
 //
-//        for (int i = 0; i < 5; i++) {
-//            int bytesRead;
-//            bytesRead = fsInputStream.read(buffer); // 最多读取5个字节
+//        // 创建一个StringBuilder来生成字符串
+//        StringBuilder sb = new StringBuilder();
 //
-//            if (bytesRead != -1) {
-//                String data = new String(buffer, 0, bytesRead);
-//                System.out.println("Read data: " + data);
-//            } else {
-//                System.out.println("No more data to read.");
-//            }
+//        // 根据需要的大小生成字符串
+//        int targetLength = 1 * 10 * 1024;
+//        while (sb.length() < targetLength) {
+//            sb.append(charset.charAt(random.nextInt(charset.length())));
 //        }
-//        fsInputStream.close();
-
-//        eFileSystem.delete("/readd/");
-//        eFileSystem.delete("/anotherTest2.txt");
-//        FSOutputStream fsOutputStream = eFileSystem.create("/anotherTest2.txt");
-//        byte[] buf = new byte[256];
-//        Arrays.fill(buf, (byte) 107);f
 //
-//        fsOutputStream.write(buf);
-//        fsOutputStream.close();
-
-//        FSInputStream fsInputStream = eFileSystem.open("/read/anotherTest.txt");
-//        byte[] buffer = new byte[300];
+//        // 将生成的字符串转换为UTF-8字节数组
+//        byte[] byteArray = sb.toString().getBytes(StandardCharsets.UTF_8);
 //
-//        int bytesRead;
-//        bytesRead = fsInputStream.read(buffer); // 最多读取5个字节
+//        fsOutputStream1.write(byteArray);
+//        fsOutputStream1.close();
 //
-//        if (bytesRead != -1) {
-//            String data = new String(buffer, 0, bytesRead);
+//        // 计算MD5
+//        MessageDigest md = MessageDigest.getInstance("MD5");
+//        byte[] md5Bytes = md.digest(byteArray);
+//
+//        // 转换为十六进制字符串
+//        StringBuilder md5Hex = new StringBuilder();
+//        for (byte b : md5Bytes) {
+//            md5Hex.append(String.format("%02x", b));
+//        }
+//
+//        System.out.println("write MD5: " + md5Hex.toString());
+//
+//        FSInputStream fsInputStream = eFileSystem.open("/test/newDir/File1.txt");
+//        byte[] buf = new byte[1024];
+//        StringBuilder res = new StringBuilder();
+//
+//        int bytesRead = 0;
+//        while ((bytesRead = fsInputStream.read(buf)) != -1) {
+//            System.out.println(bytesRead);
+//            String data = new String(buf, 0, bytesRead);
 //            System.out.println("Read data: " + data);
-//        } else {
-//            System.out.println("No more data to read.");
+//            res.append(data);
 //        }
 //        fsInputStream.close();
-
-        // System.out.println(eFileSystem.getClusterInfo().toString());
-//        System.out.println(eFileSystem.getFileStats("/read"));
-//        List<StatInfo> ll = eFileSystem.listFileStats("/read");
+//
+//        // 计算MD5
+//        MessageDigest mdr = MessageDigest.getInstance("MD5");
+//        byte[] md5Bytesr = md.digest(res.toString().getBytes());
+//
+//        // 转换为十六进制字符串
+//        StringBuilder md5Hexr = new StringBuilder();
+//        for (byte b : md5Bytesr) {
+//            md5Hexr.append(String.format("%02x", b));
+//        }
+//
+//        System.out.println("read MD5: " + md5Hexr.toString());
+//        System.out.println("Compare write and read is : " + md5Hexr.toString().contentEquals(md5Hex));
+//
+//        // delete功能
+//        eFileSystem.delete("/test/deleteDir/");
+//
+//        // 有问题
+//        // System.out.println(eFileSystem.getClusterInfo().toString());
+//        System.out.println(eFileSystem.getFileStats("/test/newDir/File1.txt"));
+//        List<StatInfo> ll = eFileSystem.listFileStats("/test/");
 //        for (StatInfo statInfo : ll) {
 //            System.out.println(statInfo);
 //        }
 
-//        FSOutputStream fsOutputStream = eFileSystem.create("/read/test.txt");
-//        for (int i = 0; i < 1; ++i) {
-//            fsOutputStream.write("abcv".getBytes());
-//        }
-//        fsOutputStream.close();
-//
-//        FSInputStream fsInputStream = eFileSystem.open("/read/test.txt");
-//
-//        int byteValue;
-//        int count = 5;
-//        while (count > 0 && (byteValue = fsInputStream.read()) != -1 ) {
-//            System.out.println((char) byteValue);
-//            count--;
-//        }
-//
-//        byte[] buffer = new byte[60];
-//
-//        int bytesRead;
-//        bytesRead = fsInputStream.read(buffer); // 最多读取5个字节
-//
-//        if (bytesRead != -1) {
-//            String data = new String(buffer, 0, bytesRead);
-//            System.out.println("Read data: " + data);
-//        } else {
-//            System.out.println("No more data to read.");
-//        }
-//        fsInputStream.close();
-
-//        FSOutputStream fsOutputStream = eFileSystem.create("/abc/123/rrrr.txt");
-//        for (int i = 0; i < 1; ++i) {
-//            fsOutputStream.write("abcv".getBytes());
-//        }
-//        fsOutputStream.close();
         System.out.println("////////////");
     }
 }

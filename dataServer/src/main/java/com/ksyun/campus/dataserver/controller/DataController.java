@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.Map;
 
 @RestController("/")
@@ -27,8 +28,6 @@ public class DataController {
     @RequestMapping("write")
     public ResponseEntity writeFile(@RequestHeader String fileSystemName, @RequestBody Map<String, Object> fileData){
         String path = fileData.get("path").toString();
-        // int offset = (Integer) fileData.get("offset");
-        // int length = (Integer) fileData.get("length");
         String str = (String) fileData.get("data");
         System.out.println(str);
 
@@ -42,7 +41,7 @@ public class DataController {
             byteArray[i] = Byte.parseByte(stringValues[i]);
         }
 
-        int res = dataService.write(fileSystemName, path, byteArray);
+        int res = dataService.write(fileSystemName, path, byteArray, true);
         return ResponseEntity.ok(res);
     }
 
@@ -56,7 +55,7 @@ public class DataController {
         if(res == null){
             return new ResponseEntity("No more data!", HttpStatus.valueOf(500));
         } else {
-            return new ResponseEntity(res, HttpStatus.OK);
+            return new ResponseEntity(Arrays.toString(res), HttpStatus.OK);
         }
     }
 
@@ -99,6 +98,26 @@ public class DataController {
         } else {
             return new ResponseEntity(HttpStatus.OK);
         }
+    }
+
+    @RequestMapping("recoveryWrite")
+    public ResponseEntity recoveryFile(@RequestHeader String fileSystemName, @RequestBody Map<String, Object> fileData){
+        String path = fileData.get("path").toString();
+        String str = (String) fileData.get("data");
+        System.out.println(str);
+
+        String trimmedStr = str.substring(1, str.length() - 1);
+
+        String[] stringValues = trimmedStr.split("\\s*,\\s*");
+
+        byte[] byteArray = new byte[stringValues.length];
+
+        for (int i = 0; i < stringValues.length; i++) {
+            byteArray[i] = Byte.parseByte(stringValues[i]);
+        }
+
+        int res = dataService.write(fileSystemName, path, byteArray, false);
+        return ResponseEntity.ok(res);
     }
 
     @RequestMapping("shutdown")
