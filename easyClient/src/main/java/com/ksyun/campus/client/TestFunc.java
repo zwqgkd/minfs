@@ -35,7 +35,7 @@ public class TestFunc {
         StringBuilder sb = new StringBuilder();
 
         // 根据需要的大小生成字符串
-        int targetLength = 1 * 100 * 1024;
+        int targetLength = 1 * 10 * 1024;
         while (sb.length() < targetLength) {
             sb.append(charset.charAt(random.nextInt(charset.length())));
         }
