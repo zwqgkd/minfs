@@ -1,12 +1,8 @@
 # 简单实现一些NAS功能
 
+### 系统架构
 
-
-## 结构
-
-### 写流程结构
-
-![写流程](https://github.com/zwqgkd/picx-images-hosting/blob/master/kc/%E6%9E%B6%E6%9E%84.png?raw=true)
+![架构](https://github.com/zwqgkd/picx-images-hosting/blob/master/kc/%E6%9E%B6%E6%9E%84.png?raw=true)
 
 ### ZK数据结构
 
@@ -28,7 +24,7 @@
       - ...
     - ...
 
-## HOW TO USE
+### HOW TO USE
 
 1. 启动服务
 
