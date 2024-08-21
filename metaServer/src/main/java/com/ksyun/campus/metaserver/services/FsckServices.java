@@ -17,15 +17,22 @@ public class FsckServices {
 
     private final CuratorService curatorService;
 
+    private final RegistService registService;
+
     @Autowired
-    public FsckServices(HttpService httpService, CuratorService curatorService) {
+    public FsckServices(HttpService httpService, CuratorService curatorService, RegistService registService) {
         this.httpService = httpService;
         this.curatorService = curatorService;
+        this.registService = registService;
     }
 
     // @Scheduled(fixedRate = 30 * 60 * 1000) // 每隔 30 分钟执行一次
     @Scheduled(fixedRate = 24000) // test
     public void fsckTask() {
+        if (registService.getRole().equals("slave")) {
+            return;
+        }
+
         log.info("start fsck task....................");
         //全量扫描文件列表
         List<StatInfoWithFSName> allFileStatInfo = curatorService.getAllFileStatInfo();
@@ -196,6 +203,7 @@ public class FsckServices {
         Map<String, Object> writeData = new HashMap<>();
         writeData.put("path", statInfo.getPath());
         writeData.put("data", Arrays.toString(contentBytes));
+        writeData.put("recover", "set");
 
         ResponseEntity tryWriteResponse = this.httpService.sendPostRequest(newReplicaIp, "write", statInfo.getFileSystemName(), writeData);
         if(!tryWriteResponse.getStatusCode().is2xxSuccessful()){
