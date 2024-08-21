@@ -11,6 +11,7 @@ public class TestFunc {
     public static void main(String[] args) throws Exception {
         EFileSystem eFileSystem = new EFileSystem();
 
+        System.out.println(eFileSystem.getClusterInfo());
 //        FSOutputStream fsOutputStream1 = eFileSystem.create("/test/newDir/File1.txt");
 //        fsOutputStream1.write("Hello World and ppppppppppppppppp!!!".getBytes(StandardCharsets.UTF_8));
 //        fsOutputStream1.close();
