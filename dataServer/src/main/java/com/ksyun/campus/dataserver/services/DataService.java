@@ -14,6 +14,8 @@ public class DataService {
     @Autowired
     private RegistService registService;
 
+    private final String LINUX_FILE_SYSTEM = "/fsFileStore/";
+
     public int write(String fileSystemName, String path, byte[] data, boolean flag){
         try{
             // 写入数据为空
@@ -22,7 +24,8 @@ public class DataService {
                 return -1;
             }
 
-            File file = new File(fileSystemName + registService.getServerInfo().getRack() + registService.getServerInfo().getZone() + "/" + path);
+            // File file = new File(fileSystemName + registService.getServerInfo().getRack() + registService.getServerInfo().getZone() + "/" + path);
+            File file = new File(LINUX_FILE_SYSTEM + fileSystemName + registService.getServerInfo().getRack() + registService.getServerInfo().getZone() + "/" + path);
             // 确保父目录存在
             file.getParentFile().mkdirs();
             // 确保目标文件存在
@@ -50,8 +53,8 @@ public class DataService {
 
     public byte[] read(String fileSystemName, String path, int offset, int length){
         try{
-            File file = new File(fileSystemName + registService.getServerInfo().getRack() + registService.getServerInfo().getZone() + "/" + path);
-
+            // File file = new File(fileSystemName + registService.getServerInfo().getRack() + registService.getServerInfo().getZone() + "/" + path);
+            File file = new File(LINUX_FILE_SYSTEM + fileSystemName + registService.getServerInfo().getRack() + registService.getServerInfo().getZone() + "/" + path);
             // 检查文件是否存在并且可读
             if (!file.exists() || !file.canRead()) {
                 System.out.println("File does not exist or cannot be read.");
@@ -106,7 +109,8 @@ public class DataService {
     public boolean mkdir(String fileSystemName, String path) {
         try {
             // localTest
-            File directory = new File(fileSystemName + registService.getServerInfo().getRack() + registService.getServerInfo().getZone() + "/" + path);
+            // File directory = new File(fileSystemName + registService.getServerInfo().getRack() + registService.getServerInfo().getZone() + "/" + path);
+            File directory = new File(LINUX_FILE_SYSTEM + fileSystemName + registService.getServerInfo().getRack() + registService.getServerInfo().getZone() + "/" + path);
             directory.mkdirs();
             return true;
         }catch (Exception e){
@@ -117,7 +121,8 @@ public class DataService {
 
     public boolean create(String fileSystemName, String path) {
         try {
-            File file = new File(fileSystemName + registService.getServerInfo().getRack() + registService.getServerInfo().getZone() + "/" + path);
+            // File file = new File(fileSystemName + registService.getServerInfo().getRack() + registService.getServerInfo().getZone() + "/" + path);
+            File file = new File(LINUX_FILE_SYSTEM + fileSystemName + registService.getServerInfo().getRack() + registService.getServerInfo().getZone() + "/" + path);
             // 确保父目录存在
             file.getParentFile().mkdirs();
             // 确保目标文件存在
@@ -134,7 +139,8 @@ public class DataService {
 
     public boolean delete(String fileSystemName, String path){
         try {
-            File file = new File(fileSystemName + registService.getServerInfo().getRack() + registService.getServerInfo().getZone() + "/" + path);
+            // File file = new File(fileSystemName + registService.getServerInfo().getRack() + registService.getServerInfo().getZone() + "/" + path);
+            File file = new File(LINUX_FILE_SYSTEM + fileSystemName + registService.getServerInfo().getRack() + registService.getServerInfo().getZone() + "/" + path);
             if (file.exists()) {
                 // 如果是目录，递归删除目录下的所有文件和子目录
                 if (file.isDirectory()) {
@@ -164,7 +170,8 @@ public class DataService {
 
     public boolean checkStats(String fileSystemName, String path){
         try {
-            File file = new File(fileSystemName + registService.getServerInfo().getRack() + registService.getServerInfo().getZone() + "/" + path);
+            // File file = new File(fileSystemName + registService.getServerInfo().getRack() + registService.getServerInfo().getZone() + "/" + path);
+            File file = new File(LINUX_FILE_SYSTEM + fileSystemName + registService.getServerInfo().getRack() + registService.getServerInfo().getZone() + "/" + path);
             if (file.exists()) {
                 return true;
             } else if (file.isDirectory()) {
