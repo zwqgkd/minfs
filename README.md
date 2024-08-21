@@ -6,7 +6,7 @@
 
 ### 写流程结构
 
-![写流程](https://github.com/zwqgkd/picx-images-hosting/raw/master/kc/photo_2024-08-18_15-34-45.67xdzf0tx2.jpg)
+![写流程](https://github.com/zwqgkd/picx-images-hosting/blob/master/kc/%E6%9E%B6%E6%9E%84.png?raw=true)
 
 ### ZK数据结构
 

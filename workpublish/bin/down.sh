@@ -1,4 +1,4 @@
-cd /root/project/minfs/workpublish
+cd /data/apps/minfs/workpublish
 ## kill java
 ps -ef | grep "java -jar" | grep -v grep | awk '{print $2}' | xargs kill -9
 ## run zks
