@@ -98,6 +98,7 @@ public class FsckServices {
         for (int i = 0; i < status.size(); i++) {
             if (status.get(i)) {
                 ip = statInfo.getReplicaData().get(i).getDsNode();
+                break;
             }
         }
 
