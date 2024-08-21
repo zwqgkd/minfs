@@ -16,7 +16,7 @@ public class DataService {
 
     private final String LINUX_FILE_SYSTEM = "/fsFileStore/";
 
-    public int write(String fileSystemName, String path, byte[] data, boolean flag){
+    public int write(String fileSystemName, String path, byte[] data, boolean flag, String optionStr){
         try{
             // 写入数据为空
             if (data == null) {
@@ -40,6 +40,9 @@ public class DataService {
             // 更新zk侧的dataServer数据，flag为false代表是恢复数据
             if (flag) {
                 DataServerInfo currentNodeData = registService.getServerInfo();
+                if (optionStr != null) {
+                    currentNodeData.setFileTotal(currentNodeData.getFileTotal() + 1);
+                }
                 currentNodeData.setUseCapacity(currentNodeData.getUseCapacity() + writableLength);
                 registService.updateServerInfo(currentNodeData);
             }
@@ -70,8 +73,8 @@ public class DataService {
 
             // 获取文件的长度
             long fileLength = file.length();
-            System.out.println(fileLength);
-            System.out.println(offset);
+            // System.out.println(fileLength);
+            // System.out.println(offset);
 
             // 检查是否将文件读完
             if (offset < 0) {

@@ -29,6 +29,8 @@ public class DataController {
     public ResponseEntity writeFile(@RequestHeader String fileSystemName, @RequestBody Map<String, Object> fileData){
         String path = fileData.get("path").toString();
         String str = (String) fileData.get("data");
+        String optionStr = (String) fileData.get("recover");
+
         System.out.println(str);
 
         String trimmedStr = str.substring(1, str.length() - 1);
@@ -41,7 +43,7 @@ public class DataController {
             byteArray[i] = Byte.parseByte(stringValues[i]);
         }
 
-        int res = dataService.write(fileSystemName, path, byteArray, true);
+        int res = dataService.write(fileSystemName, path, byteArray, true, optionStr);
         return ResponseEntity.ok(res);
     }
 
@@ -104,6 +106,8 @@ public class DataController {
     public ResponseEntity recoveryFile(@RequestHeader String fileSystemName, @RequestBody Map<String, Object> fileData){
         String path = fileData.get("path").toString();
         String str = (String) fileData.get("data");
+        String optionStr = (String) fileData.get("recover");
+
         System.out.println(str);
 
         String trimmedStr = str.substring(1, str.length() - 1);
@@ -116,7 +120,7 @@ public class DataController {
             byteArray[i] = Byte.parseByte(stringValues[i]);
         }
 
-        int res = dataService.write(fileSystemName, path, byteArray, false);
+        int res = dataService.write(fileSystemName, path, byteArray, false, optionStr);
         return ResponseEntity.ok(res);
     }
 
