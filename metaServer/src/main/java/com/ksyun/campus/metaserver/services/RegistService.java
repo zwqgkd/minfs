@@ -77,6 +77,8 @@ public class RegistService {
                         //change master
                         curatorRegisterClient.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath(MASTER_META_ZK_PATH+"/"+this.getSlaveMetaAddress());
                         curatorRegisterClient.delete().forPath(SLAVE_META_ZK_PATH+"/"+this.getSlaveMetaAddress());
+                        //set role
+                        role = "master";
                         log.info("recover master success");
                         //docker compose try to recover old master
                     }
